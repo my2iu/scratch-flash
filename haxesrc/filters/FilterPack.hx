@@ -26,6 +26,7 @@
 
 package filters;
 
+/*
 import filters.FisheyeKernel;
 import filters.HSVKernel;
 import filters.MosaicKernel;
@@ -34,6 +35,7 @@ import filters.ScratchObj;
 import filters.Shader;
 import filters.ShaderFilter;
 import filters.WhirlKernel;
+*/
 
 import flash.display.*;
 import flash.filters.*;
@@ -49,7 +51,7 @@ class FilterPack
     
     public var targetObj : ScratchObj;
     private var filterDict : Dynamic;
-    
+/*    
     @:meta(Embed(source="kernels/fisheye.pbj",mimeType="application/octet-stream"))
 
     private var FisheyeKernel : Class<Dynamic>;
@@ -74,7 +76,7 @@ class FilterPack
 
     private var WhirlKernel : Class<Dynamic>;
     private var whirlShader : Shader = new Shader(Type.createInstance(WhirlKernel, []));
-    
+*/    
     public function new(targetObj : ScratchObj)
     {
         this.targetObj = targetObj;
@@ -130,7 +132,7 @@ class FilterPack
         var srcHeight : Float = targetObj.height * scale;
         var n : Float;
         newFilters.length = 0;
-        
+        /*
         if (Reflect.field(filterDict, "whirl") != 0) {
             // range: -infinity..infinity
             var radians : Float = (Math.PI * Reflect.field(filterDict, "whirl")) / 180;
@@ -184,6 +186,7 @@ class FilterPack
             hsvShader.data.hueShift.value = [n];
             newFilters.push(new ShaderFilter(hsvShader));
         }
+		*/
         return newFilters;
     }
 }

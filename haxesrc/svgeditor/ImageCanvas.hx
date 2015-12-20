@@ -19,13 +19,6 @@
 
 package svgeditor;
 
-import svgeditor.Bitmap;
-import svgeditor.DisplayObject;
-import svgeditor.Event;
-import svgeditor.ImageEdit;
-import svgeditor.MouseEvent;
-import svgeditor.Scrollbar;
-import svgeditor.Shape;
 
 import flash.display.*;
 import flash.events.*;
@@ -360,7 +353,7 @@ class ImageCanvas extends Sprite
     
     public function setZoomAndScroll(zoomAndScroll : Array<Dynamic>) : Void{
         var newZoom : Float = zoomAndScroll[0];
-        if (Std.is(editor, BitmapEdit))             newZoom = Math.round(newZoom)  // use integer zoom for bitmap editor  ;
+        if (Std.is(editor, BitmapEdit))             newZoom = Math.round(newZoom);  // use integer zoom for bitmap editor  ;
         visibleArea.scaleX = visibleArea.scaleY = newZoom;
         isZoomedIn = newZoom > 1;
         editor.updateZoomReadout();

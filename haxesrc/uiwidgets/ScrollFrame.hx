@@ -46,9 +46,9 @@ class ScrollFrame extends Sprite implements DragClient
     public var contents : ScrollFrameContents;
     public var allowHorizontalScrollbar : Bool = true;
     
-    private inline var decayFactor : Float = 0.95;  // velocity decay (make zero to stop instantly)  
-    private inline var stopThreshold : Float = 0.4;  // stop when velocity is below threshold  
-    private inline var cornerRadius : Int = 0;
+    private static inline var decayFactor : Float = 0.95;  // velocity decay (make zero to stop instantly)  
+    private static inline var stopThreshold : Float = 0.4;  // stop when velocity is below threshold  
+    private static inline var cornerRadius : Int = 0;
     private var useFrame : Bool = false;
     
     private var scrollbarThickness : Int = 9;

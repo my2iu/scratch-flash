@@ -19,11 +19,6 @@
 
 package ui;
 
-import ui.Graphics;
-import ui.Shape;
-import ui.Sprite;
-import ui.TextField;
-import ui.TextFormat;
 
 import flash.display.*;
 import flash.filters.DropShadowFilter;
@@ -36,7 +31,7 @@ class LoadProgress extends Sprite
     
     private var titleFormat : TextFormat = new TextFormat(CSS.font, 18, CSS.textColor);
     private var infoFormat : TextFormat = new TextFormat(CSS.font, 12, CSS.textColor);
-    private inline var grooveColor : Int = 0xB9BBBD;
+    private static inline var grooveColor : Int = 0xB9BBBD;
     
     private var bkg : Shape;
     private var titleField : TextField;

@@ -19,20 +19,6 @@
 
 package watchers;
 
-import watchers.DisplayObject;
-import watchers.Event;
-import watchers.FileReference;
-import watchers.FocusEvent;
-import watchers.Graphics;
-import watchers.IconButton;
-import watchers.KeyboardEvent;
-import watchers.Menu;
-import watchers.MouseEvent;
-import watchers.ResizeableFrame;
-import watchers.Scrollbar;
-import watchers.Shape;
-import watchers.TextField;
-import watchers.TextFormat;
 
 import flash.display.*;
 import flash.events.*;

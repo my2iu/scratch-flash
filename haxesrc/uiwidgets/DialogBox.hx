@@ -64,7 +64,7 @@ class DialogBox extends Sprite
         addEventListener(FocusEvent.KEY_FOCUS_CHANGE, focusChange);
     }
     
-    public static function ask(question : String, defaultAnswer : String, stage : Stage = null, resultFunction : Function = null, context : Dictionary = null) : Void{
+    public static function ask(question : String, defaultAnswer : String, stage : Stage = null, resultFunction : String->Void = null, context : Dictionary = null) : Void{
         function done() : Void{if (resultFunction != null)                 resultFunction(d.fields["answer"].text);
         };
         var d : DialogBox = new DialogBox(done);
@@ -75,7 +75,7 @@ class DialogBox extends Sprite
         d.showOnStage((stage != null) ? stage : Scratch.app.stage);
     }
     
-    public static function confirm(question : String, stage : Stage = null, okFunction : Function = null, cancelFunction : Function = null, context : Dictionary = null) : Void{
+    public static function confirm(question : String, stage : Stage = null, okFunction : Void->Void = null, cancelFunction : Void->Void= null, context : Dictionary = null) : Void{
         var d : DialogBox = new DialogBox(okFunction, cancelFunction);
         d.addTitle(question);
         d.addAcceptCancelButtons("OK");
@@ -83,7 +83,7 @@ class DialogBox extends Sprite
         d.showOnStage((stage != null) ? stage : Scratch.app.stage);
     }
     
-    public static function notify(title : String, msg : String, stage : Stage = null, leftJustify : Bool = false, okFunction : Function = null, cancelFunction : Function = null, context : Dictionary = null) : Void{
+    public static function notify(title : String, msg : String, stage : Stage = null, leftJustify : Bool = false, okFunction : Void->Void= null, cancelFunction : Void->Void= null, context : Dictionary = null) : Void{
         var d : DialogBox = new DialogBox(okFunction, cancelFunction);
         d.leftJustify = leftJustify;
         d.addTitle(title);
@@ -177,7 +177,7 @@ class DialogBox extends Sprite
         addButton("Cancel", cancel);
     }
     
-    public function addButton(label : String, action : Function) : Void{
+    public function addButton(label : String, action : Void->Void) : Void{
         function doAction() : Void{
             remove();
             if (action != null)                 action();

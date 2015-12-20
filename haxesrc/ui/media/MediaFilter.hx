@@ -22,9 +22,6 @@
 
 package ui.media;
 
-import ui.media.Sprite;
-import ui.media.TextField;
-import ui.media.TextFormat;
 
 import flash.display.*;
 import flash.text.*;

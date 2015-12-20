@@ -19,13 +19,6 @@
 
 package svgeditor;
 
-import svgeditor.Button;
-import svgeditor.Event;
-import svgeditor.IconButton;
-import svgeditor.ImageEdit;
-import svgeditor.Menu;
-import svgeditor.Shape;
-import svgeditor.Slider;
 
 import flash.display.*;
 import flash.events.*;

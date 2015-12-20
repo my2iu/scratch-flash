@@ -24,10 +24,6 @@
 
 package primitives;
 
-import primitives.BitmapData;
-import primitives.Matrix;
-import primitives.Rectangle;
-import primitives.Scratch;
 
 import flash.display.*;
 import flash.geom.*;
@@ -42,11 +38,11 @@ class VideoMotionPrims
     public static var readMotionSensor : Function;
     
     private var toDegree : Float = 180 / Math.PI;
-    private inline var WIDTH : Int = 480;
-    private inline var HEIGHT : Int = 360;
-    private inline var AMOUNT_SCALE : Int = 100;  // chosen empirically to give a range of roughly 0-100  
-    private inline var THRESHOLD : Int = 10;
-    private inline var WINSIZE : Int = 8;
+    private static inline var WIDTH : Int = 480;
+    private static inline var HEIGHT : Int = 360;
+    private static inline var AMOUNT_SCALE : Int = 100;  // chosen empirically to give a range of roughly 0-100  
+    private static inline var THRESHOLD : Int = 10;
+    private static inline var WINSIZE : Int = 8;
     
     private var app : Scratch;
     private var interp : Interpreter;

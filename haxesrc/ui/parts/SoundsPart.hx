@@ -25,23 +25,6 @@
 
 package ui.parts;
 
-import ui.parts.Bitmap;
-import ui.parts.EditableLabel;
-import ui.parts.Graphics;
-import ui.parts.IconButton;
-import ui.parts.Matrix;
-import ui.parts.MediaPane;
-import ui.parts.Menu;
-import ui.parts.Point;
-import ui.parts.Scratch;
-import ui.parts.ScratchObj;
-import ui.parts.ScratchSound;
-import ui.parts.ScrollFrame;
-import ui.parts.Shape;
-import ui.parts.Sprite;
-import ui.parts.TextField;
-import ui.parts.TextFormat;
-import ui.parts.UIPart;
 
 import flash.display.*;
 import flash.events.KeyboardEvent;
@@ -61,7 +44,7 @@ class SoundsPart extends UIPart
     public var editor : SoundEditor;
     public var currentIndex : Int;
     
-    private inline var columnWidth : Int = 106;
+    private static inline var columnWidth : Int = 106;
     
     private var shape : Shape;
     private var listFrame : ScrollFrame;
@@ -213,7 +196,7 @@ class SoundsPart extends UIPart
         addChild(importButton = makeButton(soundFromComputer, "import", left + 61, buttonY - 1));
     }
     
-    private function makeButton(fcn : Function, iconName : String, x : Int, y : Int) : IconButton{
+    private function makeButton(fcn : Dynamic->Void, iconName : String, x : Int, y : Int) : IconButton{
         var b : IconButton = new IconButton(fcn, iconName);
         b.isMomentary = true;
         b.x = x;

@@ -26,19 +26,6 @@
 
 package ui.parts;
 
-import ui.parts.Bitmap;
-import ui.parts.EditableLabel;
-import ui.parts.Event;
-import ui.parts.Graphics;
-import ui.parts.IconButton;
-import ui.parts.Scratch;
-import ui.parts.ScratchStage;
-import ui.parts.Shape;
-import ui.parts.SoundTransform;
-import ui.parts.Sprite;
-import ui.parts.TextField;
-import ui.parts.TextFormat;
-import ui.parts.UIPart;
 
 import flash.display.*;
 import flash.events.*;
@@ -56,8 +43,8 @@ class StagePart extends UIPart
     private var readoutLabelFormat : TextFormat = new TextFormat(CSS.font, 12, readoutTextColor, true);
     private var readoutFormat : TextFormat = new TextFormat(CSS.font, 10, readoutTextColor);
     
-    private inline var topBarHeightNormal : Int = 39;
-    private inline var topBarHeightSmallPlayerMode : Int = 26;
+    private static inline var topBarHeightNormal : Int = 39;
+    private static inline var topBarHeightSmallPlayerMode : Int = 26;
     
     private var topBarHeight : Int = topBarHeightNormal;
     

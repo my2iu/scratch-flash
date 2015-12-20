@@ -36,16 +36,16 @@ class EditableLabel extends Sprite
 {
     
     private var defaultFormat : TextFormat = new TextFormat(CSS.font, 13, 0x929497);
-    private inline var bgColor : Int = 0xFFFFFF;
-    private inline var frameColor : Int = 0xA6A8AB;
+    private static inline var bgColor : Int = 0xFFFFFF;
+    private static inline var frameColor : Int = 0xA6A8AB;
     
     public var tf : TextField;
     
     private var bezel : Shape;
     private var dynamicBezel : Bool;
-    private var textChanged : Function;
+    private var textChanged : Void->Void;
     
-    public function new(textChanged : Function, format : TextFormat = null)
+    public function new(textChanged : Void->Void, format : TextFormat = null)
     {
         super();
         this.textChanged = textChanged;

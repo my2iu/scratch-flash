@@ -24,13 +24,6 @@
 
 package ui.parts;
 
-import ui.parts.Graphics;
-import ui.parts.Scratch;
-import ui.parts.Sprite;
-import ui.parts.TextField;
-import ui.parts.TextFormat;
-import ui.parts.UIPart;
-
 import flash.display.*;
 import flash.text.*;
 import translation.Translator;
@@ -99,7 +92,7 @@ class TabsPart extends UIPart
         refresh();
     }
     
-    private function makeTab(label : String, action : Function) : IconButton{
+    private function makeTab(label : String, action : Dynamic->Void) : IconButton{
         return new IconButton(action, makeTabImg(label, true), makeTabImg(label, false), true);
     }
     

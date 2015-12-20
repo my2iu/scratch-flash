@@ -79,17 +79,17 @@ class Scratch extends Sprite {
 
 	// Display modes
 	public var hostProtocol:String = 'http';
-	public var editMode:Boolean; // true when project editor showing, false when only the player is showing
-	public var isOffline:Boolean; // true when running as an offline (i.e. stand-alone) app
-	public var isSmallPlayer:Boolean; // true when displaying as a scaled-down player (e.g. in search results)
-	public var stageIsContracted:Boolean; // true when the stage is half size to give more space on small screens
-	public var isIn3D:Boolean;
-	public var render3D:DisplayObjectContainerIn3D;
-	public var isArmCPU:Boolean;
-	public var jsEnabled:Boolean = false; // true when the SWF can talk to the webpage
-	public var ignoreResize:Boolean = false; // If true, temporarily ignore resize events.
-	public var isExtensionDevMode:Boolean = false; // If true, run in extension development mode (as on ScratchX)
-	public var isMicroworld:Boolean = false;
+	public var editMode:Bool; // true when project editor showing, false when only the player is showing
+	public var isOffline:Bool; // true when running as an offline (i.e. stand-alone) app
+	public var isSmallPlayer:Bool; // true when displaying as a scaled-down player (e.g. in search results)
+	public var stageIsContracted:Bool; // true when the stage is half size to give more space on small screens
+	public var isIn3D:Bool;
+//	public var render3D:DisplayObjectContainerIn3D;
+	public var isArmCPU:Bool;
+	public var jsEnabled:Bool = false; // true when the SWF can talk to the webpage
+	public var ignoreResize:Bool = false; // If true, temporarily ignore resize events.
+	public var isExtensionDevMode:Bool = false; // If true, run in extension development mode (as on ScratchX)
+	public var isMicroworld:Bool = false;
 
 	// Runtime
 	public var runtime:ScratchRuntime;
@@ -99,18 +99,18 @@ class Scratch extends Sprite {
 	public var gh:GestureHandler;
 	public var projectID:String = '';
 	public var projectOwner:String = '';
-	public var projectIsPrivate:Boolean;
+	public var projectIsPrivate:Bool;
 	public var oldWebsiteURL:String = '';
-	public var loadInProgress:Boolean;
-	public var debugOps:Boolean = false;
+	public var loadInProgress:Bool;
+	public var debugOps:Bool = false;
 	public var debugOpCmd:String = '';
 
-	private var autostart:Boolean;
+	private var autostart:Bool;
 	private var viewedObject:ScratchObj;
 	private var lastTab:String = 'scripts';
-	private var wasEdited:Boolean; // true if the project was edited and autosaved
-	private var _usesUserNameBlock:Boolean = false;
-	private var languageChanged:Boolean; // set when language changed
+	private var wasEdited:Bool; // true if the project was edited and autosaved
+	private var _usesUserNameBlock:Bool = false;
+	private var languageChanged:Bool; // set when language changed
 
 	// UI Elements
 	public var playerBG:Shape;
@@ -154,7 +154,7 @@ class Scratch extends Sprite {
 		jsAccessDetermined(false);
 	}
 
-	private function jsAccessDetermined(result:Boolean):Void {
+	private function jsAccessDetermined(result:Bool):Void {
 		jsEnabled = result;
 		initialize();
 	}
@@ -230,7 +230,7 @@ class Scratch extends Sprite {
 		jsEditorReady();
 	}
 
-	private function setupExternalInterface(oldWebsitePlayer:Boolean):Void {
+	private function setupExternalInterface(oldWebsitePlayer:Bool):Void {
 		if (!jsEnabled) return;
 
 		addExternalCallback('ASloadExtension', extensionManager.loadRawExtension);
@@ -247,7 +247,7 @@ class Scratch extends Sprite {
 
 	private function jsEditorReady():Void {
 		if (jsEnabled) {
-			externalCall('JSeditorReady', function (success:Boolean):Void {
+			externalCall('JSeditorReady', function (success:Bool):Void {
 				if (!success) jsThrowError('Calling JSeditorReady() failed.');
 			});
 		}
@@ -291,7 +291,7 @@ class Scratch extends Sprite {
 		sbxLoader.load(request);
 	}
 
-	private var pendingExtensionURLs:Array;
+	private var pendingExtensionURLs:Array<Dynamic>;
 	/*
 	private function loadGithubURL(urlOrArray:*):Void {
 		if (!isExtensionDevMode) return;
@@ -389,7 +389,7 @@ class Scratch extends Sprite {
 		return 0;
 	}
 
-	private function startInEditMode():Boolean {
+	private function startInEditMode():Bool {
 		return isOffline || isExtensionDevMode;
 	}
 
@@ -469,7 +469,7 @@ class Scratch extends Sprite {
 
 	/*
 	SCRATCH::allow3d
-	protected function handleRenderCallback(enabled:Boolean):Void {
+	protected function handleRenderCallback(enabled:Bool):Void {
 		if (!enabled) {
 			go2D();
 			render3D = null;
@@ -579,7 +579,7 @@ class Scratch extends Sprite {
 		libraryPart.highlight(sprites);
 	}
 
-	public function refreshImageTab(fromEditor:Boolean):Void {
+	public function refreshImageTab(fromEditor:Bool):Void {
 		imagesPart.refresh(fromEditor);
 	}
 
@@ -604,21 +604,21 @@ class Scratch extends Sprite {
 		return tabsPart.x + tabsPart.w;
 	}
 
-	public function enableEditorTools(flag:Boolean):Void {
+	public function enableEditorTools(flag:Bool):Void {
 		imagesPart.editor.enableTools(flag);
 	}
 
 	public var usesUserNameBlock (get, set): Boolean;
-	public function get_usesUserNameBlock():Boolean {
+	public function get_usesUserNameBlock():Bool {
 		return _usesUserNameBlock;
 	}
 
-	public function set_usesUserNameBlock(value:Boolean):Void {
+	public function set_usesUserNameBlock(value:Bool):Void {
 		_usesUserNameBlock = value;
 		stagePart.refresh();
 	}
 
-	public function updatePalette(clearCaches:Boolean = true):Void {
+	public function updatePalette(clearCaches:Bool = true):Void {
 		// Note: updatePalette() is called after changing variable, list, or procedure
 		// definitions, so this is a convenient place to clear the interpreter's caches.
 		if (isShowing(scriptsPart)) scriptsPart.updatePalette();
@@ -631,9 +631,9 @@ class Scratch extends Sprite {
 		stagePart.setProjectName(s);
 	}
 
-	private var wasEditing:Boolean;
+	private var wasEditing:Bool;
 
-	public function setPresentationMode(enterPresentation:Boolean):Void {
+	public function setPresentationMode(enterPresentation:Bool):Void {
 		if (enterPresentation) {
 			wasEditing = editMode;
 			if (wasEditing) {
@@ -684,7 +684,7 @@ class Scratch extends Sprite {
 		}
 	}
 
-	private function setSmallStageMode(flag:Boolean):Void {
+	private function setSmallStageMode(flag:Bool):Void {
 		stageIsContracted = flag;
 		stagePart.refresh();
 		fixLayout();
@@ -731,7 +731,7 @@ class Scratch extends Sprite {
 		imagesPart.step();
 	}
 
-	public function updateSpriteLibrary(sortByIndex:Boolean = false):Void {
+	public function updateSpriteLibrary(sortByIndex:Bool = false):Void {
 		libraryPart.refresh();
 	}
 
@@ -791,7 +791,7 @@ class Scratch extends Sprite {
 	}
 
 	public function installStage(newStage:ScratchStage):Void {
-		var showGreenflagOverlay:Boolean = shouldShowGreenFlag();
+		var showGreenflagOverlay:Bool = shouldShowGreenFlag();
 		stagePart.installStage(newStage, showGreenflagOverlay);
 		selectSprite(newStage);
 		libraryPart.refresh();
@@ -800,7 +800,7 @@ class Scratch extends Sprite {
 		wasEdited = false;
 	}
 
-	private function shouldShowGreenFlag():Boolean {
+	private function shouldShowGreenFlag():Bool {
 		return !(autostart || editMode);
 	}
 
@@ -834,7 +834,7 @@ class Scratch extends Sprite {
 	// UI Modes and Resizing
 	//------------------------------
 
-	public function setEditMode(newMode:Boolean):Void {
+	public function setEditMode(newMode:Bool):Void {
 		Menu.removeMenusFrom(stage);
 		editMode = newMode;
 		if (editMode) {
@@ -868,7 +868,7 @@ class Scratch extends Sprite {
 		addChild(obj);
 	}
 
-	private function isShowing(obj:DisplayObject):Boolean {
+	private function isShowing(obj:DisplayObject):Bool {
 		return obj.parent != null;
 	}
 
@@ -968,8 +968,8 @@ class Scratch extends Sprite {
 
 	private var modalOverlay:Sprite;
 
-	public function setModalOverlay(enableOverlay:Boolean):Void {
-		var currentlyEnabled:Boolean = !!modalOverlay;
+	public function setModalOverlay(enableOverlay:Bool):Void {
+		var currentlyEnabled:Bool = !!modalOverlay;
 		if (enableOverlay != currentlyEnabled) {
 			if (enableOverlay) {
 				function eatEvent(event:MouseEvent):Void {
@@ -1101,7 +1101,7 @@ class Scratch extends Sprite {
 		d.showOnStage(stage, true);
 	}
 
-	private function canExportInternals():Boolean {
+	private function canExportInternals():Bool {
 		return false;
 	}
 
@@ -1167,7 +1167,7 @@ class Scratch extends Sprite {
 		d.showOnStage(stage);
 	}
 
-	public function exportProjectToFile(fromJS:Boolean = false, saveCallback:Function = null):Void {
+	public function exportProjectToFile(fromJS:Bool = false, saveCallback:Function = null):Void {
 		function squeakSoundsConverted():Void {
 			scriptsPane.saveScripts(false);
 			var projectType:String = extensionManager.hasExperimentalExtensions() ? '.sbx' : '.sb2';
@@ -1264,9 +1264,9 @@ class Scratch extends Sprite {
 	// Save status
 	//------------------------------
 
-	public var saveNeeded:Boolean;
+	public var saveNeeded:Bool;
 
-	public function setSaveNeeded(saveNow:Boolean = false):Void {
+	public function setSaveNeeded(saveNow:Bool = false):Void {
 		saveNow = false;
 		// Set saveNeeded flag and update the status string.
 		saveNeeded = true;
@@ -1291,7 +1291,7 @@ class Scratch extends Sprite {
 	private var originalProj:ByteArray;
 	private var revertUndo:ByteArray;
 
-	public function saveForRevert(projData:ByteArray, isNew:Boolean, onServer:Boolean = false):Void {
+	public function saveForRevert(projData:ByteArray, isNew:Bool, onServer:Bool = false):Void {
 		originalProj = projData;
 		revertUndo = null;
 	}
@@ -1316,11 +1316,11 @@ class Scratch extends Sprite {
 		revertUndo = null;
 	}
 
-	private function canRevert():Boolean {
+	private function canRevert():Bool {
 		return originalProj != null;
 	}
 
-	private function canUndoRevert():Boolean {
+	private function canUndoRevert():Bool {
 		return revertUndo != null;
 	}
 
@@ -1328,7 +1328,7 @@ class Scratch extends Sprite {
 		revertUndo = null;
 	}
 
-	public function addNewSprite(spr:ScratchSprite, showImages:Boolean = false, atMouse:Boolean = false):Void {
+	public function addNewSprite(spr:ScratchSprite, showImages:Bool = false, atMouse:Bool = false):Void {
 		var c:ScratchCostume, byteCount:Int;
 		for (c in spr.costumes) {
 			if (!c.baseLayerData) c.prepareToSave();
@@ -1373,7 +1373,7 @@ class Scratch extends Sprite {
 		if (targetObj == viewedObj()) setTab('images');
 	}
 
-	public function okayToAdd(newAssetBytes:Int):Boolean {
+	public function okayToAdd(newAssetBytes:Int):Bool {
 		// Return true if there is room to add an asset of the given size.
 		// Otherwise, return false and display a warning dialog.
 		var assetByteLimit:Int = 50 * 1024 * 1024; // 50 megabytes
@@ -1566,7 +1566,7 @@ class Scratch extends Sprite {
 	// External Interface abstraction
 	//------------------------------
 
-	public function externalInterfaceAvailable():Boolean {
+	public function externalInterfaceAvailable():Bool {
 		return ExternalInterface.available;
 	}
 

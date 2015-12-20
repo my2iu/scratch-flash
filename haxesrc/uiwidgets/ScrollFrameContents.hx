@@ -30,8 +30,6 @@
 
 package uiwidgets;
 
-import uiwidgets.BitmapData;
-import uiwidgets.DisplayObject;
 
 import flash.display.*;
 

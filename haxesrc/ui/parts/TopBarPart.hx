@@ -24,15 +24,6 @@
 
 package ui.parts;
 
-import ui.parts.Bitmap;
-import ui.parts.Button;
-import ui.parts.Graphics;
-import ui.parts.Scratch;
-import ui.parts.Shape;
-import ui.parts.Sprite;
-import ui.parts.TextField;
-import ui.parts.TextFormat;
-import ui.parts.UIPart;
 
 import assets.Resources;
 
@@ -285,7 +276,7 @@ class TopBarPart extends UIPart
         }
     }
     
-    private function makeToolButton(iconName : String, fcn : Function) : IconButton{
+    private function makeToolButton(iconName : String, fcn : Dynamic->Void) : IconButton{
         function mouseDown(evt : MouseEvent) : Void{
             toolOnMouseDown = CursorTool.tool;
         };

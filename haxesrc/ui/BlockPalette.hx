@@ -26,7 +26,6 @@
 
 package ui;
 
-import ui.ScrollFrameContents;
 
 import flash.geom.*;
 import blocks.Block;

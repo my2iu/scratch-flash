@@ -19,12 +19,6 @@
 
 package ui;
 
-import ui.Bitmap;
-import ui.BitmapData;
-import ui.Button;
-import ui.DialogBox;
-import ui.Sprite;
-import ui.Video;
 
 import flash.display.*;
 import flash.media.*;
@@ -34,7 +28,7 @@ import uiwidgets.*;
 class CameraDialog extends DialogBox
 {
     
-    private var saveFunc : Function;
+    private var saveFunc : Dynamic->Void;
     private var picture : Bitmap;
     private var video : Video;
     
@@ -42,7 +36,7 @@ class CameraDialog extends DialogBox
         return ["Camera", "Save", "Close"];
     }
     
-    public function new(saveFunc : Function)
+    public function new(saveFunc : Dynamic->Void)
     {
         super();
         this.saveFunc = saveFunc;
