@@ -19,10 +19,6 @@
 
 package uiwidgets;
 
-import uiwidgets.Graphics;
-import uiwidgets.Stage;
-import uiwidgets.TextField;
-
 import flash.display.DisplayObject;
 import flash.display.*;
 import flash.events.*;
@@ -183,7 +179,7 @@ class SimpleTooltip
     }
     
     public function showOnce(dObj : DisplayObject, ttOpts : Dynamic) : Void{
-        if (stage == null && dObj.stage)             stage = dObj.stage  //trace('showOnce()');  ;
+        if (stage == null && dObj.stage)             stage = dObj.stage;  //trace('showOnce()');  ;
         
         forceHide();
         showTimer.reset();

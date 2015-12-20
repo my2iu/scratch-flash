@@ -24,8 +24,6 @@
 
 package blocks;
 
-import blocks.Graphics;
-import blocks.Shape;
 
 import flash.display.*;
 import flash.filters.*;
@@ -53,11 +51,11 @@ class BlockShape extends Shape
     public static inline var EmptySubstackH : Int = 12;
     public static inline var SubstackInset : Int = 15;
     
-    private inline var CornerInset : Int = 3;
-    private inline var InnerCornerInset : Int = 2;
-    private inline var BottomBarH : Int = 16;  // height of the bottom bar of a C or E block  
-    private inline var DividerH : Int = 18;  // height of the divider bar in an E block  
-    private inline var NotchL1 : Int = 13;
+    private static inline var CornerInset : Int = 3;
+    private static inline var InnerCornerInset : Int = 2;
+    private static inline var BottomBarH : Int = 16;  // height of the bottom bar of a C or E block  
+    private static inline var DividerH : Int = 18;  // height of the divider bar in an E block  
+    private static inline var NotchL1 : Int = 13;
     private var NotchL2 : Int = NotchL1 + NotchDepth;
     private var NotchR1 : Int = NotchL2 + 8;
     private var NotchR2 : Int = NotchR1 + NotchDepth;
@@ -117,8 +115,8 @@ class BlockShape extends Shape
                 topH = 6;
             }
             else {
-                if (!canHaveSubstack1() && !b.isHat)                     topH = b.height  // normal command block (not hat, C, or E)  ;
-                if (targetHeight != 0)                     substack1H = targetHeight - NotchDepth  // wrapping a C or E block  ;
+                if (!canHaveSubstack1() && !b.isHat)                     topH = b.height;  // normal command block (not hat, C, or E)  ;
+                if (targetHeight != 0)                     substack1H = targetHeight - NotchDepth;  // wrapping a C or E block  ;
             }
         }
         filters = dropFeedbackFilters(reporterFlag);

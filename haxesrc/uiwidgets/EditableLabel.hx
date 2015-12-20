@@ -26,14 +26,6 @@
 
 package uiwidgets;
 
-import uiwidgets.BevelFilter;
-import uiwidgets.FocusEvent;
-import uiwidgets.Graphics;
-import uiwidgets.KeyboardEvent;
-import uiwidgets.Shape;
-import uiwidgets.Sprite;
-import uiwidgets.TextField;
-import uiwidgets.TextFormat;
 
 import flash.display.*;
 import flash.events.*;
@@ -66,7 +58,7 @@ class EditableLabel extends Sprite
     }
     
     public function setWidth(w : Int) : Void{
-        if (tf.text.length == 0)             tf.text = " "  // needs at least one character to compute textHeight  ;
+        if (tf.text.length == 0)             tf.text = " ";  // needs at least one character to compute textHeight  ;
         var h : Int = tf.textHeight + 5;  // the height is determined by the font  
         var g : Graphics = bezel.graphics;
         g.clear();

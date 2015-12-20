@@ -25,38 +25,13 @@
 
 package ui.parts;
 
-import ui.parts.BitmapData;
-import ui.parts.BitmapEdit;
-import ui.parts.Button;
-import ui.parts.DrawProperties;
-import ui.parts.EditableLabel;
-import ui.parts.Graphics;
-import ui.parts.IconButton;
-import ui.parts.ImageEdit;
-import ui.parts.Matrix;
-import ui.parts.MediaLibrary;
-import ui.parts.MediaPane;
-import ui.parts.Point;
-import ui.parts.Rectangle;
-import ui.parts.SVGEdit;
-import ui.parts.SVGElement;
-import ui.parts.SVGExport;
-import ui.parts.Scratch;
-import ui.parts.ScratchCostume;
-import ui.parts.ScratchObj;
-import ui.parts.ScratchSprite;
-import ui.parts.ScrollFrame;
-import ui.parts.Shape;
-import ui.parts.TextField;
-import ui.parts.TextFormat;
-import ui.parts.UIPart;
 
 import flash.display.*;
 import flash.events.MouseEvent;
 import flash.geom.*;
 import flash.text.*;
-import flash.utils.SetTimeout;
-
+//import flash.utils.SetTimeout;
+import haxe.Timer;
 import scratch.*;
 
 import svgeditor.*;
@@ -74,10 +49,10 @@ class ImagesPart extends UIPart
     
     public var editor : ImageEdit;
     
-    private inline var columnWidth : Int = 106;
+    private inline static var columnWidth : Int = 106;
     private var contentsX : Int = columnWidth + 13;
     private var topButtonSize : Point = new Point(24, 22);
-    private inline var smallSpace : Int = 3;
+    private inline static var smallSpace : Int = 3;
     private var bigSpace : Int;
     
     private var shape : Shape;
@@ -151,7 +126,7 @@ class ImagesPart extends UIPart
         backdropLibraryButton.visible = isStage();
         costumeLibraryButton.visible = !isStage();
         (try cast(listFrame.contents, MediaPane) catch(e:Dynamic) null).refresh();
-        if (!fromEditor)             selectCostume()  // this refresh is because the editor just saved the costume; do nothing  ;
+        if (!fromEditor)             selectCostume();  // this refresh is because the editor just saved the costume; do nothing  ;
     }
     
     private function updateLabel() : Void{
@@ -351,7 +326,7 @@ class ImagesPart extends UIPart
     // Button Creation
     //------------------------------
     
-    private function makeButton(fcn : Function, iconName : String, x : Int, y : Int) : IconButton{
+    private function makeButton(fcn : Dynamic->Void, iconName : String, x : Int, y : Int) : IconButton{
         var b : IconButton = new IconButton(fcn, iconName);
         b.isMomentary = true;
         b.x = x;
@@ -359,7 +334,7 @@ class ImagesPart extends UIPart
         return b;
     }
     
-    private function makeTopButton(fcn : Function, iconName : String, isRadioButton : Bool = false) : IconButton{
+    private function makeTopButton(fcn : Dynamic->Void, iconName : String, isRadioButton : Bool = false) : IconButton{
         return new IconButton(
         fcn, SoundsPart.makeButtonImg(iconName, true, topButtonSize), 
         SoundsPart.makeButtonImg(iconName, false, topButtonSize), isRadioButton);
@@ -385,7 +360,9 @@ class ImagesPart extends UIPart
         };
         if (Std.is(editor, BitmapEdit))             return;
         editor.shutdown();
-        setTimeout(finishConverting, 300);
+		var timer = new Timer(300);
+		timer.run = finishConverting;
+//        setTimeout(finishConverting, 300);
     }
     
     public function convertToVector() : Void{
@@ -569,7 +546,7 @@ class ImagesPart extends UIPart
                 for (c/* AS3HX WARNING could not determine type for var: c exp: EField(EIdent(spr),costumes) type: null */ in spr.costumes)addAndSelectCostume(c);
                 return;
             }
-            var costumeList : Array<Dynamic> = try cast(costumeOrSprite, Array</*AS3HX WARNING no type*/>) catch(e:Dynamic) null;
+            var costumeList : Array<Dynamic> = try cast(costumeOrSprite, Array<Dynamic/*AS3HX WARNING no type*/>) catch(e:Dynamic) null;
             if (costumeList != null) {
                 for (c in costumeList){
                     addAndSelectCostume(c);

@@ -57,7 +57,8 @@ class Log
             // Either we're not in fixedBufer mode or we haven't yet filled the buffer.
             entry = new LogEntry(severity, messageKey, extraData);
             logBuffer[nextIndex] = entry;
-        }++;nextIndex;
+        }
+		++nextIndex;
         if (fixedBuffer) {
             nextIndex %= logBuffer.length;
         }

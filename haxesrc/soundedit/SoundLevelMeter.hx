@@ -22,9 +22,6 @@
 
 package soundedit;
 
-import soundedit.Graphics;
-import soundedit.Shape;
-import soundedit.Sprite;
 
 import flash.display.*;
 import flash.text.TextFormat;

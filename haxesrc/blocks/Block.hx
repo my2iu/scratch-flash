@@ -32,20 +32,6 @@
 
 package blocks;
 
-import blocks.BlockArg;
-import blocks.BlockShape;
-import blocks.DisplayObject;
-import blocks.DisplayObjectContainer;
-import blocks.FocusEvent;
-import blocks.MouseEvent;
-import blocks.Point;
-import blocks.Scratch;
-import blocks.ScratchComment;
-import blocks.ScriptsPane;
-import blocks.Sprite;
-import blocks.TextField;
-import blocks.TextFormat;
-import blocks.TextLineMetrics;
 
 import extensions.ExtensionManager;
 
@@ -66,9 +52,9 @@ class Block extends Sprite
     public var broadcastMsg(get, set) : String;
 
     
-    private inline var minCommandWidth : Int = 36;
-    private inline var minHatWidth : Int = 80;
-    private inline var minLoopWidth : Int = 80;
+    private inline static var minCommandWidth : Int = 36;
+    private inline static var minHatWidth : Int = 80;
+    private inline static var minLoopWidth : Int = 80;
     
     public static var argTextFormat : TextFormat;
     public static var blockLabelFormat : TextFormat;
@@ -77,12 +63,12 @@ class Block extends Sprite
     //	private static const blockLabelFormat:TextFormat = new TextFormat('LucidaBoldEmbedded', 10, 0xFFFFFF, true);
     private static var useEmbeddedFont : Bool = false;
     
-    public static var MenuHandlerFunction : Function;  // optional function to handle block and blockArg menus  
+    public static var MenuHandlerFunction : Dynamic->Dynamic->Void;  // optional function to handle block and blockArg menus  
     
     public var spec : String;
     public var type : String;
     public var op : String = "";
-    public var opFunction : Function;
+    public var opFunction : Void->Void;
     public var args : Array<Dynamic> = [];
     public var defaultArgValues : Array<Dynamic> = [];
     public var parameterIndex : Int = -1;  // cache of parameter index, used by GET_PARAM block  
@@ -233,7 +219,7 @@ class Block extends Sprite
         rightToLeft = Translator.rightToLeft;
         if (rightToLeft) {
             if (["+", "-", "*", "/", "%"].indexOf(op) > -1)                 rightToLeft = Translator.rightToLeftMath;
-            if ([">", "<"].indexOf(op) > -1)                 rightToLeft = false  // never change order of comparison ops  ;
+            if ([">", "<"].indexOf(op) > -1)                 rightToLeft = false;  // never change order of comparison ops  ;
         }
         if (rightToLeft) {
             // reverse specs that don't start with arg specifier or an ASCII character
@@ -357,7 +343,7 @@ class Block extends Sprite
         return i == -(1) ? "" : argTypes[i];
     }
     
-    public function allBlocksDo(f : Function) : Void{
+    public function allBlocksDo(f : Dynamic->Void) : Void{
         f(this);
         for (arg in args){
             if (Std.is(arg, Block))                 arg.allBlocksDo(f);
@@ -516,9 +502,9 @@ class Block extends Sprite
             if ((Std.is(item, BlockArg)) && (!cast((item), BlockArg).numberType))                 item.y += 1;
         }
         
-        if ([" ", "", "o"].indexOf(type) >= 0)             x = Math.max(x, minCommandWidth)  // minimum width for command blocks  ;
-        if (["c", "cf", "e"].indexOf(type) >= 0)             x = Math.max(x, minLoopWidth)  // minimum width for C and E blocks  ;
-        if (["h"].indexOf(type) >= 0)             x = Math.max(x, minHatWidth)  // minimum width for hat blocks  ;
+        if ([" ", "", "o"].indexOf(type) >= 0)             x = Math.max(x, minCommandWidth);  // minimum width for command blocks  ;
+        if (["c", "cf", "e"].indexOf(type) >= 0)             x = Math.max(x, minLoopWidth);  // minimum width for C and E blocks  ;
+        if (["h"].indexOf(type) >= 0)             x = Math.max(x, minHatWidth);  // minimum width for hat blocks  ;
         if (elseLabel != null)             x = Math.max(x, indentLeft + elseLabel.width + 2);
         
         base.setWidthAndTopHeight(x + indentRight, indentTop + maxH + indentBottom);
@@ -778,7 +764,7 @@ class Block extends Sprite
         while (true){
             if (Std.is(b.parent, Block)) {
                 b = cast((b.parent), Block);
-                if (!b.isReporter)                     return b  // owning command block  ;
+                if (!b.isReporter)                     return b;  // owning command block  ;
             }
             else {
                 return b;
@@ -971,7 +957,7 @@ class Block extends Sprite
         var target : Block = this;
         var delta : Int = (evt.shiftKey) ? -1 : 1;
         i = focusIndex + delta;
-                while (){
+                while (true){
             if (i >= target.args.length) {
                 var p : Block = try cast(target.parent, Block) catch(e:Dynamic) null;
                 if (p != null) {
@@ -1016,7 +1002,7 @@ class Block extends Sprite
                 }
                 var nested : Block = p.nextBlock == (target != null) ? p.subStack2 || p.subStack1 : p.subStack2 == (target != null) ? p.subStack1 : null;
                 if (nested != null) {
-                                        while (){
+                                        while (true){
                         nested = nested.bottomBlock();
                         var n2 : Block = nested.subStack1 || nested.subStack2;
                         if (n2 == null)                             break;

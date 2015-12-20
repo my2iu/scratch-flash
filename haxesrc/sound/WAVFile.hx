@@ -59,7 +59,7 @@ class WAVFile
         if (waveData.readUTFBytes(4) != "RIFF")             throw cast(("WAVFile: bad file header"), Error);
         var totalSize : Int = waveData.readInt();
         if (waveData.length != (totalSize + 8))             trace("WAVFile: bad RIFF size; ignoring");
-        if (waveData.readUTFBytes(4) != "WAVE")             throw cast(("WAVFile: not a WAVE file"), Error)  // read format chunk  ;
+        if (waveData.readUTFBytes(4) != "WAVE")             throw cast(("WAVFile: not a WAVE file"), Error);  // read format chunk  ;
         
         
         
@@ -85,7 +85,7 @@ class WAVFile
         
         
         var sampleDataStartAndSize : Array<Dynamic> = dataChunkStartAndSize(waveData);
-        if (sampleDataStartAndSize == null)             sampleDataStartAndSize = [0, 0]  // no 'data' chunk  ;
+        if (sampleDataStartAndSize == null)             sampleDataStartAndSize = [0, 0];  // no 'data' chunk  ;
         result.sampleDataStart = sampleDataStartAndSize[0];
         result.sampleDataSize = sampleDataStartAndSize[1];
         
@@ -187,7 +187,7 @@ class WAVFile
             var chunkType : String = waveData.readUTFBytes(4);
             var chunkSize : Int = waveData.readUnsignedInt();
             if (chunkType == "data") {
-                if (chunkSize > waveData.bytesAvailable)                     return null  // bad wave file  ;
+                if (chunkSize > waveData.bytesAvailable)                     return null;  // bad wave file  ;
                 return [waveData.position, chunkSize];
             }
             else {
@@ -325,7 +325,7 @@ class WAVFile
                 
                 predicted += ((code & 8)) ? -delta : delta;
                 if (predicted > 32767)                     predicted = 32767;
-                if (predicted < -32768)                     predicted = -32768  // compute next index  ;
+                if (predicted < -32768)                     predicted = -32768;  // compute next index  ;
                 
                 index += indexTable[code];
                 if (index > 88)                     index = 88;
@@ -382,7 +382,7 @@ class WAVFile
                 // compute next index
                 index += indexTable[code];
                 if (index > 88)                     index = 88;
-                if (index < 0)                     index = 0  // compute and output sample  ;
+                if (index < 0)                     index = 0;  // compute and output sample  ;
                 
                 sample += ((code & 8)) ? -delta : delta;
                 if (sample > 32767)                     sample = 32767;

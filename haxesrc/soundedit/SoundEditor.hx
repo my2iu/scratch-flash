@@ -22,19 +22,8 @@
 
 package soundedit;
 
-import soundedit.Graphics;
-import soundedit.IconButton;
-import soundedit.Menu;
-import soundedit.Point;
-import soundedit.Scratch;
-import soundedit.Scrollbar;
-import soundedit.Shape;
-import soundedit.Slider;
 import soundedit.SoundLevelMeter;
-import soundedit.SoundsPart;
-import soundedit.Sprite;
-import soundedit.TextField;
-import soundedit.WaveformView;
+//import soundedit.WaveformView;
 
 import flash.display.*;
 import flash.events.KeyboardEvent;
@@ -49,10 +38,10 @@ import uiwidgets.*;
 class SoundEditor extends Sprite
 {
     
-    private inline var waveHeight : Int = 170;
-    private inline var borderColor : Int = 0x606060;
-    private inline var bgColor : Int = 0xF0F0F0;
-    private inline var cornerRadius : Int = 20;
+    private inline static var waveHeight : Int = 170;
+    private inline static var borderColor : Int = 0x606060;
+    private inline static var bgColor : Int = 0xF0F0F0;
+    private inline static var cornerRadius : Int = 20;
     
     public var app : Scratch;
     

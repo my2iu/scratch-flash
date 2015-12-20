@@ -19,16 +19,6 @@
 
 package uiwidgets;
 
-import uiwidgets.DisplayObject;
-import uiwidgets.Event;
-import uiwidgets.Graphics;
-import uiwidgets.IconButton;
-import uiwidgets.KeyboardEvent;
-import uiwidgets.Sprite;
-import uiwidgets.Stage;
-import uiwidgets.TextField;
-import uiwidgets.TextFormat;
-import uiwidgets.VariableTextField;
 
 import flash.display.*;
 import flash.events.*;
@@ -56,13 +46,13 @@ class DialogBox extends Sprite
     private var maxLabelWidth : Int = 0;
     private var maxFieldWidth : Int = 0;
     private var heightPerField : Int = Math.max(makeLabel("foo").height, makeField(10).height) + 10;
-    private inline var spaceAfterText : Int = 18;
-    private inline var blankLineSpace : Int = 7;
+    private inline static var spaceAfterText : Int = 18;
+    private inline static var blankLineSpace : Int = 7;
     
-    private var acceptFunction : Function;  // if not nil, called when menu interaction is accepted  
-    private var cancelFunction : Function;  // if not nil, called when menu interaction is canceled  
+    private var acceptFunction : Void->Void;  // if not nil, called when menu interaction is accepted  
+    private var cancelFunction : Void->Void;  // if not nil, called when menu interaction is canceled  
     
-    public function new(acceptFunction : Function = null, cancelFunction : Function = null)
+    public function new(acceptFunction : Void->Void = null, cancelFunction : Void -> Void = null)
     {
         super();
         this.acceptFunction = acceptFunction;
@@ -338,7 +328,7 @@ class DialogBox extends Sprite
             fieldY += line.height;
             if (line.text.length == 0)                 fieldY += blankLineSpace;
         }
-        if (textLines.length > 0)             fieldY += spaceAfterText  // buttons  ;
+        if (textLines.length > 0)             fieldY += spaceAfterText;  // buttons  ;
         
         if (buttons.length > 0) {
             totalW = (buttons.length - 1) * 10;
@@ -391,7 +381,7 @@ class DialogBox extends Sprite
             h += line.height;
             if (line.length == 0)                 h += blankLineSpace;
         }
-        if (textLines.length > 0)             h += spaceAfterText  // buttons  ;
+        if (textLines.length > 0)             h += spaceAfterText;  // buttons  ;
         
         totalW = 0;
         for (i in 0...buttons.length){totalW += buttons[i].width + 10;

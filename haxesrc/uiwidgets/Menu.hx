@@ -28,14 +28,6 @@
 
 package uiwidgets;
 
-import uiwidgets.DisplayObjectContainer;
-import uiwidgets.Event;
-import uiwidgets.Graphics;
-import uiwidgets.MenuItem;
-import uiwidgets.Shape;
-import uiwidgets.Sprite;
-import uiwidgets.Stage;
-
 import flash.display.*;
 import flash.events.*;
 import flash.filters.DropShadowFilter;
@@ -49,7 +41,7 @@ class Menu extends Sprite
     // when stringCollectionMode is true menus are not displayed but strings are recorded for translation
     public static var stringCollectionMode : Bool;
     
-    public var clientFunction : Function;  // if not null, called when menu interaction is done  
+    public var clientFunction : Dynamic->Void;  // if not null, called when menu interaction is done  
     public var color : Int;
     public var minWidth : Int;
     public var itemHeight : Int;
@@ -65,7 +57,7 @@ class Menu extends Sprite
     private var upArrow : Shape;
     private var downArrow : Shape;
     
-    public function new(clientFunction : Function = null, menuName : String = "", color : Int = 0xA0A0A0, itemHeight : Int = 28)
+    public function new(clientFunction : Dynamic->Void = null, menuName : String = "", color : Int = 0xA0A0A0, itemHeight : Int = 28)
     {
         super();
         this.clientFunction = clientFunction;

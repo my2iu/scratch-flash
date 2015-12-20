@@ -24,8 +24,6 @@
 
 package uiwidgets;
 
-import uiwidgets.Graphics;
-import uiwidgets.Sprite;
 
 import flash.display.*;
 import uiwidgets.SimpleTooltips;

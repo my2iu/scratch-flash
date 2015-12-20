@@ -29,9 +29,6 @@
 
 package ui.parts;
 
-import ui.parts.Scratch;
-import ui.parts.TextField;
-import ui.parts.TextFormat;
 
 import flash.display.GradientType;
 import flash.display.Graphics;
@@ -111,7 +108,7 @@ class UIPart extends Sprite
     
     /* Text Menu Buttons */
     
-    public static function makeMenuButton(s : String, fcn : Function, hasArrow : Bool = false, labelColor : Int = 0xFFFFFF) : IconButton{
+    public static function makeMenuButton(s : String, fcn : Dynamic->Void, hasArrow : Bool = false, labelColor : Int = 0xFFFFFF) : IconButton{
         var onImg : Sprite = makeButtonLabel(Translator.map(s), CSS.buttonLabelOverColor, hasArrow);
         var offImg : Sprite = makeButtonLabel(Translator.map(s), labelColor, hasArrow);
         var btn : IconButton = new IconButton(fcn, onImg, offImg);

@@ -25,13 +25,6 @@
 
 package extensions;
 
-import extensions.Event;
-import extensions.Scratch;
-import extensions.ScratchExtension;
-import extensions.Thread;
-import extensions.URLLoader;
-import extensions.URLRequest;
-
 import blocks.Block;
 
 import com.adobe.utils.StringUtil;
@@ -118,7 +111,7 @@ class ExtensionManager
                 }
                 else {
                     app.externalCall("ScratchExtensions.unregister", null, extName);
-                    if (!ext.isInternal)                         ;
+                    if (!ext.isInternal)   extensionDict[extName] = null; //delete extensionDict[extName];
                     app.updateTopBar();
                 }
             }
@@ -226,7 +219,7 @@ class ExtensionManager
         ext.showBlocks = true;
         ext.menus = extObj.menus;
         ext.javascriptURL = extObj.javascriptURL;
-        if (extObj.host)             ext.host = extObj.host  // non-local host allowed but not saved in project  ;
+        if (extObj.host)             ext.host = extObj.host;  // non-local host allowed but not saved in project  ;
         extensionDict[extObj.extensionName] = ext;
         Scratch.app.translationChanged();
         Scratch.app.updatePalette();
@@ -307,7 +300,7 @@ class ExtensionManager
         var i : Int = op.indexOf(".");
         if (i < 0)             return null;
         var ext : ScratchExtension = extensionDict[op.substring(0, i)];
-        if (ext == null || !ext.menus)             return null  // unknown extension  ;
+        if (ext == null || !ext.menus)             return null;  // unknown extension  ;
         return ext.menus[menuName];
     }
     
@@ -358,7 +351,7 @@ class ExtensionManager
         var i : Int = b.op.indexOf(".");
         var extName : String = b.op.substring(0, i);
         var ext : ScratchExtension = Reflect.field(extensionDict, extName);
-        if (ext == null)             return 0  // unknown extension  ;
+        if (ext == null)             return 0;  // unknown extension  ;
         var primOrVarName : String = b.op.substring(i + 1);
         var args : Array<Dynamic> = [];
         for (i in 0...b.args.length){
@@ -397,8 +390,8 @@ class ExtensionManager
                                 value = v;
                             }, ext.name, sensorName, args);
                 }
-                if (value == null)                     value = 0  // default to zero if missing  ;
-                if ("b" == b.type)                     value = (ext.port > (0) ? "true" == value : true == value)  // coerce value to a boolean  ;
+                if (value == null)                     value = 0;  // default to zero if missing  ;
+                if ("b" == b.type)                     value = (ext.port > (0) ? "true" == value : true == value);  // coerce value to a boolean  ;
                 return value;
             }
         }
@@ -543,7 +536,7 @@ class ExtensionManager
     
     public function getStateVar(extensionName : String, varName : String, defaultValue : Dynamic) : Dynamic{
         var ext : ScratchExtension = Reflect.field(extensionDict, extensionName);
-        if (ext == null)             return defaultValue  // unknown extension  ;
+        if (ext == null)             return defaultValue ; // unknown extension  ;
         var value : Dynamic = ext.stateVars[encodeURIComponent(varName)];
         return ((value == null)) ? defaultValue : value;
     }
@@ -597,12 +590,12 @@ class ExtensionManager
         
         
         function completeHandler(e : Event) : Void{
-            ;
+            pollInProgress[ext] = null; //delete pollInProgress[ext];
             processPollResponse(ext, loader.data);
         };
         function errorHandler(e : Event) : Void{
             // ignore errors
-            ;
+            pollInProgress[ext] = null; //delete pollInProgress[ext];
         };
         var url : String = "http://" + ext.host + ":" + ext.port + "/poll";
         var loader : URLLoader = new URLLoader();

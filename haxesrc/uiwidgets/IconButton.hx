@@ -29,11 +29,6 @@
 
 package uiwidgets;
 
-import uiwidgets.DisplayObject;
-import uiwidgets.Graphics;
-import uiwidgets.Shape;
-import uiwidgets.Sprite;
-import uiwidgets.TextField;
 
 import flash.display.*;
 import flash.events.MouseEvent;
@@ -43,7 +38,7 @@ import assets.Resources;
 class IconButton extends Sprite
 {
     
-    public var clickFunction : Function;
+    public var clickFunction : Dynamic->Void;
     public var isRadioButton : Bool;  // if true then other button children of my parent will be turned off when I'm turned on  
     public var isMomentary : Bool;  // if true then button does not remain on when clicked  
     public var lastEvent : MouseEvent;
@@ -54,7 +49,7 @@ class IconButton extends Sprite
     private var onImage : DisplayObject;
     private var offImage : DisplayObject;
     
-    public function new(clickFunction : Function, onImageOrName : Dynamic, offImageObj : DisplayObject = null, isRadioButton : Bool = false)
+    public function new(clickFunction : Dynamic->Void, onImageOrName : Dynamic, offImageObj : DisplayObject = null, isRadioButton : Bool = false)
     {
         super();
         this.clickFunction = clickFunction;
