@@ -45,9 +45,9 @@ class MediaFilter extends Sprite
     private var selectorNames : Array<Dynamic> = [];  // strings representing tags/themes/categories  
     private var selectors : Array<Dynamic> = [];  // TextFields (translated)  
     private var selection : String = "";
-    private var whenChanged : Function;
+    private var whenChanged : Dynamic->Void;
     
-    public function new(filterName : String, elements : Array<Dynamic>, whenChanged : Function = null)
+    public function new(filterName : String, elements : Array<Dynamic>, whenChanged : Dynamic->Void= null)
     {
         super();
         addChild(title = Resources.makeLabel(Translator.map(filterName), titleFormat));

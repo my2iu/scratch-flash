@@ -62,7 +62,7 @@ class ScratchSound {
 	*/
 
 	// Undo support; not saved
-	public var undoList:Array = [];
+	public var undoList:Array<Dynamic> = [];
 	public var undoListIndex:Int;
 
 	public function ScratchSound(name:String, sndData:ByteArray) {
@@ -189,10 +189,10 @@ class ScratchSound {
 		return new Array<Int>(0); // dummy data
 	}
 
-	public function getLengthInMsec():Number { return (1000.0 * sampleCount) / rate;  };
+	public function getLengthInMsec():Float { return (1000.0 * sampleCount) / rate;  };
 
 	public function toString():String {
-		var secs:Number = Math.ceil(getLengthInMsec() / 1000);
+		var secs:Float = Math.ceil(getLengthInMsec() / 1000);
 		var result:String = 'ScratchSound(' + secs + ' secs, ' + rate;
 		if (format != '') result += ' ' + format;
 		result += ')';

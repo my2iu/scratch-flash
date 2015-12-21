@@ -31,6 +31,7 @@ import sound.mp3.MP3Loader;
 import translation.Translator;
 import uiwidgets.*;
 import util.*;
+import flash.xml.XML;
 
 class MediaLibrary extends Sprite {
 

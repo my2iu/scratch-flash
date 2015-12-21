@@ -550,7 +550,7 @@ private static var Pop : Class<Dynamic>;
     
     /* Events */
     
-    private inline var DOUBLE_CLICK_MSECS : Int = 300;
+    private static inline var DOUBLE_CLICK_MSECS : Int = 300;
     private var lastClickTime : Int;
     
     public function click(evt : MouseEvent) : Void{

@@ -39,7 +39,7 @@ class BlockIO
     }
     
     public static function stringToStack(s : String, forStage : Bool = false) : Block{
-        return arrayToStack(try cast(util.JSON.parse(s), Array</*AS3HX WARNING no type*/>) catch(e:Dynamic) null, forStage);
+        return arrayToStack(try cast(util.JSON.parse(s), Array<Dynamic/*AS3HX WARNING no type*/>) catch(e:Dynamic) null, forStage);
     }
     
     public static function stackToArray(b : Block) : Array<Dynamic>{
@@ -72,12 +72,12 @@ class BlockIO
     private static function blockToArray(b : Block) : Array<Dynamic>{
         // Return an array structure for this block.
         var result : Array<Dynamic> = [b.op];
-        if (b.op == Specs.GET_VAR)             return [Specs.GET_VAR, b.spec]  // variable reporter  ;
-        if (b.op == Specs.GET_LIST)             return [Specs.GET_LIST, b.spec]  // list reporter  ;
-        if (b.op == Specs.GET_PARAM)             return [Specs.GET_PARAM, b.spec, b.type]  // parameter reporter  ;
+        if (b.op == Specs.GET_VAR)             return [Specs.GET_VAR, b.spec];  // variable reporter  ;
+        if (b.op == Specs.GET_LIST)             return [Specs.GET_LIST, b.spec];  // list reporter  ;
+        if (b.op == Specs.GET_PARAM)             return [Specs.GET_PARAM, b.spec, b.type];  // parameter reporter  ;
         if (b.op == Specs.PROCEDURE_DEF)               // procedure definition  
         return [Specs.PROCEDURE_DEF, b.spec, b.parameterNames, b.defaultArgValues, b.warpProcFlag];
-        if (b.op == Specs.CALL)             result = [Specs.CALL, b.spec]  // procedure call - arguments follow spec  ;
+        if (b.op == Specs.CALL)             result = [Specs.CALL, b.spec];  // procedure call - arguments follow spec  ;
         for (a/* AS3HX WARNING could not determine type for var: a exp: ECall(EField(EIdent(b),normalizedArgs),[]) type: null */ in b.normalizedArgs()){
             // Note: arguments are always saved in normalized (i.e. left-to-right) order
             if (Std.is(a, Block))                 result.push(blockToArray(a));
@@ -132,7 +132,7 @@ class BlockIO
             b.setArg(i, a);
         }
         if (substacks[0] && (b.base.canHaveSubstack1()))             b.insertBlockSub1(substacks[0]);
-        if (substacks[1] && (b.base.canHaveSubstack2()))             b.insertBlockSub2(substacks[1])  // to sprites named 'mouse' or 'edge' to '_mouse_' or '_edge_'.    // if hadSpriteRef is true, don't call fixMouseEdgeRefs() to avoid converting references  ;
+        if (substacks[1] && (b.base.canHaveSubstack2()))             b.insertBlockSub2(substacks[1]);  // to sprites named 'mouse' or 'edge' to '_mouse_' or '_edge_'.    // if hadSpriteRef is true, don't call fixMouseEdgeRefs() to avoid converting references  ;
         
         
         
@@ -144,7 +144,7 @@ class BlockIO
     public static function specForCmd(cmd : Array<Dynamic>, undefinedBlockType : String) : Array<Dynamic>{
         // Return the block specification for the given command.
         var op : String = cmd[0];
-        if (op == "\\\\")             op = "%"  // convert old Squeak modulo operator  ;
+        if (op == "\\\\")             op = "%";  // convert old Squeak modulo operator  ;
         for (entry/* AS3HX WARNING could not determine type for var: entry exp: EField(EIdent(Specs),commands) type: null */ in Specs.commands){
             if (entry[3] == op)                 return entry;
         }
@@ -181,7 +181,7 @@ class BlockIO
         var result : Array<Dynamic> = [];
         for (i in 1...cmd.length){
             var a : Dynamic = cmd[i];
-            if (a == null)                 result.push(null)  // a is substack if (1) it is an array and (2) it's first element is an array (vs. a String)    // null indicates an empty stack  ;
+            if (a == null)                 result.push(null);  // a is substack if (1) it is an array and (2) it's first element is an array (vs. a String)    // null indicates an empty stack  ;
             
             if ((Std.is(a, Array)) && (Std.is(a[0], Array)))                 result.push(arrayToStack(a));
         }

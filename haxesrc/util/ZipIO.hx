@@ -30,10 +30,10 @@ import flash.utils.ByteArray;
 class ZipIO
 {
     
-    private inline var Version : Int = 10;
-    private inline var FileEntryID : Int = 0x04034b50;  // Local File Header Record  
-    private inline var DirEntryID : Int = 0x02014b50;  // Central Directory Record  
-    private inline var EndID : Int = 0x06054b50;  // End of Central Directory Record  
+    private static inline var Version : Int = 10;
+    private static inline var FileEntryID : Int = 0x04034b50;  // Local File Header Record  
+    private static inline var DirEntryID : Int = 0x02014b50;  // Central Directory Record  
+    private static inline var EndID : Int = 0x06054b50;  // End of Central Directory Record  
     
     private static var crcTable : Array<Dynamic> = makeCrcTable();
     

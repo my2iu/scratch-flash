@@ -44,7 +44,7 @@ class SVGGroup extends Sprite implements ISVGEditable
     }
     
     public function redraw(forHitTest : Bool = false) : Void{
-        if (element.transform)             transform.matrix = element.transform  // Redraw the sub elements  ;
+        if (element.transform)             transform.matrix = element.transform;  // Redraw the sub elements  ;
         
         
         

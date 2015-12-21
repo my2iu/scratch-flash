@@ -38,11 +38,11 @@ import ui.media.MediaInfo;
 class ScriptsPane extends ScrollFrameContents
 {
     
-    private inline var INSERT_NORMAL : Int = 0;
-    private inline var INSERT_ABOVE : Int = 1;
-    private inline var INSERT_SUB1 : Int = 2;
-    private inline var INSERT_SUB2 : Int = 3;
-    private inline var INSERT_WRAP : Int = 4;
+    private static inline var INSERT_NORMAL : Int = 0;
+    private static inline var INSERT_ABOVE : Int = 1;
+    private static inline var INSERT_SUB1 : Int = 2;
+    private static inline var INSERT_SUB2 : Int = 3;
+    private static inline var INSERT_WRAP : Int = 4;
     
     public var app : Scratch;
     public var padding : Int = 10;

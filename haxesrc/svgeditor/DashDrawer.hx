@@ -30,7 +30,7 @@ import flash.geom.Rectangle;
 
 class DashDrawer
 {
-    private static var lineBitmaps : Dynamic = new Dynamic();
+    private static var lineBitmaps : Dynamic = {};
     
     public function new()
     {

@@ -36,15 +36,15 @@ interface IServer
     // -----------------------------
     // Asset API
     //------------------------------
-    function getAsset(md5 : String, callback : Function) : URLLoader;
-    function getMediaLibrary(type : String, callback : Function) : URLLoader;
-    function getThumbnail(md5 : String, w : Int, h : Int, callback : Function) : URLLoader;
+    function getAsset(md5 : String, callback : Dynamic->Void) : URLLoader;
+    function getMediaLibrary(type : String, callback : Dynamic->Void) : URLLoader;
+    function getThumbnail(md5 : String, w : Int, h : Int, callback : Dynamic->Void) : URLLoader;
     
     // -----------------------------
     // Translation Support
     //------------------------------
-    function getLanguageList(callback : Function) : Void;
-    function getPOFile(lang : String, callback : Function) : Void;
-    function getSelectedLang(callback : Function) : Void;
+    function getLanguageList(callback : Dynamic->Void) : Void;
+    function getPOFile(lang : String, callback : Dynamic->Void) : Void;
+    function getSelectedLang(callback : Dynamic->Void) : Void;
     function setSelectedLang(lang : String) : Void;
 }

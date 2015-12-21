@@ -447,7 +447,7 @@ class Interpreter
         return Reflect.field(primTable, op) != null;
     }
     
-    public function getPrim(op : String) : Function{return Reflect.field(primTable, op);
+    public function getPrim(op : String) : Void->Dynamic {return Reflect.field(primTable, op);
     }
     
     private function initPrims() : Void{

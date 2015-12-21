@@ -65,12 +65,12 @@ import watchers.*;
 class GestureHandler
 {
     
-    private inline var DOUBLE_CLICK_MSECS : Int = 400;
+    private static inline var DOUBLE_CLICK_MSECS : Int = 400;
     private var DEBUG : Bool = false;
     
-    private inline var SCROLL_RANGE : Float = 60;
+    private static inline var SCROLL_RANGE : Float = 60;
     private var SCROLL_MAX_SPEED : Float = 1000 / 50;
-    private inline var SCROLL_MSECS : Int = 500;
+    private static inline var SCROLL_MSECS : Int = 500;
     
     public var mouseIsDown : Bool;
     

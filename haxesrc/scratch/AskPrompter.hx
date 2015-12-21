@@ -19,15 +19,6 @@
 
 package scratch;
 
-import scratch.BevelFilter;
-import scratch.Bitmap;
-import scratch.KeyboardEvent;
-import scratch.MouseEvent;
-import scratch.Scratch;
-import scratch.Shape;
-import scratch.Sprite;
-import scratch.TextField;
-import scratch.TextFormat;
 
 import flash.display.*;
 import flash.events.*;
@@ -38,9 +29,9 @@ import assets.Resources;
 class AskPrompter extends Sprite
 {
     
-    private inline var fontSize : Int = 13;
-    private inline var outlineColor : Int = 0x4AADDE;
-    private inline var inputFieldColor : Int = 0xF2F2F2;
+    private static inline var fontSize : Int = 13;
+    private static inline var outlineColor : Int = 0x4AADDE;
+    private static inline var inputFieldColor : Int = 0xF2F2F2;
     
     private var app : Scratch;
     private var input : TextField;

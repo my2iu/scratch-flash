@@ -36,9 +36,9 @@ class ScratchComment extends Sprite
     
     private var contentsFormat : TextFormat = new TextFormat(CSS.font, 12, CSS.textColor, false);
     private var titleFormat : TextFormat = new TextFormat(CSS.font, 12, CSS.textColor, true);
-    private inline var arrowColor : Int = 0x808080;
-    private inline var bodyColor : Int = 0xFFFFD2;
-    private inline var titleBarColor : Int = 0xFFFFA5;
+    private static inline var arrowColor : Int = 0x808080;
+    private static inline var bodyColor : Int = 0xFFFFD2;
+    private static inline var titleBarColor : Int = 0xFFFFA5;
     
     private var frame : ResizeableFrame;
     private var titleBar : Shape;

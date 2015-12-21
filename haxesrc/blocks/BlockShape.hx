@@ -164,7 +164,7 @@ class BlockShape extends Shape
         redrawNeeded = false;
     }
     
-    private function blockShapeFilters() : Array<Dynamic>{
+    private function blockShapeFilters() : Array<BitmapFilter>{
         // filters for command and reporter Block outlines
         var f : BevelFilter = new BevelFilter(1);
         f.blurX = f.blurY = 3;
@@ -212,7 +212,7 @@ class BlockShape extends Shape
     }
     
     private function drawBooleanShape(g : Graphics) : Void{
-        var centerY : Int = topH / 2;
+        var centerY : Int = Std.int(topH / 2);
         g.moveTo(centerY, topH);
         g.lineTo(0, centerY);
         g.lineTo(centerY, 0);
@@ -222,7 +222,7 @@ class BlockShape extends Shape
     }
     
     private function drawNumberShape(g : Graphics) : Void{
-        var centerY : Int = topH / 2;
+        var centerY : Int = Std.int(topH / 2);
         g.moveTo(centerY, topH);
         curve(centerY, topH, 0, centerY);
         curve(0, centerY, centerY, 0);

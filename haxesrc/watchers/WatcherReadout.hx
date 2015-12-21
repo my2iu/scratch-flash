@@ -19,8 +19,6 @@
 
 package watchers;
 
-import watchers.TextField;
-import watchers.TextFormat;
 
 import flash.display.Sprite;
 import flash.text.*;

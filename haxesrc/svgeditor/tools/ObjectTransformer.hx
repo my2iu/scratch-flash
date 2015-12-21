@@ -19,15 +19,6 @@
 
 package svgeditor.tools;
 
-import svgeditor.tools.Dictionary;
-import svgeditor.tools.FocusEvent;
-import svgeditor.tools.KeyboardEvent;
-import svgeditor.tools.SVGEditTool;
-import svgeditor.tools.Selection;
-import svgeditor.tools.Stage;
-import svgeditor.tools.TextField;
-import svgeditor.tools.Timer;
-import svgeditor.tools.TimerEvent;
 
 import flash.display.*;
 import flash.events.*;
@@ -343,7 +334,7 @@ class ObjectTransformer extends SVGEditTool
     public function deleteSelection() : Void{
         if (Std.is(editor, BitmapEdit))             (try cast(editor, BitmapEdit) catch(e:Dynamic) null).deletingSelection();
         
-        if (targetObj != null)             targetObj.remove()  // Remove event handlers  ;
+        if (targetObj != null)             targetObj.remove();  // Remove event handlers  ;
         
         
         
@@ -603,7 +594,7 @@ class ObjectTransformer extends SVGEditTool
     private var movingHandle : Bool = false;
     private var wasMoved : Bool = false;
     private function moveHandler(e : MouseEvent, newSelection : Bool = false) : Void{
-        if (!stage)             return;
+        if (stage==null)             return;
         
         var _sw2_ = (e.type);        
 

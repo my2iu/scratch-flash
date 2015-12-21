@@ -55,7 +55,7 @@ class ExtensionDevManager extends ExtensionManager {
 
 	override public function loadRawExtension(extObj:Dynamic):ScratchExtension {
 		var ext:ScratchExtension = extensionDict[extObj.extensionName];
-		var isLocalExt:Boolean = (localExt && ext == localExt) || (localFilePoller && !localExt);
+		var isLocalExt:Bool = (localExt && ext == localExt) || (localFilePoller && !localExt);
 		ext = super.loadRawExtension(extObj);
 		if (isLocalExt) {
 			if (!localExt) {
@@ -105,7 +105,7 @@ class ExtensionDevManager extends ExtensionManager {
 	// Javascript Extension Development
 	//------------------------------
 
-	private var localFileDirty:Boolean;
+	private var localFileDirty:Bool;
 
 	public function loadAndWatchExtensionFile(ext:ScratchExtension = null):Void {
 		if (localExt || localFilePoller > 0) {
@@ -179,7 +179,7 @@ class ExtensionDevManager extends ExtensionManager {
 		app.updatePalette();
 	}
 
-	override public function setEnabled(extName:String, flag:Boolean):Void {
+	override public function setEnabled(extName:String, flag:Bool):Void {
 		var ext:ScratchExtension = extensionDict[extName];
 		if (ext && localExt == ext && !flag) {
 			stopWatchingExtensionFile();
@@ -188,9 +188,9 @@ class ExtensionDevManager extends ExtensionManager {
 		super.setEnabled(extName, flag);
 	}
 
-	public function getExperimentalExtensionNames():Array {
-		var names:Array = [];
-		for (ext in extensionDict) {
+	public function getExperimentalExtensionNames():Array<Dynamic> {
+		var names:Array<Dynamic> = [];
+		for (Std.is(ext, extensionDict)) {
 			if (!ext.isInternal && ext.javascriptURL) {
 				names.push(ext.name);
 			}

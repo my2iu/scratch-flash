@@ -31,24 +31,6 @@ John:
 
 package svgeditor;
 
-import svgeditor.BitmapData;
-import svgeditor.BitmapPencilTool;
-import svgeditor.DisplayObject;
-import svgeditor.Event;
-import svgeditor.ISVGEditable;
-import svgeditor.IconButton;
-import svgeditor.ImageEdit;
-import svgeditor.ImagesPart;
-import svgeditor.Matrix;
-import svgeditor.ObjectTransformer;
-import svgeditor.Point;
-import svgeditor.Rectangle;
-import svgeditor.SVGBitmap;
-import svgeditor.SVGShape;
-import svgeditor.SVGTextField;
-import svgeditor.Scratch;
-import svgeditor.Selection;
-import svgeditor.Sprite;
 
 import flash.display.*;
 import flash.events.*;
@@ -155,7 +137,7 @@ class BitmapEdit extends ImageEdit
     public function getSelection(r : Rectangle) : SVGBitmap{
         var bm : BitmapData = workArea.getBitmap().bitmapData;
         r = r.intersection(bm.rect);  // constrain selection to bitmap content  
-        if ((r.width < 1) || (r.height < 1))             return null  // empty rectangle  ;
+        if ((r.width < 1) || (r.height < 1))             return null;  // empty rectangle  ;
         
         var selectionBM : BitmapData = new BitmapData(r.width, r.height, true, 0);
         selectionBM.copyPixels(bm, r, new Point(0, 0));

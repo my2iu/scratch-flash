@@ -35,12 +35,12 @@ import uiwidgets.*;
 class SpriteThumbnail extends Sprite
 {
     
-    private inline var frameW : Int = 73;
-    private inline var frameH : Int = 73;
-    private inline var stageFrameH : Int = 86;
+    private static inline var frameW : Int = 73;
+    private static inline var frameH : Int = 73;
+    private static inline var stageFrameH : Int = 86;
     
-    private inline var thumbnailW : Int = 68;
-    private inline var thumbnailH : Int = 51;
+    private static inline var thumbnailW : Int = 68;
+    private static inline var thumbnailH : Int = 51;
     
     public var targetObj : ScratchObj;
     

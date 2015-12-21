@@ -368,7 +368,7 @@ class ImageCanvas extends Sprite
     // Cursor Tool Support
     //------------------------------
     
-    private inline var growthFactor : Float = 1.2;
+    private static inline var growthFactor : Float = 1.2;
     
     public function handleTool(tool : String, evt : MouseEvent) : Void{
         if ("help" == tool)             Scratch.app.showTip("paint");

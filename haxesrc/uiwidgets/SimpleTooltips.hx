@@ -80,12 +80,12 @@ class SimpleTooltip
     private var nextTipObj : DisplayObject;
     
     // Timing values (in milliseconds)
-    private inline var delay : Int = 500;
-    private inline var linger : Int = 1000;
-    private inline var fadeIn : Int = 200;
-    private inline var fadeOut : Int = 500;
+    private static inline var delay : Int = 500;
+    private static inline var linger : Int = 1000;
+    private static inline var fadeIn : Int = 200;
+    private static inline var fadeOut : Int = 500;
     
-    private inline var bgColor : Int = 0xfcfed4;
+    private static inline var bgColor : Int = 0xfcfed4;
     
     // Timers
     private var showTimer : Timer;
@@ -179,7 +179,7 @@ class SimpleTooltip
     }
     
     public function showOnce(dObj : DisplayObject, ttOpts : Dynamic) : Void{
-        if (stage == null && dObj.stage)             stage = dObj.stage;  //trace('showOnce()');  ;
+        if (stage == null && dObj.stage != null)             stage = dObj.stage;  //trace('showOnce()');  ;
         
         forceHide();
         showTimer.reset();
@@ -231,7 +231,7 @@ class SimpleTooltip
         hideTimer.reset();
         currentTipObj = null;
         sprite.alpha = 0;
-        if (sprite.parent)             stage.removeChild(sprite);
+        if (sprite.parent != null)             stage.removeChild(sprite);
     }
     
     private function renderTooltip(text : String) : Void{
@@ -247,7 +247,7 @@ class SimpleTooltip
     
     private function startShowTimer(dObj : DisplayObject) : Void{
         //trace('startShowTimer()');
-        if (stage == null && dObj.stage)             stage = dObj.stage;
+        if (stage == null && dObj.stage != null)             stage = dObj.stage;
         
         dObj.addEventListener(MouseEvent.MOUSE_OUT, eventHandler);
         

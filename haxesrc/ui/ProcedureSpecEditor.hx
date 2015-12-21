@@ -48,8 +48,8 @@ class ProcedureSpecEditor extends Sprite
     private var deleteButton : IconButton;
     private var focusItem : DisplayObject;
     
-    private inline var labelColor : Int = 0x8738bf;  // 0x6c36b3; // 0x9c35b3;  
-    private inline var selectedLabelColor : Int = 0xefa6ff;
+    private static inline var labelColor : Int = 0x8738bf;  // 0x6c36b3; // 0x9c35b3;  
+    private static inline var selectedLabelColor : Int = 0xefa6ff;
     
     public function new(originalSpec : String, inputNames : Array<Dynamic>, warpFlag : Bool)
     {

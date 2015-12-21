@@ -19,10 +19,6 @@
 
 package uiwidgets;
 
-import uiwidgets.Bitmap;
-import uiwidgets.BitmapData;
-import uiwidgets.MouseCursorData;
-import uiwidgets.Scratch;
 
 import flash.display.*;
 import flash.events.*;
@@ -69,7 +65,7 @@ class CursorTool
     
     private static function hideSoftwareCursor() : Void{
         // Hide the current cursor and revert to using the hardware cursor.
-        if (currentCursor != null && currentCursor.parent)             currentCursor.parent.removeChild(currentCursor);
+        if (currentCursor != null && currentCursor.parent!= null)             currentCursor.parent.removeChild(currentCursor);
         currentCursor = null;
         Mouse.cursor = MouseCursor.AUTO;
         Mouse.show();
@@ -77,10 +73,10 @@ class CursorTool
     
     private static function showSoftwareCursor(bm : Bitmap, offsetX : Int = 999, offsetY : Int = 999) : Void{
         if (bm != null) {
-            if (currentCursor != null && currentCursor.parent)                 currentCursor.parent.removeChild(currentCursor);
+            if (currentCursor != null && currentCursor.parent!= null)                 currentCursor.parent.removeChild(currentCursor);
             currentCursor = new Bitmap(bm.bitmapData);
-            CursorTool.offsetX = ((offsetX <= bm.width)) ? offsetX : (bm.width / 2);
-            CursorTool.offsetY = ((offsetY <= bm.height)) ? offsetY : (bm.height / 2);
+            CursorTool.offsetX = ((offsetX <= bm.width)) ? offsetX : Std.int(bm.width / 2);
+            CursorTool.offsetY = ((offsetY <= bm.height)) ? offsetY : Std.int(bm.height / 2);
             app.stage.addChild(currentCursor);
             Mouse.hide();
             mouseMove(null);

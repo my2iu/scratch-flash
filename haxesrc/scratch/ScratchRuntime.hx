@@ -46,7 +46,7 @@ class ScratchRuntime {
 	public var app:Scratch;
 	public var interp:Interpreter;
 	public var motionDetector:VideoMotionPrims;
-	public var keyIsDown:Array = new Array(128); // records key up/down state
+	public var keyIsDown:Array<Dynamic> = new Array<Dynamic>(128); // records key up/down state
 	public var shiftIsDown:Bool;
 	public var lastAnswer:String = '';
 	public var cloneCount:Int;
@@ -93,7 +93,7 @@ class ScratchRuntime {
 
 //-------- recording test ---------
 	public var recording:Bool;
-	private var frames:Array = [];
+	private var frames:Array<Dynamic> = [];
 
 	private function saveFrame():Void {
 		var f:BitmapData = new BitmapData(480, 360);
@@ -203,7 +203,7 @@ class ScratchRuntime {
 		allStacksAndOwnersDo(startMatchingKeyHats);
 	}
 
-	public function collectBroadcasts():Array {
+	public function collectBroadcasts():Array<Dynamic> {
 		function addBlock(b:Block):Void {
 			if ((b.op == 'broadcast:') ||
 					(b.op == 'doBroadcastAndWait') ||
@@ -214,7 +214,7 @@ class ScratchRuntime {
 				}
 			}
 		}
-		var result:Array = [];
+		var result:Array<Dynamic> = [];
 		allStacksAndOwnersDo(function (stack:Block, target:ScratchObj):Void {
 			stack.allBlocksDo(addBlock);
 		});
@@ -273,18 +273,18 @@ class ScratchRuntime {
 	// Edge-trigger sensor hats
 	//------------------------------
 
-	private var triggeredHats:Array = [];
+	private var triggeredHats:Array<Dynamic> = [];
 
 	private function clearEdgeTriggeredHats():Void { edgeTriggersEnabled = true; triggeredHats = []; }
 
 	// hats whose triggering condition is currently true
-	private var activeHats:Array = [];
+	private var activeHats:Array<Dynamic> = [];
 	private function startEdgeTriggeredHats(hat:Block, target:ScratchObj):Void {
 		if (!hat.isHat || !hat.nextBlock) return; // skip disconnected hats
 
 		if ('whenSensorGreaterThan' == hat.op) {
 			var sensorName:String = interp.arg(hat, 0);
-			var threshold:Number = interp.numarg(hat, 1);
+			var threshold:Float = interp.numarg(hat, 1);
 			if (('loudness' == sensorName && soundLevel() > threshold) ||
 					('timer' == sensorName && timer() > threshold) ||
 					('video motion' == sensorName && target.visible && VideoMotionPrims.readMotionSensor('motion', target) > threshold)) {
@@ -308,8 +308,8 @@ class ScratchRuntime {
 				var extName:String = hat.op.substr(0, dotIndex);
 				if (app.extensionManager.extensionActive(extName)) {
 					var op:String = hat.op.substr(dotIndex+1);
-					var args:Array = hat.args;
-					var finalArgs:Array = new Array(args.length);
+					var args:Array<Dynamic> = hat.args;
+					var finalArgs:Array<Dynamic> = new Array(args.length);
 					for (i=0...args.length)
 						finalArgs[i] = interp.arg(hat, i);
 
@@ -319,7 +319,7 @@ class ScratchRuntime {
 		}
 	}
 
-	private function processExtensionReporter(hat:Block, target:ScratchObj, extName:String, op:String, finalArgs:Array):Void {
+	private function processExtensionReporter(hat:Block, target:ScratchObj, extName:String, op:String, finalArgs:Array<Dynamic>):Void {
 		// TODO: Is it safe to do this in a callback, or must it happen before we return from startEdgeTriggeredHats?
 		app.externalCall('ScratchExtensions.getReporter', function(triggerCondition:Bool):Void {
 			if (triggerCondition) {
@@ -418,7 +418,7 @@ class ScratchRuntime {
 			}
 		} else {
 			var info:Object;
-			var objTable:Array;
+			var objTable:Array<Dynamic>;
 			data.position = 0;
 			var reader:ObjReader = new ObjReader(data);
 			try { info = reader.readInfo(); } catch (e:Error) { data.position = 0; }
@@ -468,7 +468,7 @@ class ScratchRuntime {
 		app.installStage(project);
 		app.updateSpriteLibrary(true);
 		// set the active sprite
-		var allSprites:Array = app.stagePane.sprites();
+		var allSprites:Array<Dynamic> = app.stagePane.sprites();
 		if (allSprites.length > 0) {
 			allSprites = allSprites.sortOn('indexInLibrary');
 			app.selectSprite(allSprites[0]);
@@ -523,7 +523,7 @@ class ScratchRuntime {
 
 	public function clearAskPrompts():Void {
 		interp.askThread = null;
-		var allPrompts:Array = [];
+		var allPrompts:Array<Dynamic> = [];
 		var uiLayer:Sprite = app.stagePane.getUILayer();
 		var c:DisplayObject;
 		for (i= 0...uiLayer.numChildren) {
@@ -570,7 +570,7 @@ class ScratchRuntime {
 	// Sensors
 	//------------------------------
 
-	public function getSensor(sensorName:String):Number {
+	public function getSensor(sensorName:String):Float {
 		return app.extensionManager.getStateVar('PicoBoard', sensorName, 0);
 	}
 
@@ -617,8 +617,8 @@ class ScratchRuntime {
 		clearAllCaches();
 	}
 
-	public function allVarNames():Array {
-		var result:Array = [], v:Variable;
+	public function allVarNames():Array<Dynamic> {
+		var result:Array<Dynamic> = [], v:Variable;
 		for (v in app.stageObj().variables) result.push(v.name);
 		if (!app.viewedObj().isStage) {
 			for (v in app.viewedObj().variables) result.push(v.name);
@@ -666,8 +666,8 @@ class ScratchRuntime {
 	// Lists
 	//------------------------------
 
-	public function allListNames():Array {
-		var result:Array = app.stageObj().listNames();
+	public function allListNames():Array<Dynamic> {
+		var result:Array<Dynamic> = app.stageObj().listNames();
 		if (!app.viewedObj().isStage) {
 			result = result.concat(app.viewedObj().listNames());
 		}
@@ -687,7 +687,7 @@ class ScratchRuntime {
 	// Sensing
 	//------------------------------
 
-	public function timer():Number { return (interp.currentMSecs - timerBase) / 1000; }
+	public function timer():Float { return (interp.currentMSecs - timerBase) / 1000; }
 	public function timerReset():Void { timerBase = interp.currentMSecs; }
 	public function isLoud():Bool { return soundLevel() > 10; }
 
@@ -728,7 +728,7 @@ class ScratchRuntime {
 		updateArgs(allUsesOfSprite(oldName), newName);
 	}
 
-	private function updateArgs(args:Array, newValue:Dynamic):Void {
+	private function updateArgs(args:Array<Dynamic>, newValue:Dynamic):Void {
 		for (a in args) {
 			a.setArgValue(newValue);
 		}
@@ -758,18 +758,18 @@ class ScratchRuntime {
 		app.updatePalette();
 	}
 
-	public function allSendersOfBroadcast(msg:String):Array {
+	public function allSendersOfBroadcast(msg:String):Array<Dynamic> {
 		// Return an array of all Scratch objects that broadcast the given message.
-		var result:Array = [];
+		var result:Array<Dynamic> = [];
 		for (o in app.stagePane.allObjects()) {
 			if (sendsBroadcast(o, msg)) result.push(o);
 		}
 		return result;
 	}
 
-	public function allReceiversOfBroadcast(msg:String):Array {
+	public function allReceiversOfBroadcast(msg:String):Array<Dynamic> {
 		// Return an array of all Scratch objects that receive the given message.
-		var result:Array = [];
+		var result:Array<Dynamic> = [];
 		for (o in app.stagePane.allObjects()) {
 			if (receivesBroadcast(o, msg)) result.push(o);
 		}
@@ -819,8 +819,8 @@ class ScratchRuntime {
 		return false;
 	}
 
-	private function allBroadcastBlocksWithMsg(msg:String):Array {
-		var result:Array = [];
+	private function allBroadcastBlocksWithMsg(msg:String):Array<Dynamic> {
+		var result:Array<Dynamic> = [];
 		for ( o in app.stagePane.allObjects()) {
 			for (stack in o.scripts) {
 				stack.allBlocksDo(function (b:Block):Void {
@@ -833,8 +833,8 @@ class ScratchRuntime {
 		return result;
 	}
 
-	public function allUsesOfBackdrop(backdropName:String):Array {
-		var result:Array = [];
+	public function allUsesOfBackdrop(backdropName:String):Array<Dynamic> {
+		var result:Array<Dynamic> = [];
 		allStacksAndOwnersDo(function (stack:Block, target:ScratchObj):Void {
 			stack.allBlocksDo(function (b:Block):Void {
 				for  (a in b.args) {
@@ -845,8 +845,8 @@ class ScratchRuntime {
 		return result;
 	}
 
-	public function allUsesOfCostume(costumeName:String):Array {
-		var result:Array = [];
+	public function allUsesOfCostume(costumeName:String):Array<Dynamic> {
+		var result:Array<Dynamic> = [];
 		for (stack in app.viewedObj().scripts) {
 			stack.allBlocksDo(function (b:Block):Void {
 				for (a in b.args) {
@@ -857,9 +857,9 @@ class ScratchRuntime {
 		return result;
 	}
 
-	public function allUsesOfSprite(spriteName:String):Array {
-		var spriteMenus:Array = ["spriteOnly", "spriteOrMouse", "spriteOrStage", "touching"];
-		var result:Array = [];
+	public function allUsesOfSprite(spriteName:String):Array<Dynamic> {
+		var spriteMenus:Array<Dynamic> = ["spriteOnly", "spriteOrMouse", "spriteOrStage", "touching"];
+		var result:Array<Dynamic> = [];
 		for (stack in allStacks()) {
 			// for each block in stack
 			stack.allBlocksDo(function (b:Block):Void {
@@ -871,10 +871,10 @@ class ScratchRuntime {
 		return result;
 	}
 
-	public function allUsesOfVariable(varName:String, owner:ScratchObj):Array {
-		var variableBlocks:Array = [Specs.SET_VAR, Specs.CHANGE_VAR, "showVariable:", "hideVariable:"];
-		var result:Array = [];
-		var stacks:Array = owner.isStage ? allStacks() : owner.scripts;
+	public function allUsesOfVariable(varName:String, owner:ScratchObj):Array<Dynamic> {
+		var variableBlocks:Array<Dynamic> = [Specs.SET_VAR, Specs.CHANGE_VAR, "showVariable:", "hideVariable:"];
+		var result:Array<Dynamic> = [];
+		var stacks:Array<Dynamic> = owner.isStage ? allStacks() : owner.scripts;
 		for (stack in stacks) {
 			// for each block in stack
 			stack.allBlocksDo(function (b:Block):Void {
@@ -895,8 +895,8 @@ class ScratchRuntime {
 		}
 	}
 
-	public function allCallsOf(callee:String, owner:ScratchObj, includeRecursive:Bool = true):Array {
-		var result:Array = [];
+	public function allCallsOf(callee:String, owner:ScratchObj, includeRecursive:Bool = true):Array<Dynamic> {
+		var result:Array<Dynamic> = [];
 		for (stack in owner.scripts) {
 			if (!includeRecursive && stack.op == Specs.PROCEDURE_DEF && stack.spec == callee) continue;
 			// for each block in stack
@@ -920,9 +920,9 @@ class ScratchRuntime {
 		clearAllCaches();
 	}
 
-	public function allStacks():Array {
+	public function allStacks():Array<Dynamic> {
 		// return an array containing all stacks in all objects
-		var result:Array = [];
+		var result:Array<Dynamic> = [];
 		allStacksAndOwnersDo(
 				function (stack:Block, target:ScratchObj):Void { result.push(stack); } );
 		return result;
@@ -994,7 +994,7 @@ class ScratchRuntime {
 	}
 
 	private function setInitialPosition(watcher:DisplayObject):Void {
-		var wList:Array = app.stagePane.watchers();
+		var wList:Array<Dynamic> = app.stagePane.watchers();
 		var w:Int = watcher.width;
 		var h:Int = watcher.height;
 		var x:Int = 5;
@@ -1018,7 +1018,7 @@ class ScratchRuntime {
 		watcher.y = 5 + Math.floor(320 * Math.random());
 	}
 
-	private function watcherIntersecting(watchers:Array, r:Rectangle):DisplayObject {
+	private function watcherIntersecting(watchers:Array<Dynamic>, r:Rectangle):DisplayObject {
 		for (w in watchers) {
 			if (r.intersects(w.getBounds(app.stagePane))) return w;
 		}
@@ -1106,14 +1106,14 @@ class ScratchRuntime {
 	// Undelete support
 	//------------------------------
 
-	private var lastDelete:Array; // object, x, y, owner (for blocks/stacks/costumes/sounds)
+	private var lastDelete:Array<Dynamic>; // object, x, y, owner (for blocks/stacks/costumes/sounds)
 
 	public function canUndelete():Bool { return lastDelete != null; }
 	public function clearLastDelete():Void { lastDelete = null; }
 
 	public function recordForUndelete(obj:Dynamic, x:Int, y:Int, index:Int, owner:Dynamic = null):Void {
 		if (Std.is(obj, Block)) {
-			var comments:Array = (cast(obj, Block)).attachedCommentsIn(app.scriptsPane);
+			var comments:Array<Dynamic> = (cast(obj, Block)).attachedCommentsIn(app.scriptsPane);
 			if (comments.length) {
 				for (c in comments) {
 					c.parent.removeChild(c);

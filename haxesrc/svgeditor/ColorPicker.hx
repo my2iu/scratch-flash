@@ -19,20 +19,6 @@
 
 package svgeditor;
 
-import svgeditor.Bitmap;
-import svgeditor.BitmapData;
-import svgeditor.ColorTransform;
-import svgeditor.DrawProperties;
-import svgeditor.DrawPropertyUI;
-import svgeditor.Graphics;
-import svgeditor.IconButton;
-import svgeditor.ImageEdit;
-import svgeditor.Matrix;
-import svgeditor.MouseEvent;
-import svgeditor.Point;
-import svgeditor.Shape;
-import svgeditor.Slider;
-import svgeditor.Sprite;
 
 import flash.display.*;
 import flash.events.*;
@@ -179,8 +165,8 @@ class ColorPicker extends Sprite
         }
         updateSwatches();
         
-        if (selectedColor != null)             drawColorSelector(selectedColor)  // clear the old color selection  ;
-        if (color != null)             drawColorSelector(color, true)  // highlight the new selection  ;
+        if (selectedColor != null)             drawColorSelector(selectedColor);  // clear the old color selection  ;
+        if (color != null)             drawColorSelector(color, true);  // highlight the new selection  ;
         selectedColor = color;
     }
     
@@ -202,7 +188,7 @@ class ColorPicker extends Sprite
         drawSwatch(secondaryColorSwatch.graphics, props.secondColor, props.secondAlpha);
     }
     
-    private inline var swatchSize : Int = 25;
+    private static inline var swatchSize : Int = 25;
     
     private function drawSwatch(g : Graphics, color : Int, alpha : Float) : Void{
         var radius : Int = 6;
@@ -328,8 +314,8 @@ class ColorPicker extends Sprite
     
     /* New (Scratch 1.4 Color Palette */
     
-    private inline var paletteSwatchW : Int = 12;
-    private inline var paletteSwatchH : Int = 12;
+    private static inline var paletteSwatchW : Int = 12;
+    private static inline var paletteSwatchH : Int = 12;
     
     private function makeColorPalette() : Void{
         addChild(palette = new Sprite());

@@ -36,7 +36,7 @@ class ListWatcher extends Sprite
     
     private var titleFont : TextFormat = new TextFormat(CSS.font, 12, 0, true);
     private var cellNumFont : TextFormat = new TextFormat(CSS.font, 11, 0, false);
-    private inline var SCROLLBAR_W : Int = 10;
+    private static inline var SCROLLBAR_W : Int = 10;
     
     public var listName : String = "";
     public var target : ScratchObj;  // the ScratchObj that owns this list  

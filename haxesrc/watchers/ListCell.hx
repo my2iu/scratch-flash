@@ -19,11 +19,6 @@
 
 package watchers;
 
-import watchers.FocusEvent;
-import watchers.IconButton;
-import watchers.ResizeableFrame;
-import watchers.TextField;
-import watchers.TextFormat;
 
 import flash.display.Sprite;
 import flash.events.*;

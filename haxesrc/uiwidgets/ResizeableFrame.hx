@@ -19,11 +19,6 @@
 
 package uiwidgets;
 
-import uiwidgets.BevelFilter;
-import uiwidgets.BitmapFilter;
-import uiwidgets.Graphics;
-import uiwidgets.Shape;
-import uiwidgets.Sprite;
 
 import flash.display.*;
 import flash.events.*;

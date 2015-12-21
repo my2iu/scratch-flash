@@ -25,18 +25,6 @@
 
 package watchers;
 
-import watchers.DialogBox;
-import watchers.DragClient;
-import watchers.Graphics;
-import watchers.Menu;
-import watchers.ResizeableFrame;
-import watchers.Scratch;
-import watchers.ScratchRuntime;
-import watchers.Shape;
-import watchers.TextField;
-import watchers.TextFormat;
-import watchers.Variable;
-import watchers.WatcherReadout;
 
 import blocks.BlockIO;
 
@@ -66,10 +54,10 @@ class Watcher extends Sprite implements DragClient
     
     private var format : TextFormat = new TextFormat(CSS.font, 11, 0, true);
     
-    private inline var NORMAL_MODE : Int = 1;
-    private inline var LARGE_MODE : Int = 2;
-    private inline var SLIDER_MODE : Int = 3;
-    private inline var TEXT_MODE : Int = 4;
+    private static inline var NORMAL_MODE : Int = 1;
+    private static inline var LARGE_MODE : Int = 2;
+    private static inline var SLIDER_MODE : Int = 3;
+    private static inline var TEXT_MODE : Int = 4;
     
     public var target : ScratchObj;
     private var cmd : String;

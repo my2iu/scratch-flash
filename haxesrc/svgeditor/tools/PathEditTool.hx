@@ -259,7 +259,8 @@ import svgutils.SVGPath;
             };
             if (j == index) {
                 break;
-            }++;cp_idx;
+            }
+			++cp_idx;
         }  // Cut the path here if the shift key was down and the point is not an end-point    //if(endPoints[1] - endPoints[0] < 2) return;    // then uncomment this code:    // If we want to prevent removing 2-point paths by removing a point,  
         
         
@@ -371,7 +372,8 @@ import svgutils.SVGPath;
                 cp = getAnchorPoint(j, false);
                 controlPoints.splice(i, 0, cp);
                 break;
-            }++;i;
+            }
+			++i;
         }  // Shift the indices of the control points after the inserted point  
         
         

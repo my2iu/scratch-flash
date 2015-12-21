@@ -33,11 +33,11 @@ class Button extends Sprite
     private var minWidth : Int = 50;
     private var compact : Bool;
     
-    private var action : Function;  // takes no arguments  
-    private var eventAction : Function;  // like action, but takes the event as an argument  
+    private var action : Void->Void;  // takes no arguments  
+    private var eventAction : Dynamic->Void;  // like action, but takes the event as an argument  
     private var tipName : String;
     
-    public function new(label : String, action : Function = null, compact : Bool = false, tipName : String = null)
+    public function new(label : String, action : Void->Void= null, compact : Bool = false, tipName : String = null)
     {
         super();
         this.action = action;
@@ -98,8 +98,8 @@ class Button extends Sprite
         graphics.endFill();
     }
     
-    public function setEventAction(newEventAction : Function) : Function{
-        var oldEventAction : Function = eventAction;
+    public function setEventAction(newEventAction : Dynamic->Void) : Dynamic->Void{
+        var oldEventAction : Dynamic->Void = eventAction;
         eventAction = newEventAction;
         return oldEventAction;
     }

@@ -106,9 +106,9 @@ class IconButton extends Sprite
     
     public function isOn() : Bool{return buttonIsOn;
     }
-    public function right() : Int{return x + width;
+    public function right() : Int{return Std.int(x + width);
     }
-    public function bottom() : Int{return y + height;
+    public function bottom() : Int{return Std.int(y + height);
     }
     
     public function isDisabled() : Bool{return alpha < 1;

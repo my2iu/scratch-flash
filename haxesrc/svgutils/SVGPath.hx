@@ -35,14 +35,15 @@ package svgutils;
 	import svgeditor.objs.PathDrawContext;
 	import svgeditor.tools.PixelPerfectCollisionDetection;
 
-/*dynamic*/ class SVGPath extends Array {
-	private static inline var adjustmentFactor:Number = 0.5;
+/*dynamic*/ class SVGPath  {
+	private static inline var adjustmentFactor:Float = 0.5;
 	private var dirty:Bool;  // has the path been altered since it was loaded or exported?
+	private var path: Array<Dynamic> = new Array<Dynamic>();
 
 	function SVGPath(args:Array<Dynamic>) {
 		var n:UInt = args.length;
-		if (n == 1 && (Std.is(args[0], Number))) {
-			var dlen:Number = args[0];
+		if (n == 1 && (Std.is(args[0], Float))) {
+			var dlen:Float = args[0];
 			var ulen:UInt = dlen;
 			if(ulen != dlen) throw new RangeError("Array index is not a 32-bit unsigned integer ("+dlen+")");
 			length = ulen;
@@ -50,7 +51,7 @@ package svgutils;
 		else {
 			length = n;
 			for(i=0...n)
-				this[i] = args[i];
+				path[i] = args[i];
 		}
 		dirty = false;
 	}
@@ -58,22 +59,22 @@ package svgutils;
 	public function clone():SVGPath {
 		var p:SVGPath = new SVGPath(length);
 		for(i=0...length)
-			p[i] = this[i].slice();
+			p[i] = path[i].slice();
 
 		return p;
 	}
 
-	public function set(cmds:Array):Void {
+	public function set(cmds:Array<Dynamic>):Void {
 		length = cmds.length;
 		for(i=0...length)
-			this[i] = cmds[i];
+			path[i] = cmds[i];
 	}
 
 	public function setDirty():Void {
 		dirty = true;
 	}
 
-	static public  inline var ADJUST:Object = {
+	static public  inline var ADJUST:Dynamic = {
 		NONE:	0,
 		NORMAL:	1,
 		CORNER:	2
@@ -81,8 +82,8 @@ package svgutils;
 
 	public function move(index:UInt, pt:Point, adjust:UInt = 1):Void {
 		if(index < length) {
-			var cmd:Array = this[index];
-			var ends:Array = getSegmentEndPoints(index);
+			var cmd:Array<Dynamic> = path[index];
+			var ends:Array<Dynamic> = getSegmentEndPoints(index);
 			switch (cmd[0]) {
 				case 'M':
 				case 'L':
@@ -104,7 +105,7 @@ package svgutils;
 			}
 
 			// If we're moving the end point of a closed path, then move the first point too
-			if(ends[2] && (cmd[0] == 'C' || cmd[0] == 'L') && index == ends[1] && ends[0] != index && this[ends[0]][0] == 'M') {
+			if(ends[2] && (cmd[0] == 'C' || cmd[0] == 'L') && index == ends[1] && ends[0] != index && path[ends[0]][0] == 'M') {
 				move(ends[0], pt, ADJUST.NONE);
 			}
 
@@ -116,7 +117,7 @@ package svgutils;
 
 	public function transform(src:DisplayObject, dst:DisplayObject):Void {
 		for(i=0...length) {
-			var cmd:Array = this[i];
+			var cmd:Array<Dynamic> = path[i];
 			var pt:Point;
 			switch (cmd[0]) {
 				case 'C':
@@ -136,18 +137,18 @@ package svgutils;
 
 	public function remove(index:UInt):Void {
 		if(index < length) {
-			var ends:Array = getSegmentEndPoints(index);
+			var ends:Array<Dynamic> = getSegmentEndPoints(index);
 			var p:Point;
 
 			// If the point removed is on a closed path segment and it is the last point,
 			// then move the first move command to match the new last point
-			if(index == ends[1] && ends[2] && ends[0]>0 && this[ends[0] - 1][0] == 'M') {
+			if(index == ends[1] && ends[2] && ends[0]>0 && path[ends[0] - 1][0] == 'M') {
 				p = getPos(index - 1);
-				this[ends[0] - 1] = ['M', p.x, p.y];
+				path[ends[0] - 1] = ['M', p.x, p.y];
 			}
-			else if(index == ends[0] && !ends[2] && index < length - 1 && this[index][0] == 'M') {
+			else if(index == ends[0] && !ends[2] && index < length - 1 && path[index][0] == 'M') {
 				p = getPos(index + 1);
-				this[index + 1] = ['M', p.x, p.y];
+				path[index + 1] = ['M', p.x, p.y];
 			}
 
 			splice(index, 1);
@@ -160,17 +161,17 @@ package svgutils;
 
 	public function add(index:UInt, pt:Point, normal:Bool):Void {
 		if(index < length) {
-			var curve:Bool = this[index][0] == 'C';
+			var curve:Bool = path[index][0] == 'C';
 			if(!normal) curve = !curve;
-			var cmd:Array;
+			var cmd:Array<Dynamic>;
 			if(curve) {
-				var indices:Array = getIndicesAroundAnchor(index, 2);
-				var cPts1:Array = SVGPath.getControlPointsAdjacentAnchor(getPos(indices[0]), getPos(indices[1]), pt);
-				var cPts2:Array = SVGPath.getControlPointsAdjacentAnchor(getPos(indices[1]), pt, getPos(indices[2]));
+				var indices:Array<Dynamic> = getIndicesAroundAnchor(index, 2);
+				var cPts1:Array<Dynamic> = SVGPath.getControlPointsAdjacentAnchor(getPos(indices[0]), getPos(indices[1]), pt);
+				var cPts2:Array<Dynamic> = SVGPath.getControlPointsAdjacentAnchor(getPos(indices[1]), pt, getPos(indices[2]));
 
 				// Keep the original control point from curve before the added curve
-				if(this[index][0] == 'C') {
-					cmd = this[index];
+				if(path[index][0] == 'C') {
+					cmd = path[index];
 					cPts1[1].x = cmd[1];
 					cPts1[1].y = cmd[2];
 				}
@@ -179,8 +180,8 @@ package svgutils;
 				cmd = ['C', cPts1[1].x, cPts1[1].y, cPts2[0].x, cPts2[0].y, pt.x, pt.y];
 
 				// Apply the second control point to the next cubic bezier curve if there is one
-				if(this[indices[2]][0] == 'C') {
-					var cmd2:Array = this[indices[2]];
+				if(path[indices[2]][0] == 'C') {
+					var cmd2:Array<Dynamic> = path[indices[2]];
 					cmd2[1] = cPts2[1].x;
 					cmd2[2] = cPts2[1].y;
 				}
@@ -195,9 +196,9 @@ package svgutils;
 		}
 	}
 
-	public function getPos(index:UInt, time:Number = 1.0):Point {
+	public function getPos(index:UInt, time:Float = 1.0):Point {
 		if(index < length) {
-			var cmd:Array = this[index];
+			var cmd:Array<Dynamic> = path[index];
 			switch (cmd[0]) {
 				case 'M':
 					return new Point(cmd[1], cmd[2]);
@@ -217,7 +218,7 @@ package svgutils;
 					return new Point(cmd[3], cmd[4]);
 				case 'Z':
 					// Return the position of the first point
-					var indices:Array = getSegmentEndPoints(index);
+					var indices:Array<Dynamic> = getSegmentEndPoints(index);
 					if(indices[0] < index) {
 						return getPos(indices[0]);
 					}
@@ -231,14 +232,14 @@ package svgutils;
 		return null;
 	}
 
-	public function adjustPathAroundAnchor(index:UInt, proximity:UInt = 1, strength:Number = 0.5):Void {
+	public function adjustPathAroundAnchor(index:UInt, proximity:UInt = 1, strength:Float = 0.5):Void {
 		if(index >= length) return;
 
-		var ends:Array = getSegmentEndPoints(index);
+		var ends:Array<Dynamic> = getSegmentEndPoints(index);
 		// Handle the special 2-point path case
-		var cmd:Array;
+		var cmd:Array<Dynamic>;
 		if(!ends[2] && ends[1] - ends[0] == 1) {
-			cmd = this[ends[1]];
+			cmd = path[ends[1]];
 			if(cmd[0] == 'C') {
 				var p:Point = getPos(ends[0]);
 				cmd[1] = p.x;
@@ -250,7 +251,7 @@ package svgutils;
 		}
 
 		// Get additional indices for the before/after of the proximity edges
-		var indices:Array = getIndicesAroundAnchor(index, proximity + 1);
+		var indices:Array<Dynamic> = getIndicesAroundAnchor(index, proximity + 1);
 		var midIdx:UInt = indices.indexOf(index);
 		var lastIdx:UInt = indices.length - 1;
 		var lastC2:Point;
@@ -258,9 +259,9 @@ package svgutils;
 			var before:Point = here ? here : getPos(indices[i - 1]);
 			var here:Point = after ? after : getPos(indices[i]);
 			var after:Point = getPos(indices[i + 1]);
-			var cPts:Array = SVGPath.getControlPointsAdjacentAnchor(before, here, after);
-			cmd = this[indices[i]];
-			var currStr:Number = Math.pow(strength, 1+Math.abs(midIdx - i));
+			var cPts:Array<Dynamic> = SVGPath.getControlPointsAdjacentAnchor(before, here, after);
+			cmd = path[indices[i]];
+			var currStr:Float = Math.pow(strength, 1+Math.abs(midIdx - i));
 			if(!ends[2] && (indices[i] == ends[0] || indices[i] == ends[1]))
 				currStr = 1;
 
@@ -283,7 +284,7 @@ package svgutils;
 			}
 
 			// Apply the second control point to the next cubic bezier curve if there is one
-			var cmd2:Array = this[indices[i+1]];
+			var cmd2:Array<Dynamic> = path[indices[i+1]];
 			if(indices[i] != indices[i+1] && cmd2[0] == 'C') {
 				var c2:Point = Point.interpolate(cPts[1], new Point(cmd2[1], cmd2[2]), currStr);
 				cmd2[1] = c2.x;
@@ -292,10 +293,10 @@ package svgutils;
 		}
 	}
 
-	private function getIndicesAroundAnchor(index:UInt, proximity:UInt = 1):Array {
+	private function getIndicesAroundAnchor(index:UInt, proximity:UInt = 1):Array<Dynamic> {
 		var centerIndex:UInt = index;
-		var indices:Array = [];
-		var ends:Array = getSegmentEndPoints(index);
+		var indices:Array<Dynamic> = [];
+		var ends:Array<Dynamic> = getSegmentEndPoints(index);
 		var closed:Bool = ends[2];
 
 		proximity = Math.min(Math.max(index - ends[0], ends[1] - index), proximity);
@@ -333,25 +334,25 @@ package svgutils;
 		return indices;
 	}
 
-	public function getSegmentEndPoints(index:UInt = 0):Array {
+	public function getSegmentEndPoints(index:UInt = 0):Array<Dynamic> {
 		index = Math.min(index, length - 1);
-		var indices:Array = [index, index, false];
+		var indices:Array<Dynamic> = [index, index, false];
 
 		var last:UInt = index;
 		i = index + 1;
-		while(i <= length - 1 && this[i][0] != 'Z' && this[i][0] != 'M') {
+		while(i <= length - 1 && path[i][0] != 'Z' && path[i][0] != 'M') {
 			last = i;
 			++i;
 		}
 		indices[1] = last;
 
 		// Was it a closed path
-		indices[2] = (i <= length - 1 && this[i][0] == 'Z');
+		indices[2] = (i <= length - 1 && path[i][0] == 'Z');
 
 		var first:UInt = last;
 		var i:Int = last - 1;
 		// TODO: handle nested closed segments
-		while(i >= 0 && this[i][0] != 'Z' && this[first][0] != 'M') {
+		while(i >= 0 && path[i][0] != 'Z' && path[first][0] != 'M') {
 			first = i;
 			--i;
 		}
@@ -363,14 +364,14 @@ package svgutils;
 	// Create control points on either side of an anchor point
 	// Each handle is 1/3 the length of the segment on that side of the anchor
 	// The vector of the handles is determined by the vector between the anchor points on either side of 'here'
-	static public function getControlPointsAdjacentAnchor(before:Point, here:Point, after:Point):Array {
+	static public function getControlPointsAdjacentAnchor(before:Point, here:Point, after:Point):Array<Dynamic> {
 		var v1:Point = before.subtract(here);
-		var c1l:Number = v1.length * 0.333;
+		var c1l:Float = v1.length * 0.333;
 		var v2:Point = after.subtract(here);
-		var c2l:Number = v2.length * 0.333;
+		var c2l:Float = v2.length * 0.333;
 		var v3:Point = before.subtract(after);
-		var v3l:Number = v3.length * 0.5;
-		var r:Number = Math.min(1, v3l / (c1l + c2l));
+		var v3l:Float = v3.length * 0.5;
+		var r:Float = Math.min(1, v3l / (c1l + c2l));
 		v3.normalize(r * Math.max(Math.min(c1l, v3l), c2l / 4));
 		var c1:Point = here.add(v3);
 		v3.normalize(r * Math.max(Math.min(c2l, v3l), c1l / 4));
@@ -380,14 +381,14 @@ package svgutils;
 	}
 
 	public function isClosed():Bool {
-		return (Std.is((length && this[length-1]), Array) && this[length-1][0] == 'z');
+		return (Std.is((length && path[length-1]), Array) && path[length-1][0] == 'z');
 	}
 
 	public static function render(el:SVGElement, g:Graphics, forHitTest:Bool = false):Void {
 		if (!el.path || el.path.length == 0) return;
 		var cmds:Array<Int> = new Array<Int>();
-		var points:Array<Number> = new Array<Number>();
-		var lastX:Number = 0, lastY:Number = 0;
+		var points:Array<Float> = new Array<Float>();
+		var lastX:Float = 0, lastY:Float = 0;
 		var lastMove:Point = new Point();
 		setBorderAndFill(g, el, gradientBoxForPath(el.path), forHitTest);
 		for (cmd in el.path) {
@@ -428,7 +429,7 @@ package svgutils;
 //		debugDrawPoints(el.path, g);
 	}
 
-	public static function drawCubicBezier(g:Graphics, p0:Point, p1:Point, p2:Point, p3:Point, cmds:Array<Int>, points:Array<Number>):Void {
+	public static function drawCubicBezier(g:Graphics, p0:Point, p1:Point, p2:Point, p3:Point, cmds:Array<Int>, points:Array<Float>):Void {
 		// Approximate a a cubic Bezier with four quadratic ones.
 		// Based on Timothee Groleau's Bezier_lib.as - v1.2, 19/05/02, which
 		// uses a simplified version of the midPoint algorithm by Helen Triolo.
@@ -437,8 +438,8 @@ package svgutils;
 		var pb:Point = Point.interpolate(p2, p3, 3/4);
 
 		// compute 1/16 of the [p3, p0] segment
-		var dx:Number = (p3.x - p0.x) / 16;
-		var dy:Number = (p3.y - p0.y) / 16;
+		var dx:Float = (p3.x - p0.x) / 16;
+		var dy:Float = (p3.y - p0.y) / 16;
 
 		// calculates control point 1
 		var pc1:Point = Point.interpolate(p1, p0, 3/8);
@@ -484,18 +485,18 @@ package svgutils;
 	// -----------------------------
 	// Border, Fill, and Gradients
 	//------------------------------
-	private static var capConversion:Object = {
+	private static var capConversion:Dynamic = {
 		butt:	CapsStyle.NONE,
 		round:	CapsStyle.ROUND,
 		square:	CapsStyle.SQUARE
 	};
 
 	public static function setBorderAndFill(g:Graphics, el:SVGElement, box:Rectangle, forHitTest:Bool = false):Void {
-		var alpha:Number;
+		var alpha:Float;
 
 		var stroke:Dynamic = el.getAttribute('stroke');
 		if (stroke && stroke != 'none') {
-			alpha = Number(el.getAttribute('stroke-opacity', 1));
+			alpha = Float(el.getAttribute('stroke-opacity', 1));
 			alpha = Math.max(0, Math.min(alpha, 1));
 
 			var capStyle:String = el.getAttribute('stroke-linecap', 'butt');
@@ -513,7 +514,7 @@ package svgutils;
 
 		var fill:Dynamic = el.getAttribute('fill', 'black');
 		if (fill && fill != 'none') {
-			alpha = Number(el.getAttribute('fill-opacity', 1));
+			alpha = Float(el.getAttribute('fill-opacity', 1));
 			alpha = Math.max(0, Math.min(alpha, 1));
 
 			if (Std.is(fill, SVGElement)) setGradient(g, fill, box, alpha);
@@ -524,7 +525,7 @@ package svgutils;
 		}
 	}
 
-	private static function setGradient(g:Graphics, gradEl:SVGElement, box:Rectangle, alpha:Number, isLine:Bool=false, lineWidth:Number=0):Void {
+	private static function setGradient(g:Graphics, gradEl:SVGElement, box:Rectangle, alpha:Float, isLine:Bool=false, lineWidth:Float=0):Void {
 		var colors:Array = [];
 		var alphas:Array = [];
 		var ratios:Array = [];
@@ -568,10 +569,10 @@ package svgutils;
 	}
 
 	private static function linearGradientMatrix(gradEl:SVGElement, box:Rectangle):Matrix {
-		var x1:Number = gradEl.getAttribute('x1', 0);
-		var y1:Number = gradEl.getAttribute('y1', 0);
-		var x2:Number = gradEl.getAttribute('x2', 0);
-		var y2:Number = gradEl.getAttribute('y2', 0);
+		var x1:Float = gradEl.getAttribute('x1', 0);
+		var y1:Float = gradEl.getAttribute('y1', 0);
+		var x2:Float = gradEl.getAttribute('x2', 0);
+		var y2:Float = gradEl.getAttribute('y2', 0);
 		var userSpace:Bool = (gradEl.getAttribute('gradientUnits', '') == 'userSpaceOnUse');
 		if (userSpace) {
 			x1 = x1 / box.width;
@@ -579,7 +580,7 @@ package svgutils;
 			y1 = y1 / box.height;
 			y2 = y2 / box.height;
 		}
-		var radians:Number = Math.atan2(y2 - y1, x2 - x1);
+		var radians:Float = Math.atan2(y2 - y1, x2 - x1);
 		var m:Matrix = new Matrix();
 		m.createGradientBox(box.width, box.height, radians, box.x, box.y);
 		return m;
@@ -588,11 +589,11 @@ package svgutils;
 	private static function radialGradientMatrix(gradEl:SVGElement, box:Rectangle):Matrix {
 		// Note: Ignores fx and fy; assumes focus at the center.
 		var userSpace:Bool = (gradEl.getAttribute('gradientUnits', '') == 'userSpaceOnUse');
-		var rScale:Number = Math.max(0, gradEl.getAttribute('r', 0.5));
-		var cx:Number = box.x + (box.width * gradEl.getAttribute('cx', 0.5));
-		var cy:Number = box.y + (box.height * gradEl.getAttribute('cy', 0.5));
-		var fx:Number = box.x + (box.width * gradEl.getAttribute('fx', gradEl.getAttribute('cx', 0.5)));
-		var fy:Number = box.y + (box.height * gradEl.getAttribute('fy', gradEl.getAttribute('cy', 0.5)));
+		var rScale:Float = Math.max(0, gradEl.getAttribute('r', 0.5));
+		var cx:Float = box.x + (box.width * gradEl.getAttribute('cx', 0.5));
+		var cy:Float = box.y + (box.height * gradEl.getAttribute('cy', 0.5));
+		var fx:Float = box.x + (box.width * gradEl.getAttribute('fx', gradEl.getAttribute('cx', 0.5)));
+		var fy:Float = box.y + (box.height * gradEl.getAttribute('fy', gradEl.getAttribute('cy', 0.5)));
 		if (userSpace) {
 			rScale = Math.max(0, gradEl.getAttribute('r', 0)) / box.width;
 			cx = gradEl.getAttribute('cx', box.width / 2);
@@ -602,12 +603,12 @@ package svgutils;
 		}
 
 		// The radius is the maximum dimension of the box
-		var rx:Number = box.width * rScale;
-		var ry:Number = box.height * rScale;
-		var focusX:Number = (fx - cx) / rx;
-		var focusY:Number = (fy - cy) / ry;
-		var focalPointAngle:Number = Math.atan2(focusY, focusX);
-		var focalPointRatio:Number = Math.sqrt((focusX * focusX) + (focusY * focusY));
+		var rx:Float = box.width * rScale;
+		var ry:Float = box.height * rScale;
+		var focusX:Float = (fx - cx) / rx;
+		var focusY:Float = (fy - cy) / ry;
+		var focalPointAngle:Float = Math.atan2(focusY, focusX);
+		var focalPointRatio:Float = Math.sqrt((focusX * focusX) + (focusY * focusY));
 		// Unfortunately, this is the only way to hand this value back for the beginGradientFill call
 		gradEl.setAttribute('fpRatio', focalPointRatio);
 
@@ -616,18 +617,18 @@ package svgutils;
 		return m;
 	}
 
-	private static function gradientBoxForPath(pathCmds:Array):Rectangle {
+	private static function gradientBoxForPath(pathCmds:Array<Dynamic>):Rectangle {
 		// Return a Point containing the approximate width and height for the
 		// the given path, not including its borders or the parts of curves that
 		// bulge outside of their endpoints.
 		// NOTE: Approximation acceptable for gradient fills, but not much else.
-		var minX:Number, minY:Number, maxX:Number, maxY:Number;
+		var minX:Float, minY:Float, maxX:Float, maxY:Float;
 		var firstCmd:Array = pathCmds[0];
 		minX = maxX = firstCmd[1];
 		minY = maxY = firstCmd[2];
 		for (cmd in pathCmds) {
-			var x:Number = cmd[1];
-			var y:Number = cmd[2];
+			var x:Float = cmd[1];
+			var y:Float = cmd[2];
 			if (x < minX) minX = x;
 			if (y < minY) minY = y;
 			if (x > maxX) maxX = x;
@@ -639,16 +640,16 @@ package svgutils;
 	//////////////////////////////////////////////////////
 	// From anchor points to Bezier
 	/////////////////////////////////////////////////////
-	public function fromAnchorPoints(points:Array):Void {
+	public function fromAnchorPoints(points:Array<Dynamic>):Void {
 		var first:Point = points[0];
 		length = 0;
-		this.push(['M', first.x, first.y]);
+		path.push(['M', first.x, first.y]);
 		if (points.length < 3 ) {
-			this.push(['L', points[1].x, points[1].y]);
+			path.push(['L', points[1].x, points[1].y]);
 		}
 		else {
 			var ctx:PathDrawContext = new PathDrawContext();
-			ctx.cmds = this;
+			ctx.cmds = path;
 			for (i= 1...points.length - 1)
 				processSegment(points[i-1], points[i], points[i+1], ctx);
 
@@ -672,7 +673,7 @@ package svgutils;
 
 		// Pre-render to get their path bounds
 		g.lineStyle(0.5);
-		for (cmd in this)
+		for (cmd in path)
 			renderPathCmd(cmd, g, lastCP);
 
 		var dRect:Rectangle = s.getBounds(s);
@@ -703,7 +704,7 @@ package svgutils;
 
 	// Split a cubic bezier curve into two at t and
 	// return the index of the command before the split
-	public function splitCurve(index:UInt, t:Number):UInt {
+	public function splitCurve(index:UInt, t:Float):UInt {
 //trace('splitCurve('+index+', '+t+')');
 		if(index < 1)
 			return 0;
@@ -717,7 +718,7 @@ package svgutils;
 		if(t > 0.99)
 			return index;
 
-		var cmd:Array = this[index];
+		var cmd:Array = path[index];
 		var p1:Point = getPos(index - 1);
 		var p2:Point = getPos(index);
 		var newCmd:Array;
@@ -754,8 +755,8 @@ package svgutils;
 		return index;
 	}
 
-	public function removeInvalidSegments(strokeWidth:Number):Void {
-		var minWidth:Number = Math.min(Math.max(1, strokeWidth * 0.2), 5);
+	public function removeInvalidSegments(strokeWidth:Float):Void {
+		var minWidth:Float = Math.min(Math.max(1, strokeWidth * 0.2), 5);
 		var i:Int = 0;
 		// Remove any segments with very short lengths
 		while(i<length) {
@@ -764,7 +765,7 @@ package svgutils;
 			var next:Int = indices[0]+1;
 			var len:Int = indices[1] - indices[0];
 			if(len>0) {
-				var dist:Number = start.subtract(getPos(next)).length;
+				var dist:Float = start.subtract(getPos(next)).length;
 				if(getPos(indices[1]).subtract(start).length < minWidth && dist < minWidth) {
 					do {
 						splice(next, 1);
@@ -794,7 +795,7 @@ package svgutils;
 		var j:Int = 0;
 		var i:Int = indices[1];
 		while(i>=indices[0]) {
-			var cmd:Array = this[i];
+			var cmd:Array = path[i];
 			var pos:Point = getPos(i);
 			var newCmd:Array;
 			if(lastCmd == null) {
@@ -825,17 +826,17 @@ package svgutils;
 		// Insert new commands at beginning of segment
 		newCmds.unshift(indices[0]);
 
-		super.splice.apply(this, newCmds);
+		super.splice.apply(path, newCmds);
 	}
 
-	static public function getPosByTime(ratio:Number, p1:Point, cp1:Point, cp2:Point, p2:Point):Point {
+	static public function getPosByTime(ratio:Float, p1:Point, cp1:Point, cp2:Point, p2:Point):Point {
 		// Do Bezier
 		if(cp1) {
 			ratio = 1 - ratio;
-			function b1(t:Number):Number { return t * t * t; }
-			function b2(t:Number):Number { return 3 * t * t * (1 - t); }
-			function b3(t:Number):Number { return 3 * t * (1 - t) * (1 - t); }
-			function b4(t:Number):Number { return (1 - t) * (1 - t) * (1 - t); }
+			function b1(t:Float):Float { return t * t * t; }
+			function b2(t:Float):Float { return 3 * t * t * (1 - t); }
+			function b3(t:Float):Float { return 3 * t * (1 - t) * (1 - t); }
+			function b4(t:Float):Float { return (1 - t) * (1 - t) * (1 - t); }
 			return new Point(p1.x*b1(ratio) + cp1.x*b2(ratio) + cp2.x*b3(ratio) + p2.x*b4(ratio),
 				p1.y*b1(ratio) + cp1.y*b2(ratio) + cp2.y*b3(ratio) + p2.y*b4(ratio));
 		}
@@ -850,18 +851,18 @@ package svgutils;
 	// and the second control from the internal calculation (specific to our UI)
 	// the end point is the current anchor point in the loop
 	// (the start point is the previous point)
-	static private inline var tolerance:Number = 1;
+	static private inline var tolerance:Float = 1;
 	private function processSegment(before:Point, here:Point, after:Point, ctx:PathDrawContext):Void {
-		var l1:Number = before.subtract(here).length;
-		var l2:Number = here.subtract(after).length;
-		var l3:Number = before.subtract(after).length;
-		var l:Number = l3 / (l1 + l2);
-		var min:Number = Math.min(l1,l2);
+		var l1:Float = before.subtract(here).length;
+		var l2:Float = here.subtract(after).length;
+		var l3:Float = before.subtract(after).length;
+		var l:Float = l3 / (l1 + l2);
+		var min:Float = Math.min(l1,l2);
 		//if ((l1 + l2) >  3 * l3)	l = 0;
 
 		// This is the key equation that creates a control point
 		var vTangent:Point = getCurveTangent(before, here, after);
-		var fudge:Number = l * l * min * 0.666 ; // needs more work on the fudge factor
+		var fudge:Float = l * l * min * 0.666 ; // needs more work on the fudge factor
 		vTangent.x *= fudge;
 		vTangent.y *= fudge;
 		var c1:Point = ctx.acurve ? before.add(before.subtract(ctx.lastcxy)) : before;
@@ -891,8 +892,8 @@ package svgutils;
 		var s:Point = intersect2Lines(a, b, c, d);
 		if (s && !isNaN(s.x) && !isNaN(s.y) && !ctx.adjust) {
 			// find distance between the midpoints
-			var dx:Number = (a.x + d.x + s.x * 4 - (b.x + c.x) * 3) * .125;
-			var dy:Number = (a.y + d.y + s.y * 4 - (b.y + c.y) * 3) * .125;
+			var dx:Float = (a.x + d.x + s.x * 4 - (b.x + c.x) * 3) * .125;
+			var dy:Float = (a.y + d.y + s.y * 4 - (b.y + c.y) * 3) * .125;
 
 			// Don't split the curve if the quadratic is close enough
 			if (dx*dx + dy*dy <= tolerance*tolerance) {
@@ -918,27 +919,27 @@ package svgutils;
 	}
 
 	static private function intersect2Lines(p1:Point, p2:Point, p3:Point, p4:Point):Point {
-		var x1:Number = p1.x; var y1:Number = p1.y;
-		var x4:Number = p4.x; var y4:Number = p4.y;
+		var x1:Float = p1.x; var y1:Float = p1.y;
+		var x4:Float = p4.x; var y4:Float = p4.y;
 
-		var dx1:Number = p2.x - x1;
-		var dx2:Number = p3.x - x4;
+		var dx1:Float = p2.x - x1;
+		var dx2:Float = p3.x - x4;
 
 		if (!dx1 && !dx2) return null; // new Point(NaN, NaN);
 
-		var m1:Number = (p2.y - y1) / dx1;
-		var m2:Number = (p3.y - y4) / dx2;
+		var m1:Float = (p2.y - y1) / dx1;
+		var m2:Float = (p3.y - y4) / dx2;
 
 		if (!dx1) return new Point(x1, m2 * (x1 - x4) + y4);
 		else if (!dx2) return new Point(x4, m1 * (x4 - x1) + y1);
 
-		var xInt:Number = (-m2 * x4 + y4 + m1 * x1 - y1) / (m1 - m2);
-		var yInt:Number = m1 * (xInt - x1) + y1;
+		var xInt:Float = (-m2 * x4 + y4 + m1 * x1 - y1) / (m1 - m2);
+		var yInt:Float = m1 * (xInt - x1) + y1;
 
 		return new Point(xInt, yInt);
 	}
 
-	static private function bezierSplit(p0:Point, p1:Point, p2:Point, p3:Point):Object {
+	static private function bezierSplit(p0:Point, p1:Point, p2:Point, p3:Point):Dynamic {
 		var p01:Point = Point.interpolate(p0, p1, 0.5);
 		var p12:Point = Point.interpolate(p1, p2, 0.5);
 		var p23:Point = Point.interpolate(p2, p3, 0.5);
@@ -949,7 +950,7 @@ package svgutils;
 			b1:{a:p03, b:p13, c:p23, d:p3}};
 	}
 
-	static public function renderPathCmd(cmd:Array, g:Graphics, lastCP:Point, startP:Point = null):Void {
+	static public function renderPathCmd(cmd:Array<Dynamic>, g:Graphics, lastCP:Point, startP:Point = null):Void {
 		switch (cmd[0]) {
 			case 'C':
 				SVGPath.drawCubicBezier(g,
@@ -982,7 +983,7 @@ package svgutils;
 	}
 
 	/* debugging */
-	private static function debugDrawPoints(cmds:Array, g:Graphics):Void {
+	private static function debugDrawPoints(cmds:Array<Dynamic>, g:Graphics):Void {
 		g.lineStyle(); // no outline
 		for (cmd in cmds) {
 			var len:Int = cmd.length;
@@ -998,7 +999,7 @@ package svgutils;
 	public function outputCommands(start:Int=0, end:Int=-1):Void {
 		if(end==-1) end=length-1;
 		for(k=start...end+1) {
-			var c:Array = this[k];
+			var c:Array = path[k];
 			trace('Command #'+k+': '+c.join(','));
 		}
 	}

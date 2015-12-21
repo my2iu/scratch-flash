@@ -44,7 +44,7 @@ class IndicatorLight extends Sprite
     }
     
     public function setColorAndMsg(color : Int, msg : String) : Void{
-        if ((color == this.color) && (msg == this.msg))             return  // no change  ;
+        if ((color == this.color) && (msg == this.msg))             return;  // no change  ;
         this.color = color;
         this.msg = msg;
         SimpleTooltips.add(this, {

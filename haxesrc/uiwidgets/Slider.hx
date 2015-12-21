@@ -25,7 +25,6 @@
 
 package uiwidgets;
 
-import uiwidgets.Graphics;
 
 import flash.display.*;
 import flash.events.*;
@@ -48,11 +47,11 @@ class Slider extends Sprite implements DragClient
     
     private var isVertical : Bool;
     private var dragOffset : Int;
-    private var scrollFunction : Function;
+    private var scrollFunction : Dynamic->Void;
     private var minValue : Float;
     private var maxValue : Float;
     
-    public function new(w : Int, h : Int, scrollFunction : Function = null)
+    public function new(w : Int, h : Int, scrollFunction : Dynamic->Void = null)
     {
         super();
         this.scrollFunction = scrollFunction;

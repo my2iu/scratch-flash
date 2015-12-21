@@ -46,9 +46,9 @@ import watchers.ListWatcher;
 
 class ScratchSprite extends ScratchObj {
 
-	public var scratchX:Number;
-	public var scratchY:Number;
-	public var direction:Number = 90;
+	public var scratchX:Float;
+	public var scratchY:Float;
+	public var direction:Float = 90;
 	public var rotationStyle:String = 'normal'; // 'normal', 'leftRight', 'none'
 
 	public var isDraggable:Bool = false;
@@ -56,10 +56,10 @@ class ScratchSprite extends ScratchObj {
 	public var bubble:TalkBubble;
 
 	public var penIsDown:Bool;
-	public var penWidth:Number = 1;
-	public var penHue:Number = 120; // blue
-	public var penShade:Number = 50; // full brightness and saturation
-	public var penColorCache:Number = 0xFF;
+	public var penWidth:Float = 1;
+	public var penHue:Float = 120; // blue
+	public var penShade:Float = 50; // full brightness and saturation
+	public var penColorCache:Float = 0xFF;
 
 	private var cachedBitmap:BitmapData;	// current costume, rotated & scaled
 	private var cachedBounds:Rectangle;		// bounds of non-transparent cachedBitmap in stage coords
@@ -98,7 +98,7 @@ class ScratchSprite extends ScratchObj {
 	}
 
 	public function setRotationStyle(newRotationStyle:String):Void {
-		var oldDir:Number = direction;
+		var oldDir:Float = direction;
 		setDirection(90);
 		if ('all around' == newRotationStyle) rotationStyle = 'normal';
 		if ('left-right' == newRotationStyle) rotationStyle = 'leftRight';
@@ -177,7 +177,7 @@ class ScratchSprite extends ScratchObj {
 		if(bubble) updateBubble();
 	}
 
-	public function setScratchXY(newX:Number, newY:Number):Void {
+	public function setScratchXY(newX:Float, newY:Float):Void {
 		scratchX = isFinite(newX) ? newX : newX > 0 ? 1e6 : -1e6;
 		scratchY = isFinite(newY) ? newY : newY > 0 ? 1e6 : -1e6;
 		x = 240 + Math.round(scratchX);
@@ -223,7 +223,7 @@ class ScratchSprite extends ScratchObj {
 		setScratchXY(scratchX, scratchY);
 	}
 
-	public function setDirection(d:Number):Void {
+	public function setDirection(d:Float):Void {
 		if ((d * 0) != 0) return; // d is +/-Infinity or NaN
 		var wasFlipped:Bool = isCostumeFlipped();
 		d = d % 360;
@@ -248,36 +248,36 @@ class ScratchSprite extends ScratchObj {
 		geomShape.scaleX = img.getChildAt(0).scaleX;
 	}
 
-	public function getSize():Number { return 100 * scaleX; }
+	public function getSize():Float { return 100 * scaleX; }
 
-	public function setSize(percent:Number):Void {
+	public function setSize(percent:Float):Void {
 		var origW:Int = img.width;
 		var origH:Int = img.height;
-		var minScale:Number = Math.min(1, Math.max(5 / origW, 5 / origH));
-		var maxScale:Number = Math.min((1.5 * 480) / origW, (1.5 * 360) / origH);
+		var minScale:Float = Math.min(1, Math.max(5 / origW, 5 / origH));
+		var maxScale:Float = Math.min((1.5 * 480) / origW, (1.5 * 360) / origH);
 		scaleX = scaleY = Math.max(minScale, Math.min(percent / 100.0, maxScale));
 		clearCachedBitmap();
 		updateBubble();
 	}
 
-	public function setPenSize(n:Number):Void {
+	public function setPenSize(n:Float):Void {
 		penWidth = Math.max(1, Math.min(Math.round(n), 255)); // 255 is the maximum line with supported by Flash
 	}
 
-	public function setPenColor(c:Number):Void {
+	public function setPenColor(c:Float):Void {
 		var hsv:Array = Color.rgb2hsv(c);
 		penHue = (200 * hsv[0]) / 360 ;
 		penShade = 50 * hsv[2];  // not quite right; doesn't account for saturation
 		penColorCache = c;
 	}
 
-	public function setPenHue(n:Number):Void {
+	public function setPenHue(n:Float):Void {
 		penHue = n % 200;
 		if (penHue < 0) penHue += 200;
 		updateCachedPenColor();
 	}
 
-	public function setPenShade(n:Number):Void {
+	public function setPenShade(n:Float):Void {
 		penShade = n % 200;
 		if (penShade < 0) penShade += 200;
 		updateCachedPenColor();
@@ -285,7 +285,7 @@ class ScratchSprite extends ScratchObj {
 
 	private function updateCachedPenColor():Void {
 		var c:Int = Color.fromHSV((penHue * 180) / 100, 1, 1);
-		var shade:Number = (penShade > 100) ? 200 - penShade : penShade; // range 0..100
+		var shade:Float = (penShade > 100) ? 200 - penShade : penShade; // range 0..100
 		if (shade < 50) {
 			penColorCache = Color.mixRGB(0, c, (10 + shade) / 60);
 		} else {
@@ -314,7 +314,7 @@ class ScratchSprite extends ScratchObj {
 		}
 	}
 
-	public override function hitTestPoint(globalX:Number, globalY:Number, shapeFlag:Bool = true):Bool {
+	public override function hitTestPoint(globalX:Float, globalY:Float, shapeFlag:Bool = true):Bool {
 		if ((!visible) || (img.transform.colorTransform.alphaMultiplier == 0)) return false;
 		var p:Point = parent.globalToLocal(new Point(globalX, globalY));
 		var myRect:Rectangle = bounds();
@@ -374,7 +374,7 @@ class ScratchSprite extends ScratchObj {
 /*
 		if (SCRATCH::allow3d) {
 			if (Scratch.app.isIn3D) {
-				var oldGhost:Number = filterPack.getFilterSetting('ghost');
+				var oldGhost:Float = filterPack.getFilterSetting('ghost');
 				filterPack.setFilter('ghost', 0);
 				updateEffectsFor3D();
 				var bm:BitmapData = Scratch.app.render3D.getRenderedChild(this, b.width * scaleX, b.height * scaleY);
@@ -440,7 +440,7 @@ class ScratchSprite extends ScratchObj {
 		var p2:Point = m.transformPoint(new Point(r.right, r.top));
 		var p3:Point = m.transformPoint(new Point(r.left, r.bottom));
 		var p4:Point = m.transformPoint(r.bottomRight);
-		var xMin:Number, xMax:Number, yMin:Number, yMax:Number;
+		var xMin:Float, xMax:Float, yMin:Float, yMax:Float;
 		xMin = Math.min(p1.x, p2.x, p3.x, p4.x);
 		yMin = Math.min(p1.y, p2.y, p3.y, p4.y);
 		xMax = Math.max(p1.x, p2.x, p3.x, p4.x);
@@ -449,7 +449,7 @@ class ScratchSprite extends ScratchObj {
 		return newR;
 	}
 
-	public override function defaultArgsFor(op:String, specDefaults:Array):Array {
+	public override function defaultArgsFor(op:String, specDefaults:Array<Dynamic>):Array<String> {
 		if ('gotoSpriteOrMouse:' == op) return ['_mouse_'];
 		if ('gotoX:y:' == op) return [Math.round(scratchX), Math.round(scratchY)];
 		if ('glideSecs:toX:y:elapsed:from:' == op) return [1, Math.round(scratchX), Math.round(scratchY)];
@@ -682,7 +682,7 @@ class ScratchSprite extends ScratchObj {
 
 	public function getVisibleBounds(space:DisplayObject):Rectangle {
 		if(space == this) {
-			var rot:Number = rotation;
+			var rot:Float = rotation;
 			rotation = 0;
 		}
 

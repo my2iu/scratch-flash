@@ -242,8 +242,8 @@ class SoundsPart extends UIPart
     
     public static function makeButtonImg(iconName : String, isOn : Bool, buttonSize : Point = null) : Sprite{
         var icon : Bitmap = Resources.createBmp(iconName + ((isOn) ? "On" : "Off"));
-        var buttonW : Int = Math.max(icon.width, (buttonSize != null) ? buttonSize.x : 24);
-        var buttonH : Int = Math.max(icon.height, (buttonSize != null) ? buttonSize.y : 24);
+        var buttonW : Int = Std.int(Math.max(icon.width, (buttonSize != null) ? buttonSize.x : 24));
+        var buttonH : Int = Std.int(Math.max(icon.height, (buttonSize != null) ? buttonSize.y : 24));
         
         var img : Sprite = new Sprite();
         var g : Graphics = img.graphics;

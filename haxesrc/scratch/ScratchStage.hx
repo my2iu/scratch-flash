@@ -46,7 +46,7 @@ import by.blooddy.crypto.MD5;
 class ScratchStage extends ScratchObj {
 
 	public var info:Dynamic = {};
-	public var tempoBPM:Number = 60;
+	public var tempoBPM:Float = 60;
 
 	public var penActivity:Bool;
 	public var newPenStrokes:Shape;
@@ -62,7 +62,7 @@ class ScratchStage extends ScratchObj {
 	public var videoImage:Bitmap;
 	static private var camera:Camera;
 	private var video:Video;
-	private var videoAlpha:Number = 0.5;
+	private var videoAlpha:Float = 0.5;
 	private var flipVideo:Bool = true;
 
 	public function ScratchStage() {
@@ -82,7 +82,7 @@ class ScratchStage extends ScratchObj {
 		showCostume(0);
 	}
 
-	public function setTempo(bpm:Number):Void {
+	public function setTempo(bpm:Float):Void {
 		tempoBPM = Math.max(20, Math.min(bpm, 500));
 	}
 
@@ -105,7 +105,7 @@ class ScratchStage extends ScratchObj {
 		return null;
 	}
 
-	public function spritesAndClonesNamed(spriteName:String):Array {
+	public function spritesAndClonesNamed(spriteName:String):Array<Dynamic> {
 		// Return all sprites and clones with the given name.
 		var result:Array = [];
 		for (i= 0...numChildren) {
@@ -161,22 +161,22 @@ class ScratchStage extends ScratchObj {
 		addChild(penLayer);
 	}
 
-	public function baseW():Number { return bg.width; }
-	public function baseH():Number { return bg.height; }
+	public function baseW():Float { return bg.width; }
+	public function baseH():Float { return bg.height; }
 
 	public function scratchMouseX():Int { return Math.max( -240, Math.min(mouseX - (STAGEW / 2), 240)); }
 	public function scratchMouseY():Int { return -Math.max( -180, Math.min(mouseY - (STAGEH / 2), 180)); }
 
-	public override function allObjects():Array {
+	public override function allObjects():Array<Dynamic> {
 		// Return an array of all sprites in this project plus the stage.
-		var result:Array = sprites();
+		var result:Array<Dynamic> = sprites();
 		result.push(this);
 		return result;
 	}
 
-	public function sprites():Array {
+	public function sprites():Array<Dynamic> {
 		// Return an array of all sprites in this project.
-		var result:Array = [];
+		var result:Array<Dynamic> = [];
 		for (i= 0...numChildren) {
 			var o:Dynamic = getChildAt(i);
 			if (Std.is(o, ScratchSprite) && !o.isClone) result.push(o);
@@ -185,7 +185,7 @@ class ScratchStage extends ScratchObj {
 	}
 
 	public function deleteClones():Void {
-		var clones:Array = [];
+		var clones:Array<Dynamic> = [];
 		for (i= 0...numChildren) {
 			var o:Dynamic = getChildAt(i);
 			if (Std.is(o, ScratchSprite) && o.isClone) {
@@ -196,9 +196,9 @@ class ScratchStage extends ScratchObj {
 		for (c in clones) removeChild(c);
 	}
 
-	public function watchers():Array {
+	public function watchers():Array<Dynamic> {
 		// Return an array of all variable and lists on the stage, visible or not.
-		var result:Array = [];
+		var result:Array<Dynamic> = [];
 		var uiLayer:Sprite = getUILayer();
 		for (i= 0...uiLayer.numChildren) {
 			var o:Dynamic = uiLayer.getChildAt(i);
@@ -209,7 +209,7 @@ class ScratchStage extends ScratchObj {
 
 	public function removeObsoleteWatchers():Void {
 		// Called after deleting a sprite.
-		var toDelete:Array = [];
+		var toDelete:Array<Dynamic> = [];
 		var uiLayer:Sprite = getUILayer();
 		for (i= 0...uiLayer.numChildren) {
 			var w:Watcher = cast(uiLayer.getChildAt(i), Watcher);
@@ -239,8 +239,8 @@ class ScratchStage extends ScratchObj {
 
 	/* Scrolling support */
 
-	public var xScroll:Number = 0;
-	public var yScroll:Number = 0;
+	public var xScroll:Float = 0;
+	public var yScroll:Float = 0;
 
 	public function scrollAlign(s:String):Void {
 		var c:DisplayObject = currentCostume().displayObj();
@@ -271,8 +271,8 @@ class ScratchStage extends ScratchObj {
 		updateImage();
 	}
 
-	public function scrollRight(n:Number):Void { xScroll += n; updateImage(); }
-	public function scrollUp(n:Number):Void { yScroll += n; updateImage(); }
+	public function scrollRight(n:Float):Void { xScroll += n; updateImage(); }
+	public function scrollUp(n:Float):Void { yScroll += n; updateImage(); }
 
 	public function getUILayer():Sprite {
 		/*
@@ -381,7 +381,7 @@ class ScratchStage extends ScratchObj {
 	}
 
 	private var stampBounds:Rectangle = new Rectangle();
-	public function stampSprite(s:ScratchSprite, stampAlpha:Number):Void {
+	public function stampSprite(s:ScratchSprite, stampAlpha:Float):Void {
 		if(s == null) return;
 //		if(!testBM.parent) {
 //			//testBM.filters = [new GlowFilter(0xFF00FF, 0.8)];
@@ -399,7 +399,7 @@ class ScratchStage extends ScratchObj {
 			m.rotate((Math.PI * s.rotation) / 180);
 			m.scale(s.scaleX, s.scaleY);
 			m.translate(s.x, s.y);
-			var oldGhost:Number = s.filterPack.getFilterSetting('ghost');
+			var oldGhost:Float = s.filterPack.getFilterSetting('ghost');
 			s.filterPack.setFilter('ghost', 0);
 			s.applyFilters();
 			penBM.draw(s, m, new ColorTransform(1, 1, 1, stampAlpha));
@@ -486,7 +486,7 @@ class ScratchStage extends ScratchObj {
 		}
 	}
 
-	public function setVideoTransparency(transparency:Number):Void {
+	public function setVideoTransparency(transparency:Float):Void {
 		videoAlpha = 1 - Math.max(0, Math.min(transparency / 100, 1));
 		if (videoImage) {
 			videoImage.alpha = videoAlpha;
@@ -631,7 +631,7 @@ class ScratchStage extends ScratchObj {
 		return string;
 	}
 
-	public function updateRender(dispObj:DisplayObject, renderID:String = null, renderOpts:Object = null):Void {
+	public function updateRender(dispObj:DisplayObject, renderID:String = null, renderOpts:Dynamic = null):Void {
 		/*
 		SCRATCH::allow3d {
 			if (Scratch.app.isIn3D) Scratch.app.render3D.updateRender(dispObj, renderID, renderOpts);
@@ -811,8 +811,8 @@ class ScratchStage extends ScratchObj {
 		json.writeKeyValue('info', info);
 	}
 
-	public override function readJSON(jsonObj:Object):Void {
-		var children:Array, i:Int, o:Object;
+	public override function readJSON(jsonObj:Dynamic):Void {
+		var children:Array, i:Int, o:Dynamic;
 
 		// read stage fields
 		super.readJSON(jsonObj);
@@ -823,7 +823,7 @@ class ScratchStage extends ScratchObj {
 		info = jsonObj.info;
 
 		// instantiate sprites and record their names
-		var spriteNameMap:Object = new Object();
+		var spriteNameMap:Object = {};
 		spriteNameMap[objName] = this; // record stage's name
 		for (i = 0...children.length) {
 			o = children[i];

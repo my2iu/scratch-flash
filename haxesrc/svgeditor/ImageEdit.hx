@@ -267,9 +267,9 @@ class ImageEdit extends Sprite
     
     public function isActive() : Bool{
         // Return true if the editor is currently showing.
-        if (!root)             return false;  // Note: The editor is removed from the display tree when it is inactive.  ;
-        if (CursorTool.tool)             return false;
-        return !app.mediaLibrary;
+        if (root == null)             return false;  // Note: The editor is removed from the display tree when it is inactive.  ;
+        if (CursorTool.tool != null)             return false;
+        return app.mediaLibrary != null;
     }
     
     private var clipBoard : Dynamic;
@@ -549,8 +549,8 @@ class ImageEdit extends Sprite
     }
     
     public static function buttonFrame(bmp : DisplayObject, b : Bool, buttonSize : Point = null) : Sprite{
-        var frameW : Int = (buttonSize != null) ? buttonSize.x : bmp.width;
-        var frameH : Int = (buttonSize != null) ? buttonSize.y : bmp.height;
+        var frameW : Int = (buttonSize != null) ? Std.int(buttonSize.x) : bmp.width;
+        var frameH : Int = (buttonSize != null) ? Std.int(buttonSize.y) : bmp.height;
         
         var result : Sprite = new Sprite();
         var g : Graphics = result.graphics;
@@ -934,7 +934,7 @@ class ImageEdit extends Sprite
         
         
         
-        if (stage && workArea.getInteractionLayer().hitTestPoint(stage.mouseX, stage.mouseY, true) &&
+        if (stage != null && workArea.getInteractionLayer().hitTestPoint(stage.mouseX, stage.mouseY, true) &&
             !uiLayer.hitTestPoint(stage.mouseX, stage.mouseY, true)) {
             CursorTool.setCustomCursor(currentCursor);
         }

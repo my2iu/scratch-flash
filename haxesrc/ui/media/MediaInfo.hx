@@ -49,7 +49,7 @@ class MediaInfo extends Sprite {
 	public var mycostume:ScratchCostume;
 	public var mysprite:ScratchSprite;
 	public var mysound:ScratchSound;
-	public var scripts:Array;
+	public var scripts:Array<Dynamic>;
 
 	public var objType:String = 'unknown';
 	public var objName:String = '';
@@ -57,8 +57,8 @@ class MediaInfo extends Sprite {
 	public var md5:String;
 
 	public var owner:ScratchObj; // object owning a sound or costume in MediaPane; null for other cases
-	public var isBackdrop:Boolean;
-	public var forBackpack:Boolean;
+	public var isBackdrop:Bool;
+	public var forBackpack:Bool;
 
 	private var frame:Shape; // visible when selected
 	private var thumbnail:Bitmap;
@@ -107,7 +107,7 @@ class MediaInfo extends Sprite {
 		updateLabelAndInfo(false);
 	}
 
-	public static function strings():Array {
+	public static function strings():Array<String> {
 		return ['Backdrop', 'Costume', 'Script', 'Sound', 'Sprite', 'save to local file'];
 	}
 
@@ -123,7 +123,7 @@ class MediaInfo extends Sprite {
 		if (frame.alpha != 0) { frame.alpha = 0; showDeleteButton(false); }
 	}
 
-	private function showDeleteButton(flag:Boolean):Void {
+	private function showDeleteButton(flag:Bool):Void {
 		if (deleteButton) {
 			deleteButton.visible = flag;
 			if (flag && mycostume && owner && (owner.costumes.length < 2)) deleteButton.visible = false;
@@ -138,7 +138,7 @@ class MediaInfo extends Sprite {
 	public function thumbnailX():Int { return thumbnail.x; }
 	public function thumbnailY():Int { return thumbnail.y; }
 
-	public function computeThumbnail():Boolean {
+	public function computeThumbnail():Bool {
 		if (mycostume) setLocalCostumeThumbnail();
 		else if (mysprite) setLocalSpriteThumbnail();
 		else if (scripts) setScriptThumbnail();
@@ -149,7 +149,7 @@ class MediaInfo extends Sprite {
 
 	private function setLocalCostumeThumbnail():Void {
 		// Set the thumbnail for a costume local to this project (and not necessarily saved to the server).
-		var forStage:Boolean = owner && owner.isStage;
+		var forStage:Bool = owner && owner.isStage;
 		var bm:BitmapData = mycostume.thumbnail(thumbnailWidth, thumbnailHeight, forStage);
 		isBackdrop = forStage;
 		setThumbnailBM(bm);
@@ -169,7 +169,7 @@ class MediaInfo extends Sprite {
 	private function setScriptThumbnail():Void {
 		if (!scripts || (scripts.length < 1)) return; // no scripts
 		var script:Block = BlockIO.arrayToStack(scripts[0]);
-		var scale:Number = Math.min(thumbnailWidth / script.width, thumbnailHeight / script.height);
+		var scale:Float = Math.min(thumbnailWidth / script.width, thumbnailHeight / script.height);
 		var bm:BitmapData = new BitmapData(thumbnailWidth, thumbnailHeight, true, 0);
 		var m:Matrix = new Matrix();
 		m.scale(scale, scale);
@@ -191,7 +191,7 @@ class MediaInfo extends Sprite {
 	// Label and Info
 	//------------------------------
 
-	public function updateLabelAndInfo(forBackpack:Boolean):Void {
+	public function updateLabelAndInfo(forBackpack:Bool):Void {
 		this.forBackpack = forBackpack;
 		setText(label, (forBackpack ? backpackTitle() : objName));
 		label.x = ((frameWidth - label.textWidth) / 2) - 2;
@@ -234,7 +234,7 @@ class MediaInfo extends Sprite {
 		return w + 'x' + h;
 	}
 
-	private function soundInfoString(msecs:Number):String {
+	private function soundInfoString(msecs:Float):String {
 		// Return a formatted time in MM:SS.HH (where HH is hundredths of a second).
 		function twoDigits(n:Int):String { return (n < 10) ? '0' + n : '' + n; }
 
@@ -281,9 +281,9 @@ class MediaInfo extends Sprite {
 		}
 	}
 
-	public function backpackRecord():Object {
+	public function backpackRecord():Dynamic {
 		// Return an object to be saved in the backpack.
-		var result:Object = {
+		var result:Dynamic = {
 			type: objType,
 			name: objName,
 			md5: md5

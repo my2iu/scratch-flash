@@ -30,6 +30,7 @@ import com.adobe.utils.StringUtil;
 import extensions.ExtensionDevManager;
 import extensions.ExtensionManager;
 
+import flash.errors.Error;
 import flash.display.*;
 import flash.events.*;
 import flash.external.ExternalInterface;
@@ -552,7 +553,7 @@ class Scratch extends Sprite {
 		}
 	}
 
-	public function strings():Array {
+	public function strings():Array<String> {
 		return [
 			'a copy of the project file on your computer.',
 			'Project not saved!', 'Save now', 'Not saved; project did not load.',
@@ -575,7 +576,7 @@ class Scratch extends Sprite {
 		return stagePart.projectName();
 	}
 
-	public function highlightSprites(sprites:Array):Void {
+	public function highlightSprites(sprites:Array<Dynamic>):Void {
 		libraryPart.highlight(sprites);
 	}
 
@@ -608,7 +609,7 @@ class Scratch extends Sprite {
 		imagesPart.editor.enableTools(flag);
 	}
 
-	public var usesUserNameBlock (get, set): Boolean;
+	public var usesUserNameBlock (get, set): Bool;
 	public function get_usesUserNameBlock():Bool {
 		return _usesUserNameBlock;
 	}
@@ -1129,7 +1130,7 @@ class Scratch extends Sprite {
 		createNewProjectAndThen();
 	}
 
-	private function createNewProjectScratchX(jsCallback:Array):Void {
+	private function createNewProjectScratchX(jsCallback:Array<Dynamic>):Void {
 		createNewProjectAndThen(function():Void {
 			externalCallArray(jsCallback);
 		});
@@ -1223,10 +1224,10 @@ class Scratch extends Sprite {
 	public function handleTool(tool:String, evt:MouseEvent):Void {
 	}
 
-	public function showBubble(text:String, x:Dynamic = null, y:Dynamic = null, width:Number = 0):Void {
+	public function showBubble(text:String, x:Dynamic = null, y:Dynamic = null, width:Float = 0):Void {
 		if (x == null) x = stage.mouseX;
 		if (y == null) y = stage.mouseY;
-		gh.showBubble(text, Number(x), Number(y), width);
+		gh.showBubble(text, cast(x, Float), cast(y, Float), width);
 	}
 
 	// -----------------------------
@@ -1457,7 +1458,7 @@ class Scratch extends Sprite {
 	private var firstFrameTime:Int;
 	private var frameCount:Int;
 
-	private function addFrameRateReadout(x:Int, y:Int, color:Uint = 0):Void {
+	private function addFrameRateReadout(x:Int, y:Int, color:UInt = 0):Void {
 		frameRateReadout = new TextField();
 		frameRateReadout.autoSize = TextFieldAutoSize.LEFT;
 		frameRateReadout.selectable = false;
@@ -1483,7 +1484,7 @@ class Scratch extends Sprite {
 	}
 
 	// TODO: Remove / no longer used
-	private inline var frameRateGraphH:Int = 150;
+	private static inline var frameRateGraphH:Int = 150;
 	private var frameRateGraph:Shape;
 	private var nextFrameRateX:Int;
 	private var lastFrameTime:Int;
@@ -1584,8 +1585,8 @@ class Scratch extends Sprite {
 
 	// jsCallbackArray is: [functionName, arg1, arg2...] where args are optional.
 	// TODO: rewrite all versions of externalCall in terms of this
-	public function externalCallArray(jsCallbackArray:Array, returnValueCallback:Function = null):Void {
-		var args:Array = jsCallbackArray.concat(); // clone
+	public function externalCallArray(jsCallbackArray:Array<Dynamic>, returnValueCallback:Dynamic->Void = null):Void {
+		var args:Array<Dynamic> = jsCallbackArray.concat(); // clone
 		args.splice(1, 0, returnValueCallback);
 		externalCall.apply(this, args);
 	}
