@@ -36,7 +36,7 @@ package translation;
 
 import flash.net.FileReference;
 import scratch.*;
-import soundedit.SoundEditor;
+//import soundedit.SoundEditor;
 import svgeditor.*;
 import ui.*;
 import ui.media.*;
@@ -120,7 +120,7 @@ class TranslatableStrings
         // Get the strings from the Scratch app instance so that the offline version can add strings
         addAll(Scratch.app.strings());
         addAll(ScriptsPane.strings());
-        addAll(SoundEditor.strings());
+//        addAll(SoundEditor.strings());
         addAll(SoundsPart.strings());
         addAll(SpriteInfoPart.strings());
         addAll(SpriteThumbnail.strings());

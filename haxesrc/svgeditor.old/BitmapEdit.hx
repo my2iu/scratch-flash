@@ -178,13 +178,13 @@ class BitmapEdit extends ImageEdit
     }
     
     override private function selectHandler(evt : Event = null) : Void{
-        if ((Std.is(currentTool, ObjectTransformer) && !(try cast(currentTool, ObjectTransformer) catch(e:Dynamic) null).getSelection())) {
+        if ((Std.is(currentTool, ObjectTransformer) != null&& !(try cast(currentTool, ObjectTransformer) catch(e:Dynamic) null).getSelection())) {
             // User clicked away from the object transformer, so bake it in.
             bakeIntoBitmap();
             saveToCostume();
         }
         
-        var cropToolEnabled : Bool = (Std.is(currentTool, ObjectTransformer) && !!(try cast(currentTool, ObjectTransformer) catch(e:Dynamic) null).getSelection());
+        var cropToolEnabled : Bool = (Std.is(currentTool, ObjectTransformer) != null && !!(try cast(currentTool, ObjectTransformer) catch(e:Dynamic) null).getSelection());
         imagesPart.setCanCrop(cropToolEnabled);
     }
     
@@ -223,7 +223,7 @@ class BitmapEdit extends ImageEdit
         new Point(480 - (scale * c.rotationCenterX), 360 - (scale * c.rotationCenterY));
         bm.copyPixels(costumeBM, costumeBM.rect, destP);
         if (c.undoList.length == 0) {
-            recordForUndo(costumeBM, (scale * c.rotationCenterX), (scale * c.rotationCenterY));
+            recordForUndo(costumeBM, Std.int(scale * c.rotationCenterX), Std.int(scale * c.rotationCenterY));
         }
     }
     

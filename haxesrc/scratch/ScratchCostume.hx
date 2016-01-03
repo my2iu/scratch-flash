@@ -386,8 +386,8 @@ class ScratchCostume {
 		return H;
 	}
 
-	public function width():Float { return svgRoot ? svgWidth : (bitmap ? bitmap.width / bitmapResolution : 0); }
-	public function height():Float { return svgRoot ? svgHeight : (bitmap ? bitmap.height / bitmapResolution : 0); }
+	public function width():Float { return svgRoot!=null ? svgWidth : (bitmap ? bitmap.width / bitmapResolution : 0); }
+	public function height():Float { return svgRoot!=null ? svgHeight : (bitmap ? bitmap.height / bitmapResolution : 0); }
 
 	public function duplicate():ScratchCostume {
 		// Return a copy of this costume.

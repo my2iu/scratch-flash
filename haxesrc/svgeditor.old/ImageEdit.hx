@@ -172,7 +172,7 @@ class ImageEdit extends Sprite
         
         
         
-        if (event.type == MouseEvent.MOUSE_OVER && CursorTool.tool) 
+        if (event.type == MouseEvent.MOUSE_OVER && CursorTool.tool != null) 
             workArea.getContentLayer().addEventListener(MouseEvent.MOUSE_DOWN, workAreaMouseDown, true, 1, true)
         else 
         workArea.getContentLayer().removeEventListener(MouseEvent.MOUSE_DOWN, workAreaMouseDown);
@@ -180,7 +180,7 @@ class ImageEdit extends Sprite
     
     private var globalToolObject : ISVGEditable;
     private function workAreaMouseDown(event : MouseEvent) : Void{
-        if (!CursorTool.tool) {
+        if (CursorTool.tool==null) {
             globalToolObject = null;
             return;
         }  // raw bitmap, only on the selected marquee (sub-bitmap?)    // BitmapEdit will have to make sure that you can't use the global tools on the  
@@ -251,7 +251,7 @@ class ImageEdit extends Sprite
         
         var leftMargin : Int = 44;
         var rightMargin : Int = 30;
-        workArea.resize(w - leftMargin - rightMargin, h - drawPropsUI.height - 12);
+        workArea.resize(w - leftMargin - rightMargin, Std.int(h - drawPropsUI.height - 12));
         workArea.x = leftMargin;
         
         refreshCurrentTool();
@@ -362,12 +362,12 @@ class ImageEdit extends Sprite
         var immediateTools : Array<Dynamic> = getImmediateToolList();
         var ib : IconButton;
         var dy : Float = 0;
-        var ttDirection : String = (Std.is(this, (SVGEdit) ? "left" : "right"));
+        var ttDirection : String = (Std.is(this, SVGEdit) != null? "left" : "right");
         for (i in 0...tools.length){
             if (tools[i] == null)                 dy += extraSpace
             else {
                 var toolName : String = tools[i].name;
-                var isImmediate : Bool = (immediateTools && Lambda.indexOf(immediateTools, toolName) > -1);
+                var isImmediate : Bool = (immediateTools!= null && Lambda.indexOf(immediateTools, toolName) > -1);
                 var iconName : String = toolName;
                 if ("bitmapBrush" == toolName)                     iconName = "bitmapBrush";
                 if ("bitmapEraser" == toolName)                     iconName = "eraser";
@@ -397,7 +397,7 @@ class ImageEdit extends Sprite
     }
     
     public function updateTranslation() : Void{
-        var direction : String = (Std.is(this, (SVGEdit) ? "left" : "right"));
+        var direction : String = (Std.is(this, SVGEdit) != null? "left" : "right");
         for (tool/* AS3HX WARNING could not determine type for var: tool exp: ECall(EIdent(getToolDefs),[]) type: null */ in getToolDefs()){
             if (tool == null)                 continue;
             var text : String = Translator.map(tool.desc);
@@ -549,8 +549,8 @@ class ImageEdit extends Sprite
     }
     
     public static function buttonFrame(bmp : DisplayObject, b : Bool, buttonSize : Point = null) : Sprite{
-        var frameW : Int = (buttonSize != null) ? Std.int(buttonSize.x) : bmp.width;
-        var frameH : Int = (buttonSize != null) ? Std.int(buttonSize.y) : bmp.height;
+        var frameW : Int = (buttonSize != null) ? Std.int(buttonSize.x) : Std.int(bmp.width);
+        var frameH : Int = (buttonSize != null) ? Std.int(buttonSize.y) : Std.int(bmp.height);
         
         var result : Sprite = new Sprite();
         var g : Graphics = result.graphics;
@@ -606,7 +606,7 @@ class ImageEdit extends Sprite
             
             
             if (toolChanged) {
-                if (currentTool.parent) 
+                if (currentTool.parent != null) 
                     toolsLayer.removeChild(currentTool);
                 
                 if (Std.is(currentTool, SVGEditTool)) 
@@ -716,7 +716,7 @@ class ImageEdit extends Sprite
         
         // If the tool wasn't canceled and an object was created then select it
         if (nextObject != null && (Std.is(nextObject, Selection) || nextObject.parent)) {
-            var s : Selection = (Std.is(nextObject, (Selection) ? nextObject : new Selection([nextObject])));
+            var s : Selection = (Std.is(nextObject, Selection)!= null ? nextObject : new Selection([nextObject]));
             (try cast(currentTool, ObjectTransformer) catch(e:Dynamic) null).select(s);
         }
         saveContent();
@@ -751,7 +751,7 @@ class ImageEdit extends Sprite
     
     public function editCostume(c : ScratchCostume, forStage : Bool, force : Bool = false) : Void{
         // Edit the given ScratchCostume
-        if ((targetCostume == c) && !force)             return  // already editing  ;
+        if ((targetCostume == c) && !force)             return;  // already editing  ;
         
         targetCostume = c;
         isScene = forStage;
@@ -842,13 +842,13 @@ class ImageEdit extends Sprite
     //------------------------------
     
     public function canUndo() : Bool{
-        return targetCostume &&
+        return targetCostume != null &&
         (targetCostume.undoList.length > 0) &&
         (targetCostume.undoListIndex > 0);
     }
     
     public function canRedo() : Bool{
-        return targetCostume &&
+        return targetCostume != null &&
         (targetCostume.undoList.length > 0) &&
         (targetCostume.undoListIndex < (targetCostume.undoList.length - 1));
     }

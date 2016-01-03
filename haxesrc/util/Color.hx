@@ -58,7 +58,7 @@ class Color
         r = Math.floor(r * 255);
         g = Math.floor(g * 255);
         b = Math.floor(b * 255);
-        return (r << 16) | (g << 8) | b;
+        return (Std.int(r) << 16) | (Std.int(g) << 8) | Std.int(b);
     }
     
     // Convert RGB to an array containing the hue, saturation, and brightness.
@@ -69,9 +69,9 @@ class Color
         var x : Float;
         var f : Float;
         var i : Float;
-        var r : Float = ((rgb >> 16) & 255) / 255;
-        var g : Float = ((rgb >> 8) & 255) / 255;
-        var b : Float = (rgb & 255) / 255;
+        var r : Float = ((Std.int(rgb) >> 16) & 255) / 255;
+        var g : Float = ((Std.int(rgb) >> 8) & 255) / 255;
+        var b : Float = (Std.int(rgb) & 255) / 255;
         x = Math.min(Math.min(r, g), b);
         v = Math.max(Math.max(r, g), b);
         if (x == v)             return [0, 0, v];  // gray; hue arbitrarily reported as zero  ;

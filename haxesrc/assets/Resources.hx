@@ -27,7 +27,7 @@ class Resources
 {
     
     public static function createBmp(resourceName : String) : Bitmap{
-        var resourceClass : Class<Dynamic> = Resources[resourceName];
+        var resourceClass : Class<Dynamic> = Reflect.field (Resources, resourceName);  // Resources[resourceName];
         if (resourceClass == null) {
             trace("missing resource: ", resourceName);
             return new Bitmap(new BitmapData(10, 10, false, 0x808080));

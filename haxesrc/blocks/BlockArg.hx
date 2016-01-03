@@ -121,7 +121,7 @@ class BlockArg extends Sprite
             setArgValue(Color.random());
         }
         else {
-            base.setWidthAndTopHeight(30, Block.argTextFormat.size + 6);
+            base.setWidthAndTopHeight(30, Std.int(Block.argTextFormat.size + 6));
         }
         base.filters = blockArgFilters();
         addChild(base);
@@ -141,7 +141,7 @@ class BlockArg extends Sprite
         if (editable || numberType != 0 || (type == "m")) {  // add a string field  
             field = makeTextField();
             if ((type == "m") && !editable)                 field.textColor = 0xFFFFFF
-            else base.setWidthAndTopHeight(30, Block.argTextFormat.size + 5);  // 14 for normal arg font  
+            else base.setWidthAndTopHeight(30, Std.int(Block.argTextFormat.size + 5));  // 14 for normal arg font  
             field.text = (numberType != 0) ? "10" : "";
             if (numberType != 0)                 field.restrict = "0-9e.\\-";  // restrict to numeric characters  ;
             if (editable) {
@@ -241,13 +241,13 @@ class BlockArg extends Sprite
         var padding : Int = ((type == "n")) ? 3 : 0;
         if (type == "b")             padding = 8;
         if (menuIcon != null)             padding = ((type == "d")) ? 10 : 13;
-        var w : Int = Math.max(14, field.textWidth + 6 + padding);
+        var w : Int = Std.int(Math.max(14, field.textWidth + 6 + padding));
         if (menuIcon != null)             menuIcon.x = w - menuIcon.width - 3;
         base.setWidth(w);
         base.redraw();
         if (Std.is(parent, Block))             cast((parent), Block).fixExpressionLayout();
         
-        if (evt != null && Scratch.app)             Scratch.app.setSaveNeeded();
+        if (evt != null && Scratch.app != null)             Scratch.app.setSaveNeeded();
     }
     
     private function invokeMenu(evt : MouseEvent) : Void{

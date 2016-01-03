@@ -129,17 +129,17 @@ class BlockShape extends Shape
     
     public function nextBlockY() : Int{
         if (ProcHatShape == shape)             return topH;
-        return height - NotchDepth;
+        return Std.int(height - NotchDepth);
     }
     
     public function setSubstack1Height(h : Int) : Void{
-        h = Math.max(h, EmptySubstackH);
+        h = Std.int(Math.max(h, EmptySubstackH));
         if (h != substack1H) {substack1H = h;redrawNeeded = true;
         }
     }
     
     public function setSubstack2Height(h : Int) : Void{
-        h = Math.max(h, EmptySubstackH);
+        h = Std.int(Math.max(h, EmptySubstackH));
         if (h != substack2H) {substack2H = h;redrawNeeded = true;
         }
     }

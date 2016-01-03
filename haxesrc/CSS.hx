@@ -22,7 +22,6 @@
 //
 // Styles for Scratch Editor based on the Upstatement design.
 
-import TextFormat;
 
 import flash.text.*;
 import assets.Resources;

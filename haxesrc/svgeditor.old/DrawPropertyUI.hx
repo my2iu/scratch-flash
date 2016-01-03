@@ -318,7 +318,7 @@ class DrawPropertyUI extends Sprite
     }
     
     private function makeFontUI() : Void{
-        function fontMenu() : Void{
+        function fontMenu(ignored:Dynamic) : Void{
             var m : Menu = new Menu(fontSelected);
             m.itemHeight = 20;
             m.addItem("Donegal");

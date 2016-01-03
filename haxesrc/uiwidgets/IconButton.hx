@@ -29,7 +29,7 @@
 
 package uiwidgets;
 
-
+import CSS;
 import flash.display.*;
 import flash.events.MouseEvent;
 import flash.text.*;
@@ -134,7 +134,7 @@ class IconButton extends Sprite
         label.textColor = labelColor;
         var img : Sprite = new Sprite();
         img.addChild(label);
-        if (dropDownArrow)             img.addChild(menuArrow(label.textWidth + 6, 6, labelColor));
+        if (dropDownArrow)             img.addChild(menuArrow(Std.int(label.textWidth + 6), 6, labelColor));
         return img;
     }
     

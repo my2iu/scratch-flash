@@ -19,7 +19,7 @@
 
 package uiwidgets;
 
-
+import CSS;
 import flash.display.*;
 import flash.events.MouseEvent;
 import flash.geom.Matrix;
@@ -75,12 +75,12 @@ class Button extends Sprite
     public function setMinWidthHeight(minW : Int, minH : Int) : Void{
         if (labelOrIcon != null) {
             if (Std.is(labelOrIcon, TextField)) {
-                minW = Math.max(minWidth, labelOrIcon.width + 11);
+                minW = Std.int(Math.max(minWidth, labelOrIcon.width + 11));
                 minH = (compact) ? 20 : 25;
             }
             else {
-                minW = Math.max(minWidth, labelOrIcon.width + 12);
-                minH = Math.max(minH, labelOrIcon.height + 11);
+                minW = Std.int(Math.max(minWidth, labelOrIcon.width + 12));
+                minH = Std.int(Math.max(minH, labelOrIcon.height + 11));
             }
             labelOrIcon.x = ((minW - labelOrIcon.width) / 2);
             labelOrIcon.y = ((minH - labelOrIcon.height) / 2);

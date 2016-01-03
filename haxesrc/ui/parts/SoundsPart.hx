@@ -33,7 +33,7 @@ import flash.text.*;
 import assets.Resources;
 import scratch.*;
 import sound.WAVFile;
-import soundedit.SoundEditor;
+//import soundedit.SoundEditor;
 import translation.Translator;
 import ui.media.*;
 import uiwidgets.*;
@@ -41,7 +41,7 @@ import uiwidgets.*;
 class SoundsPart extends UIPart
 {
     
-    public var editor : SoundEditor;
+    //public var editor : SoundEditor;
     public var currentIndex : Int;
     
     private static inline var columnWidth : Int = 106;
@@ -68,9 +68,9 @@ class SoundsPart extends UIPart
         
         addListFrame();
         addChild(nameField = new EditableLabel(nameChanged));
-        addChild(editor = new SoundEditor(app, this));
+        //addChild(editor = new SoundEditor(app, this));
         addUndoButtons();
-        app.stage.addEventListener(KeyboardEvent.KEY_DOWN, editor.keyDown);
+        //app.stage.addEventListener(KeyboardEvent.KEY_DOWN, editor.keyDown);
         updateTranslation();
     }
     
@@ -83,7 +83,7 @@ class SoundsPart extends UIPart
     
     public function updateTranslation() : Void{
         newSoundLabel.text = Translator.map("New sound:");
-        editor.updateTranslation();
+        //editor.updateTranslation();
         SimpleTooltips.add(libraryButton, {
                     text : "Choose sound from library",
                     direction : "bottom",
@@ -123,24 +123,24 @@ class SoundsPart extends UIPart
         var viewedObj : ScratchObj = app.viewedObj();
         if (viewedObj.sounds.length < 1) {
             nameField.visible = false;
-            editor.visible = false;
+            //editor.visible = false;
             undoButton.visible = false;
             redoButton.visible = false;
             return;
         }
         else {
             nameField.visible = true;
-            editor.visible = true;
+            //editor.visible = true;
             undoButton.visible = true;
             redoButton.visible = true;
             refreshUndoButtons();
         }
         
-        editor.waveform.stopAll();
+        //editor.waveform.stopAll();
         var snd : ScratchSound = viewedObj.sounds[currentIndex];
         if (snd != null) {
             nameField.setContents(snd.soundName);
-            editor.waveform.editSound(snd);
+            //editor.waveform.editSound(snd);
         }
     }
     
@@ -183,9 +183,9 @@ class SoundsPart extends UIPart
         redoButton.x = undoButton.right() + 8;
         undoButton.y = redoButton.y = nameField.y - 2;
         
-        editor.setWidthHeight(contentsW, 200);
-        editor.x = contentsX;
-        editor.y = 50;
+        //editor.setWidthHeight(contentsW, 200);
+        //editor.x = contentsX;
+        //editor.y = 50;
     }
     
     private function addNewSoundButtons() : Void{
@@ -229,15 +229,15 @@ class SoundsPart extends UIPart
     //------------------------------
     
     private function addUndoButtons() : Void{
-        addChild(undoButton = new IconButton(editor.waveform.undo, makeButtonImg("undo", true), makeButtonImg("undo", false)));
-        addChild(redoButton = new IconButton(editor.waveform.redo, makeButtonImg("redo", true), makeButtonImg("redo", false)));
+        //addChild(undoButton = new IconButton(editor.waveform.undo, makeButtonImg("undo", true), makeButtonImg("undo", false)));
+        //addChild(redoButton = new IconButton(editor.waveform.redo, makeButtonImg("redo", true), makeButtonImg("redo", false)));
         undoButton.isMomentary = true;
         redoButton.isMomentary = true;
     }
     
     public function refreshUndoButtons() : Void{
-        undoButton.setDisabled(!editor.waveform.canUndo(), 0.5);
-        redoButton.setDisabled(!editor.waveform.canRedo(), 0.5);
+        //undoButton.setDisabled(!editor.waveform.canUndo(), 0.5);
+        //redoButton.setDisabled(!editor.waveform.canRedo(), 0.5);
     }
     
     public static function makeButtonImg(iconName : String, isOn : Bool, buttonSize : Point = null) : Sprite{

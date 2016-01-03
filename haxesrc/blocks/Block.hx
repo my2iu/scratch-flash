@@ -354,16 +354,16 @@ class Block extends Sprite
     }
     
     public function showRunFeedback() : Void{
-        if (filters && filters.length > 0) {
+        if (filters != null && filters.length > 0) {
             for (f/* AS3HX WARNING could not determine type for var: f exp: EIdent(filters) type: null */ in filters){
                 if (Std.is(f, GlowFilter))                     return;
             }
         }
-        filters = runFeedbackFilters().concat(filters || []);
+        filters = runFeedbackFilters().concat(filters != null ? filters : []);
     }
     
     public function hideRunFeedback() : Void{
-        if (filters && filters.length > 0) {
+        if (filters != null && filters.length > 0) {
             var newFilters : Array<Dynamic> = [];
             for (f/* AS3HX WARNING could not determine type for var: f exp: EIdent(filters) type: null */ in filters){
                 if (!(Std.is(f, GlowFilter)))                     newFilters.push(f);
@@ -433,12 +433,12 @@ class Block extends Sprite
     }
     
     public function originalPositionIn(p : DisplayObject) : Point{
-        return originalPosition && p.globalToLocal(originalPosition);
+        return originalPosition != null && p.globalToLocal(originalPosition);
     }
     
     private function setDefaultArgs(defaults : Array<Dynamic>) : Void{
         collectArgs();
-        for (i in 0...Math.min(args.length, defaults.length)){
+        for (i in 0...Std.int(Math.min(args.length, defaults.length))){
             var argLabel : String = null;
             var v : Dynamic = defaults[i];
             if (Std.is(v, BlockArg))                 v = cast((v), BlockArg).argValue;
@@ -488,10 +488,10 @@ class Block extends Sprite
         for (i in 0...labelsAndArgs.length){
             item = labelsAndArgs[i];
             // Next line moves the argument of if and if-else blocks right slightly:
-            if ((i == 1) && !(argTypes[i] == "label"))                 x = Math.max(x, 30);
+            if ((i == 1) && !(argTypes[i] == "label"))                 x = Std.int(Math.max(x, 30));
             item.x = x;
-            maxH = Math.max(maxH, item.height);
-            x += item.width + 2;
+            maxH = Std.int(Math.max(maxH, item.height));
+            x += Std.int(item.width + 2);
             if (argTypes[i] == "icon")                 x += 3;
         }
         x -= indentAjustmentFor(labelsAndArgs[labelsAndArgs.length - 1]);
@@ -499,13 +499,13 @@ class Block extends Sprite
         for (i in 0...labelsAndArgs.length){
             item = labelsAndArgs[i];
             item.y = indentTop + ((maxH - item.height) / 2) + vOffset;
-            if ((Std.is(item, BlockArg)) && (!cast((item), BlockArg).numberType))                 item.y += 1;
+            if ((Std.is(item, BlockArg) != null) && (cast((item), BlockArg).numberType != 0))                 item.y += 1;
         }
         
-        if ([" ", "", "o"].indexOf(type) >= 0)             x = Math.max(x, minCommandWidth);  // minimum width for command blocks  ;
-        if (["c", "cf", "e"].indexOf(type) >= 0)             x = Math.max(x, minLoopWidth);  // minimum width for C and E blocks  ;
-        if (["h"].indexOf(type) >= 0)             x = Math.max(x, minHatWidth);  // minimum width for hat blocks  ;
-        if (elseLabel != null)             x = Math.max(x, indentLeft + elseLabel.width + 2);
+        if ([" ", "", "o"].indexOf(type) >= 0)             x = Std.int(Math.max(x, minCommandWidth));  // minimum width for command blocks  ;
+        if (["c", "cf", "e"].indexOf(type) >= 0)             x = Std.int(Math.max(x, minLoopWidth));  // minimum width for C and E blocks  ;
+        if (["h"].indexOf(type) >= 0)             x = Std.int(Math.max(x, minHatWidth));  // minimum width for hat blocks  ;
+        if (elseLabel != null)             x = Std.int(Math.max(x, indentLeft + elseLabel.width + 2));
         
         base.setWidthAndTopHeight(x + indentRight, indentTop + maxH + indentBottom);
         if ((type == "c") || (type == "e"))             fixStackLayout();
@@ -528,20 +528,20 @@ class Block extends Sprite
         while (b != null){
             if (b.base.canHaveSubstack1()) {
                 var substackH : Int = BlockShape.EmptySubstackH;
-                if (b.subStack1) {
+                if (b.subStack1 != null) {
                     b.subStack1.fixStackLayout();
                     b.subStack1.x = BlockShape.SubstackInset;
-                    b.subStack1.y = b.base.substack1y();
-                    substackH = b.subStack1.getRect(b).height;
+                    b.subStack1.y = Std.int(b.base.substack1y());
+                    substackH = Std.int(b.subStack1.getRect(b).height);
                     if (b.subStack1.bottomBlock().isTerminal)                         substackH += BlockShape.NotchDepth;
                 }
                 b.base.setSubstack1Height(substackH);
                 substackH = BlockShape.EmptySubstackH;
-                if (b.subStack2) {
+                if (b.subStack2!=null) {
                     b.subStack2.fixStackLayout();
                     b.subStack2.x = BlockShape.SubstackInset;
                     b.subStack2.y = b.base.substack2y();
-                    substackH = b.subStack2.getRect(b).height;
+                    substackH = Std.int(b.subStack2.getRect(b).height);
                     if (b.subStack2.bottomBlock().isTerminal)                         substackH += BlockShape.NotchDepth;
                 }
                 b.base.setSubstack2Height(substackH);
@@ -559,7 +559,7 @@ class Block extends Sprite
     private function fixElseLabel() : Void{
         if (elseLabel != null) {
             var metrics : TextLineMetrics = elseLabel.getLineMetrics(0);
-            var dy : Int = (metrics.ascent + metrics.descent) / 2;
+            var dy : Int = Std.int((metrics.ascent + metrics.descent) / 2);
             elseLabel.x = 4;
             elseLabel.y = base.substack2y() - 11 - dy + vOffset;
         }
@@ -669,12 +669,12 @@ class Block extends Sprite
             fixExpressionLayout();
             
             // Cancel any outstanding requests (for blocking reporters, isRequester=true)
-            if (b.requestLoader) 
+            if (b.requestLoader != null) 
                 b.requestLoader.close();
         }
         topBlock().fixStackLayout();
-        /* AS3HX WARNING namespace modifier SCRATCH::allow3d */{Scratch.app.runtime.checkForGraphicEffects();
-        }
+        /* AS3HX WARNING namespace modifier SCRATCH::allow3d {Scratch.app.runtime.checkForGraphicEffects();
+        }*/
     }
     
     public function insertBlock(b : Block) : Void{
@@ -858,7 +858,7 @@ class Block extends Sprite
     
     public function duplicateStack(deltaX : Float, deltaY : Float) : Void{
         if (isProcDef() || op == "proc_declaration")             return  // don't duplicate procedure definition  ;
-        var forStage : Bool = Scratch.app.viewedObj() && Scratch.app.viewedObj().isStage;
+        var forStage : Bool = Scratch.app.viewedObj()!= null && Scratch.app.viewedObj().isStage;
         var newStack : Block = BlockIO.stringToStack(BlockIO.stackToString(this), forStage);
         var p : Point = localToGlobal(new Point(0, 0));
         newStack.x = p.x + deltaX;
@@ -947,6 +947,7 @@ class Block extends Sprite
     
     private function focusChange(evt : FocusEvent) : Void{
         evt.preventDefault();
+		var p : Block ;
         if (evt.target.parent.parent != this)             return  // make sure the target TextField is in this block, not a child block  ;
         if (args.length == 0)             return;
         var i : Int;
@@ -959,7 +960,7 @@ class Block extends Sprite
         i = focusIndex + delta;
                 while (true){
             if (i >= target.args.length) {
-                var p : Block = try cast(target.parent, Block) catch(e:Dynamic) null;
+                p = try cast(target.parent, Block) catch(e:Dynamic) null;
                 if (p != null) {
                     i = p.args.indexOf(target);
                     if (i != -1) {
@@ -968,24 +969,24 @@ class Block extends Sprite
                         continue;
                     }
                 }
-                if (target.subStack1) {
+                if (target.subStack1 != null) {
                     target = target.subStack1;
                 }
-                else if (target.subStack2) {
+                else if (target.subStack2 != null) {
                     target = target.subStack2;
                 }
                 else {
                     var t : Block = target;
                     target = t.nextBlock;
-                    while (!target){
+                    while (target == null){
                         var tp : Block = try cast(t.parent, Block) catch(e:Dynamic) null;
                         var b : Block = t;
-                        while (tp && tp.nextBlock == b){
+                        while (tp != null && tp.nextBlock == b){
                             b = tp;
                             tp = try cast(tp.parent, Block) catch(e:Dynamic) null;
                         }
                         if (tp == null)                             return;
-                        target = tp.subStack1 == b && (tp.subStack2) ? tp.subStack2 : tp.nextBlock;
+                        target = tp.subStack1 == b && (tp.subStack2!= null) ? tp.subStack2 : tp.nextBlock;
                         t = tp;
                     }
                 }
@@ -1000,11 +1001,11 @@ class Block extends Sprite
                     target = p;
                     continue;
                 }
-                var nested : Block = p.nextBlock == (target != null) ? p.subStack2 || p.subStack1 : p.subStack2 == (target != null) ? p.subStack1 : null;
+                var nested : Block = p.nextBlock == (target != null) ? (p.subStack2 != null ? p.subStack2 : p.subStack1) : p.subStack2 == (target != null) ? p.subStack1 : null;
                 if (nested != null) {
                                         while (true){
                         nested = nested.bottomBlock();
-                        var n2 : Block = nested.subStack1 || nested.subStack2;
+                        var n2 : Block = nested.subStack1 != null ? nested.subStack1 : (nested.subStack2 != null ? nested.subStack2 : null);
                         if (n2 == null)                             break;
                         nested = n2;
                     }

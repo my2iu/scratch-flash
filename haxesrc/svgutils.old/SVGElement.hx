@@ -32,7 +32,7 @@ package svgutils;
 	import flash.geom.*;
 	import flash.text.*;
 
-	import svgeditor.DrawProperties;
+//	import svgeditor.DrawProperties;
 
 class SVGElement {
 

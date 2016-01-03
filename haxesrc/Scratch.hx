@@ -59,7 +59,7 @@ import mx.utils.URLUtil;
 
 import scratch.*;
 
-import svgeditor.tools.SVGTool;
+//import svgeditor.tools.SVGTool;
 
 import translation.*;
 
@@ -135,7 +135,7 @@ class Scratch extends Sprite {
 	public var logger:Log = new Log(16);
 
 	public function Scratch() {
-		SVGTool.setStage(stage);
+		//SVGTool.setStage(stage);
 		loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
 		app = this;
 
@@ -606,7 +606,7 @@ class Scratch extends Sprite {
 	}
 
 	public function enableEditorTools(flag:Bool):Void {
-		imagesPart.editor.enableTools(flag);
+		//imagesPart.editor.enableTools(flag);
 	}
 
 	public var usesUserNameBlock (get, set): Bool;

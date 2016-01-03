@@ -140,11 +140,11 @@ class Menu extends Sprite
         var i : Int;
         var maxW : Int = minWidth;
         var item : MenuItem;
-        while (allItems.length && allItems[allItems.length - 1].isLine())allItems.pop();
+        while (allItems.length != 0 && allItems[allItems.length - 1].isLine()) allItems.pop();
         // translate strings
         for (item in allItems)item.translate(menuName);
         // find the widest menu item...
-        for (item in allItems)maxW = Math.max(maxW, item.width);
+        for (item in allItems) maxW = Std.int(Math.max(maxW, item.width));
         // then fix item sizes and layout
         var nextY : Int = 0;
         for (item in allItems){
