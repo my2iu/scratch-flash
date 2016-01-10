@@ -46,7 +46,7 @@ class Menu extends Sprite
     public var minWidth : Int;
     public var itemHeight : Int;
     
-    public static var line : Dynamic = new Dynamic();
+    public static var line : Dynamic = {};
     private static var menuJustCreated : Bool;
     
     private var menuName : String = "";
@@ -67,7 +67,7 @@ class Menu extends Sprite
     }
     
     public function addItem(label : Dynamic, value : Dynamic = null, enabled : Bool = true, checkmark : Bool = false) : Void{
-        var last : MenuItem = (allItems.length) ? allItems[allItems.length - 1] : null;
+        var last : MenuItem = (allItems.length != 0) ? allItems[allItems.length - 1] : null;
         var newItem : MenuItem = new MenuItem(this, label, value, enabled);
         if ((last == null || last.isLine()) && newItem.isLine())             return;
         newItem.showCheckmark(checkmark);

@@ -216,10 +216,10 @@ class ScriptsPart extends UIPart
     
     private function addXYDisplay() : Void{
         xyDisplay = new Sprite();
-        xyDisplay.addChild(xLabel = makeLabel("x:", readoutLabelFormat, 0, 0));
-        xyDisplay.addChild(xReadout = makeLabel("-888", readoutFormat, 15, 0));
-        xyDisplay.addChild(yLabel = makeLabel("y:", readoutLabelFormat, 0, 13));
-        xyDisplay.addChild(yReadout = makeLabel("-888", readoutFormat, 15, 13));
+        xyDisplay.addChild(xLabel = UIPart.makeLabel("x:", readoutLabelFormat, 0, 0));
+        xyDisplay.addChild(xReadout = UIPart.makeLabel("-888", readoutFormat, 15, 0));
+        xyDisplay.addChild(yLabel = UIPart.makeLabel("y:", readoutLabelFormat, 0, 13));
+        xyDisplay.addChild(yReadout = UIPart.makeLabel("-888", readoutFormat, 15, 13));
         addChild(xyDisplay);
     }
 }

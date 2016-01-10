@@ -120,29 +120,29 @@ class SpriteInfoPart extends UIPart implements DragClient
         
         addChild(thumbnail = new Bitmap());
         
-        addChild(xReadoutLabel = makeLabel("x:", readoutLabelFormat));
-        addChild(xReadout = makeLabel("-888", readoutFormat));
+        addChild(xReadoutLabel = UIPart.makeLabel("x:", readoutLabelFormat));
+        addChild(xReadout = UIPart.makeLabel("-888", readoutFormat));
         
-        addChild(yReadoutLabel = makeLabel("y:", readoutLabelFormat));
-        addChild(yReadout = makeLabel("-888", readoutFormat));
+        addChild(yReadoutLabel = UIPart.makeLabel("y:", readoutLabelFormat));
+        addChild(yReadout = UIPart.makeLabel("-888", readoutFormat));
         
-        addChild(dirLabel = makeLabel("", readoutLabelFormat));
+        addChild(dirLabel = UIPart.makeLabel("", readoutLabelFormat));
         addChild(dirWheel = new Sprite());
         dirWheel.addEventListener(MouseEvent.MOUSE_DOWN, dirMouseDown);
-        addChild(dirReadout = makeLabel("-179", readoutFormat));
+        addChild(dirReadout = UIPart.makeLabel("-179", readoutFormat));
         
-        addChild(rotationStyleLabel = makeLabel("", readoutLabelFormat));
+        addChild(rotationStyleLabel = UIPart.makeLabel("", readoutLabelFormat));
         rotationStyleButtons = [
                 new IconButton(rotate360, "rotate360", null, true), 
                 new IconButton(rotateFlip, "flip", null, true), 
                 new IconButton(rotateNone, "norotation", null, true)];
         for (b in rotationStyleButtons)addChild(b);
         
-        addChild(draggableLabel = makeLabel("", readoutLabelFormat));
+        addChild(draggableLabel = UIPart.makeLabel("", readoutLabelFormat));
         addChild(draggableButton = new IconButton(toggleLock, "checkbox"));
         draggableButton.disableMouseover();
         
-        addChild(showSpriteLabel = makeLabel("", readoutLabelFormat));
+        addChild(showSpriteLabel = UIPart.makeLabel("", readoutLabelFormat));
         addChild(showSpriteButton = new IconButton(toggleShowSprite, "checkbox"));
         showSpriteButton.disableMouseover();
     }

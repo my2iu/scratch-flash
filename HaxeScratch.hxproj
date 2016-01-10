@@ -16,6 +16,10 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="haxesrc" />
+    <class path="as3corelib-haxesrc" />
+    <class path="flex-haxesrc" />
+    <class path="blooddy_crypto-haxesrc" />
+    <class path="as3hx-haxesrc" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -36,7 +40,7 @@
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+    <asset path="haxeswclibs\mx.swc" />
   </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

@@ -27,8 +27,8 @@ import blocks.*;
 
 import com.adobe.utils.StringUtil;
 
-import extensions.ExtensionDevManager;
-import extensions.ExtensionManager;
+//import extensions.ExtensionDevManager;
+//import extensions.ExtensionManager;
 
 import flash.errors.Error;
 import flash.display.*;
@@ -95,7 +95,7 @@ class Scratch extends Sprite {
 	// Runtime
 	public var runtime:ScratchRuntime;
 	public var interp:Interpreter;
-	public var extensionManager:ExtensionManager;
+	//public var extensionManager:ExtensionManager;
 	public var server:IServer;
 	public var gh:GestureHandler;
 	public var projectID:String = '';
@@ -234,9 +234,9 @@ class Scratch extends Sprite {
 	private function setupExternalInterface(oldWebsitePlayer:Bool):Void {
 		if (!jsEnabled) return;
 
-		addExternalCallback('ASloadExtension', extensionManager.loadRawExtension);
-		addExternalCallback('ASextensionCallDone', extensionManager.callCompleted);
-		addExternalCallback('ASextensionReporterDone', extensionManager.reporterCompleted);
+		//addExternalCallback('ASloadExtension', extensionManager.loadRawExtension);
+		//addExternalCallback('ASextensionCallDone', extensionManager.callCompleted);
+		//addExternalCallback('ASextensionReporterDone', extensionManager.reporterCompleted);
 		addExternalCallback('AScreateNewProject', createNewProjectScratchX);
 
 		if (isExtensionDevMode) {
@@ -365,12 +365,12 @@ class Scratch extends Sprite {
 	}
 
 	private function initExtensionManager():Void {
-		if (isExtensionDevMode) {
-			extensionManager = new ExtensionDevManager(this);
-		}
-		else {
-			extensionManager = new ExtensionManager(this);
-		}
+		//if (isExtensionDevMode) {
+			//extensionManager = new ExtensionDevManager(this);
+		//}
+		//else {
+			//extensionManager = new ExtensionManager(this);
+		//}
 	}
 
 	private function initServer():Void {
@@ -910,15 +910,15 @@ class Scratch extends Sprite {
 		} else {
 			drawBG();
 			var pad:Int = (w > 550) ? 16 : 0; // add padding for full-screen mode
-			var scale:Number = Math.min((w - extraW - pad) / 480, (h - extraH - pad) / 360);
+			var scale:Float = Math.min((w - extraW - pad) / 480, (h - extraH - pad) / 360);
 			scale = Math.max(0.01, scale);
 			var scaledW:Int = Math.floor((scale * 480) / 4) * 4; // round down to a multiple of 4
 			scale = scaledW / 480;
-			var playerW:Number = (scale * 480) + extraW;
-			var playerH:Number = (scale * 360) + extraH;
+			var playerW:Float = (scale * 480) + extraW;
+			var playerH:Float = (scale * 360) + extraH;
 			stagePart.setWidthHeight(playerW, playerH, scale);
-			stagePart.x = int((w - playerW) / 2);
-			stagePart.y = int((h - playerH) / 2);
+			stagePart.x = Std.int((w - playerW) / 2);
+			stagePart.y = Std.int((h - playerH) / 2);
 			fixLoadProgressLayout();
 			return;
 		}
@@ -938,7 +938,7 @@ class Scratch extends Sprite {
 		var contentY:Int = tabsPart.y + 27;
 		if (!isMicroworld)
 			w -= tipsWidth();
-		updateContentArea(tabsPart.x, contentY, w - tabsPart.x - 6, h - contentY - 5, h);
+		updateContentArea(Std.int(tabsPart.x), Std.int(contentY), Std.int(w - tabsPart.x - 6), Std.int(h - contentY - 5), Std.int(h));
 	}
 
 	private function updateContentArea(contentX:Int, contentY:Int, contentW:Int, contentH:Int, fullH:Int):Void {
@@ -1171,7 +1171,7 @@ class Scratch extends Sprite {
 	public function exportProjectToFile(fromJS:Bool = false, saveCallback:Function = null):Void {
 		function squeakSoundsConverted():Void {
 			scriptsPane.saveScripts(false);
-			var projectType:String = extensionManager.hasExperimentalExtensions() ? '.sbx' : '.sb2';
+			var projectType:String = /*extensionManager.hasExperimentalExtensions() ? '.sbx' : */'.sb2';
 			var defaultName:String = StringUtil.trim(projectName());
 			defaultName = ((defaultName.length > 0) ? defaultName : 'project') + projectType;
 			var zipData:ByteArray = projIO.encodeProjectAsZipFile(stagePane);
@@ -1338,7 +1338,7 @@ class Scratch extends Sprite {
 		if (!okayToAdd(byteCount)) return; // not enough room
 		spr.objName = stagePane.unusedSpriteName(spr.objName);
 		spr.indexInLibrary = 1000000; // add at end of library
-		spr.setScratchXY(int(200 * Math.random() - 100), int(100 * Math.random() - 50));
+		spr.setScratchXY(Std.int(200 * Math.random() - 100), Std.int(100 * Math.random() - 50));
 		if (atMouse) spr.setScratchXY(stagePane.scratchMouseX(), stagePane.scratchMouseY());
 		stagePane.addChild(spr);
 		spr.updateCostume();
@@ -1403,7 +1403,7 @@ class Scratch extends Sprite {
 	//------------------------------
 
 	public function flashSprite(spr:ScratchSprite):Void {
-		function doFade(alpha:Number):Void {
+		function doFade(alpha:Float):Void {
 			box.alpha = alpha;
 		}
 
@@ -1446,8 +1446,8 @@ class Scratch extends Sprite {
 		var p:Point = stagePane.localToGlobal(new Point(0, 0));
 		lp.scaleX = stagePane.scaleX;
 		lp.scaleY = stagePane.scaleY;
-		lp.x = int(p.x + ((stagePane.width - lp.width) / 2));
-		lp.y = int(p.y + ((stagePane.height - lp.height) / 2));
+		lp.x = Std.int(p.x + ((stagePane.width - lp.width) / 2));
+		lp.y = Std.int(p.y + ((stagePane.height - lp.height) / 2));
 	}
 
 	// -----------------------------
@@ -1476,7 +1476,7 @@ class Scratch extends Sprite {
 		var now:Int = getTimer();
 		var msecs:Int = now - firstFrameTime;
 		if (msecs > 500) {
-			var fps:Number = Math.round((1000 * frameCount) / msecs);
+			var fps:Float = Math.round((1000 * frameCount) / msecs);
 			frameRateReadout.text = fps + ' fps (' + Math.round(msecs / frameCount) + ' msecs)';
 			firstFrameTime = now;
 			frameCount = 0;

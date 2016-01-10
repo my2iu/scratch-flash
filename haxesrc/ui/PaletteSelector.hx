@@ -75,7 +75,7 @@ class PaletteSelector extends Sprite
         
         for (i in 0...categories.length){
             if (i == numberOfRows) {
-                x = (w / 2) - 3;
+                x = Std.int((w / 2) - 3);
                 y = startY;
             }
             var entry : Array<Dynamic> = Specs.entryForCategory(categories[i]);

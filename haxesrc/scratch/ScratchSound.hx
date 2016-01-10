@@ -36,8 +36,8 @@ import flash.utils.*;
 
 import logging.LogLevel;
 
-import sound.*;
-import sound.mp3.MP3Loader;
+//import sound.*;
+//import sound.mp3.MP3Loader;
 
 import util.*;
 
@@ -67,6 +67,7 @@ class ScratchSound {
 
 	public function ScratchSound(name:String, sndData:ByteArray) {
 		this.soundName = name;
+		/*
 		if (sndData != null) {
 			try {
 				var info:Object = WAVFile.decode(sndData);
@@ -86,6 +87,7 @@ class ScratchSound {
 				setSamples(new Array<Int>(0), 22050);
 			}
 		}
+		*/
 	}
 
 	public var soundData (get, set): ByteArray;
@@ -99,6 +101,7 @@ class ScratchSound {
 	}
 
 	private function reduceSizeIfNeeded(channels:Int):Void {
+		/*
 		// Convert stereo to mono, downsample if rate > 32000, or both.
 		// Compress if data is over threshold and not already compressed.
 		var compressionThreshold:Int = 30 * 44100; // about 30 seconds
@@ -115,30 +118,32 @@ class ScratchSound {
 			// Compress large, uncompressed sounds
 			setSamples(WAVFile.extractSamples(soundData), rate, true);
 		}
+		*/
 	}
 
-	private function stereoToMono(stereo:Array<Int>, downsample:Bool):Array<Int> {
-		var mono:Array<Int> = new Array<Int>();
-		var skip:Int = downsample ? 4 : 2;
-		var i:Int = 0, end:Int = stereo.length - 1;
-		while (i < end) {
-			mono.push((stereo[i] + stereo[i + 1]) / 2);
-			i += skip;
-		}
-		return mono;
-	}
-
-	private function downsample(samples:Array<Int>):Array<Int> {
-		var result:Array<Int> = new Array<Int>();
-		var i:Int = 0;
-		while (i < samples.length) {
-			result.push(samples[i]);
-			i += 2;
-		}
-		return result;
-	}
+	//private function stereoToMono(stereo:Array<Int>, downsample:Bool):Array<Int> {
+		//var mono:Array<Int> = new Array<Int>();
+		//var skip:Int = downsample ? 4 : 2;
+		//var i:Int = 0, end:Int = stereo.length - 1;
+		//while (i < end) {
+			//mono.push((stereo[i] + stereo[i + 1]) / 2);
+			//i += skip;
+		//}
+		//return mono;
+	//}
+//
+	//private function downsample(samples:Array<Int>):Array<Int> {
+		//var result:Array<Int> = new Array<Int>();
+		//var i:Int = 0;
+		//while (i < samples.length) {
+			//result.push(samples[i]);
+			//i += 2;
+		//}
+		//return result;
+	//}
 
 	public function setSamples(samples:Array<Int>, samplingRate:Int, compress:Bool = false):Void {
+		/*
 		var data:ByteArray = new ByteArray();
 		data.endian = Endian.LITTLE_ENDIAN;
 		for (i = 0...samples.length) data.writeShort(samples[i]);
@@ -149,9 +154,11 @@ class ScratchSound {
 		format = compress ? 'adpcm' : '';
 		rate = samplingRate;
 		sampleCount = samples.length;
+		*/
 	}
 
 	public function convertMP3IfNeeded():Void {
+		/*
 		// Support for converting MP3 format sounds in Scratch projects was removed during alpha test.
 		// If this is on old, MP3 formatted sound, convert it to WAV format. Otherwise, do nothing.
 		function whenDone(snd:ScratchSound):Void {
@@ -166,16 +173,17 @@ class ScratchSound {
 			if (soundData) MP3Loader.convertToScratchSound('', soundData, whenDone);
 			else setSamples(new Array<Int>(), 22050);
 		}
+		*/
 	}
 
-	public function sndplayer():ScratchSoundPlayer {
-		var player:ScratchSoundPlayer;
-		if (format == 'squeak') player = new SqueakSoundPlayer(soundData, bitsPerSample, rate);
-		else if (format == '' || format == 'adpcm' || format == 'float') player = new ScratchSoundPlayer(soundData);
-		else player = new ScratchSoundPlayer(WAVFile.empty()); // player on empty sound
-		player.scratchSound = this;
-		return player;
-	}
+	//public function sndplayer():ScratchSoundPlayer {
+		//var player:ScratchSoundPlayer;
+		//if (format == 'squeak') player = new SqueakSoundPlayer(soundData, bitsPerSample, rate);
+		//else if (format == '' || format == 'adpcm' || format == 'float') player = new ScratchSoundPlayer(soundData);
+		//else player = new ScratchSoundPlayer(WAVFile.empty()); // player on empty sound
+		//player.scratchSound = this;
+		//return player;
+	//}
 
 	public function duplicate():ScratchSound {
 		var dup:ScratchSound = new ScratchSound(soundName, null);
@@ -184,8 +192,8 @@ class ScratchSound {
 	}
 
 	public function getSamples():Array<Int> {
-		if (format == 'squeak') prepareToSave(); // convert to WAV
-		if ((format == '') || (format == 'adpcm')) return WAVFile.extractSamples(soundData);
+		//if (format == 'squeak') prepareToSave(); // convert to WAV
+		//if ((format == '') || (format == 'adpcm')) return WAVFile.extractSamples(soundData);
 		return new Array<Int>(0); // dummy data
 	}
 
@@ -200,20 +208,20 @@ class ScratchSound {
 	}
 
 	public function prepareToSave():Void {
-		if (format == 'squeak') { // convert Squeak ADPCM to WAV ADPCM
-			var uncompressedData:ByteArray = new SqueakSoundDecoder(bitsPerSample).decode(soundData);
-			if (uncompressedData.length == 0) uncompressedData.writeShort(0); // a WAV file must have at least one sample
-			Scratch.app.log(LogLevel.INFO, 'Converting squeak sound to WAV ADPCM',
-				{oldSampleCount: sampleCount, newSampleCount: (uncompressedData.length / 2)});
-			sampleCount = uncompressedData.length / 2;
-			soundData = WAVFile.encode(uncompressedData, sampleCount, rate, true);
-			format = 'adpcm';
-			bitsPerSample = 4;
-			md5 = null;
-		}
-		reduceSizeIfNeeded(1); // downsample or compress to reduce size before saving
-		if (soundID == WasEdited) { md5 = null; soundID = -1; } // sound was edited; force md5 to be recomputed
-		if (!md5) md5 = MD5.hashBytes(soundData) + '.wav';
+		//if (format == 'squeak') { // convert Squeak ADPCM to WAV ADPCM
+			//var uncompressedData:ByteArray = new SqueakSoundDecoder(bitsPerSample).decode(soundData);
+			//if (uncompressedData.length == 0) uncompressedData.writeShort(0); // a WAV file must have at least one sample
+			//Scratch.app.log(LogLevel.INFO, 'Converting squeak sound to WAV ADPCM',
+				//{oldSampleCount: sampleCount, newSampleCount: (uncompressedData.length / 2)});
+			//sampleCount = uncompressedData.length / 2;
+			//soundData = WAVFile.encode(uncompressedData, sampleCount, rate, true);
+			//format = 'adpcm';
+			//bitsPerSample = 4;
+			//md5 = null;
+		//}
+		//reduceSizeIfNeeded(1); // downsample or compress to reduce size before saving
+		//if (soundID == WasEdited) { md5 = null; soundID = -1; } // sound was edited; force md5 to be recomputed
+		//if (!md5) md5 = MD5.hashBytes(soundData) + '.wav';
 	}
 
 	public static function isWAV(data:ByteArray):Bool {

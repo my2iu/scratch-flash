@@ -81,7 +81,7 @@ class ImagesPart extends UIPart
         this.app = app;
         addChild(shape = new Shape());
         
-        addChild(newCostumeLabel = makeLabel("", new TextFormat(CSS.font, 12, CSS.textColor, true)));
+        addChild(newCostumeLabel = UIPart.makeLabel("", new TextFormat(CSS.font, 12, CSS.textColor, true)));
         addNewCostumeButtons();
         
         addListFrame();

@@ -25,9 +25,9 @@ import flash.net.*;
 import flash.text.*;
 import flash.utils.*;
 import assets.Resources;
-import extensions.ScratchExtension;
+//import extensions.ScratchExtension;
 import scratch.*;
-import sound.mp3.MP3Loader;
+//import sound.mp3.MP3Loader;
 import translation.Translator;
 import uiwidgets.*;
 import util.*;
@@ -156,30 +156,30 @@ class MediaLibrary extends Sprite {
 
 		innerFrame.x = title.x + title.textWidth + 25;
 		innerFrame.y = inset + 35;
-		drawInnerFrame(w - (innerFrame.x + inset + rightInset), h - (innerFrame.y + inset + cancelButton.height + 20));
+		drawInnerFrame(Std.int(w - (innerFrame.x + inset + rightInset)), Std.int(h - (innerFrame.y + inset + cancelButton.height + 20)));
 
 		resultsFrame.x = innerFrame.x + 5;
 		resultsFrame.y = innerFrame.y + 5;
 		resultsFrame.setWidthHeight(innerFrame.width - 10, innerFrame.height - 10);
 
-		var nextX:Int = title.x + 3;
+		var nextX:Int = Std.int(title.x + 3);
 		var nextY:Int = inset + 60;
 		var spaceBetweenFilteres:Int = 12;
 
 		categoryFilter.x = nextX;
 		categoryFilter.y = nextY;
-		nextY += categoryFilter.height + spaceBetweenFilteres;
+		nextY += Std.int(categoryFilter.height + spaceBetweenFilteres);
 
 		if (themeFilter.visible) {
 			themeFilter.x = nextX;
 			themeFilter.y = nextY;
-			nextY += themeFilter.height + spaceBetweenFilteres;
+			nextY += Std.int(themeFilter.height + spaceBetweenFilteres);
 		}
 
 		if (imageTypeFilter.visible) {
 			imageTypeFilter.x = nextX;
 			imageTypeFilter.y = nextY;
-			nextY += imageTypeFilter.height + spaceBetweenFilteres;
+			nextY += Std.int(imageTypeFilter.height + spaceBetweenFilteres);
 		}
 
 		if (spriteFeaturesFilter.visible) {
@@ -191,7 +191,7 @@ class MediaLibrary extends Sprite {
 
 	private function drawBackground(w:Int, h:Int):Void {
 		var bgColor:Int = 0;
-		var bgAlpha:Number = 0.6;
+		var bgAlpha:Float = 0.6;
 		var g:Graphics = this.graphics;
 		g.clear();
 		g.beginFill(bgColor, bgAlpha);

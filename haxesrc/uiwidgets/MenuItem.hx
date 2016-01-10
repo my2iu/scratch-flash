@@ -24,11 +24,6 @@
 
 package uiwidgets;
 
-import uiwidgets.Graphics;
-import uiwidgets.Shape;
-import uiwidgets.Sprite;
-import uiwidgets.TextField;
-import uiwidgets.TextFormat;
 
 import flash.display.*;
 import flash.events.MouseEvent;
@@ -40,9 +35,9 @@ import util.Color;
 class MenuItem extends Sprite
 {
     
-    private inline var leftMargin : Int = 22;
-    private inline var rightMargin : Int = 10;
-    private inline var checkmarkColor : Int = 0xF0F0F0;
+    private static inline var leftMargin : Int = 22;
+    private static inline var rightMargin : Int = 10;
+    private static inline var checkmarkColor : Int = 0xF0F0F0;
     
     private var menu : Menu;
     private var label : TextField;  // if label is null, this item is a divider line  

@@ -46,7 +46,7 @@ class DialogBox extends Sprite
     private var textLines : Array<Dynamic> = [];
     private var maxLabelWidth : Int = 0;
     private var maxFieldWidth : Int = 0;
-    private var heightPerField : Int = Math.max(makeLabel("foo").height, makeField(10).height) + 10;
+    private var heightPerField : Int = Std.int(Math.max(makeLabel("foo").height, makeField(10).height) + 10);
     private inline static var spaceAfterText : Int = 18;
     private inline static var blankLineSpace : Int = 7;
     
@@ -351,16 +351,16 @@ class DialogBox extends Sprite
         w = h = 0;
         // title
         if (title != null) {
-            w = Math.max(w, title.width);
-            h += 10 + title.height;
+            w = Std.int(Math.max(w, title.width));
+            h += Std.int(10 + title.height);
         }  // fields  
         
         maxLabelWidth = 0;
         maxFieldWidth = 0;
         for (i in 0...labelsAndFields.length){
             var r : Array<Dynamic> = labelsAndFields[i];
-            if (r[0] != null)                 maxLabelWidth = Math.max(maxLabelWidth, r[0].width);
-            maxFieldWidth = Math.max(maxFieldWidth, r[1].width);
+            if (r[0] != null)                 maxLabelWidth = Std.int(Math.max(maxLabelWidth, r[0].width));
+            maxFieldWidth = Std.int(Math.max(maxFieldWidth, r[1].width));
             h += heightPerField;
         }  // boolean fields  
         

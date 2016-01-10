@@ -388,10 +388,11 @@ class GestureHandler
         // through a hole in another sprite that is in front of it.
         // Return the stage if no other object is found.
         if (app.isIn3D)             app.stagePane.visible = true;
+		var o : DisplayObject;
         var uiLayer : Sprite = app.stagePane.getUILayer();
         var i : Int = uiLayer.numChildren - 1;
         while (i > 0){
-            var o : DisplayObject = try cast(uiLayer.getChildAt(i), DisplayObject) catch(e:Dynamic) null;
+            o = try cast(uiLayer.getChildAt(i), DisplayObject) catch(e:Dynamic) null;
             if (Std.is(o, Bitmap))                 break;  // hit the paint layer of the stage; no more elments  ;
             if (o.visible && o.hitTestPoint(globalX, globalY, true)) {
                 if (app.isIn3D)                     app.stagePane.visible = false;

@@ -44,9 +44,9 @@ package scratch;
 	import flash.utils.*;
 	import svgutils.*;
 	import util.*;
-	import by.blooddy.crypto.MD5;
-	import by.blooddy.crypto.image.PNG24Encoder;
-	import by.blooddy.crypto.image.PNGFilter;
+	//import by.blooddy.crypto.MD5;
+	//import by.blooddy.crypto.image.PNG24Encoder;
+	//import by.blooddy.crypto.image.PNGFilter;
 
 class ScratchCostume {
 
@@ -63,7 +63,7 @@ class ScratchCostume {
 
 	public static inline var WasEdited:Int = -10; // special baseLayerID used to indicate costumes that have been edited
 
-	public var svgRoot:SVGElement; // non-null for an SVG costume
+//	public var svgRoot:SVGElement; // non-null for an SVG costume
 	public var svgLoading:Bool; // true while loading bitmaps embedded in an SVG
 	private var svgSprite:Sprite;
 	private var svgWidth:Float;
@@ -188,6 +188,7 @@ class ScratchCostume {
 
 	public function setSVGData(data:ByteArray, computeCenter:Bool, fromEditor:Bool = true):Void {
 		// Initialize an SVG costume.
+		/*
 		function refreshAfterImagesLoaded():Void {
 			svgSprite = new SVGDisplayRender().renderAsSprite(svgRoot, false, true);
 			if (Scratch.app && Scratch.app.viewedObj() && (Scratch.app.viewedObj().currentCostume() == thisC)) {
@@ -195,17 +196,20 @@ class ScratchCostume {
 				Scratch.app.refreshImageTab(fromEditor);
 			}
 			svgLoading = false;
-		}
+		}*/
 		var thisC:ScratchCostume = this; // record "this" for use in callback
 		clearOldCostume();
 		baseLayerData = data;
 		baseLayerID = WasEdited;
+		/*
 		var importer:SVGImporter = new SVGImporter(XML(data));
 		setSVGRoot(importer.root, computeCenter);
 		svgLoading = true;
 		importer.loadAllImages(refreshAfterImagesLoaded);
+		*/
 	}
 
+	/*
 	public function setSVGRoot(svg:SVGElement, computeCenter:Bool):Void {
 		svgRoot = svg;
 		svgSprite = new SVGDisplayRender().renderAsSprite(svgRoot, false, true);
@@ -225,6 +229,7 @@ class ScratchCostume {
 			rotationCenterY = r.y + (r.height / 2);
 		}
 	}
+	*/
 
 	private function clearOldCostume():Void {
 		bitmap = null;
@@ -232,7 +237,7 @@ class ScratchCostume {
 		bitmapResolution = 1;
 		baseLayerID = -1;
 		baseLayerData = null;
-		svgRoot = null;
+		//svgRoot = null;
 		svgSprite = null;
 		svgWidth = svgHeight = 0;
 		oldComposite = null;
@@ -247,10 +252,12 @@ class ScratchCostume {
 	public function isBitmap():Bool { return baseLayerBitmap != null; }
 
 	public function displayObj():DisplayObject {
+		/*
 		if (svgRoot) {
 			if (!svgSprite) svgSprite = new SVGDisplayRender().renderAsSprite(svgRoot, false, true);
 			return svgSprite;
 		}
+		*/
 
 		var bitmapObj:Bitmap = new Bitmap(bitmap);
 		bitmapObj.scaleX = bitmapObj.scaleY = 1 / bitmapResolution;
@@ -386,8 +393,8 @@ class ScratchCostume {
 		return H;
 	}
 
-	public function width():Float { return svgRoot!=null ? svgWidth : (bitmap ? bitmap.width / bitmapResolution : 0); }
-	public function height():Float { return svgRoot!=null ? svgHeight : (bitmap ? bitmap.height / bitmapResolution : 0); }
+	public function width():Float {/* return svgRoot!=null ? svgWidth : */(bitmap ? bitmap.width / bitmapResolution : 0); }
+	public function height():Float {/* return svgRoot!=null ? svgHeight : */(bitmap ? bitmap.height / bitmapResolution : 0); }
 
 	public function duplicate():ScratchCostume {
 		// Return a copy of this costume.
@@ -404,7 +411,7 @@ class ScratchCostume {
 		dup.baseLayerData = baseLayerData;
 		dup.baseLayerMD5 = baseLayerMD5;
 
-		dup.svgRoot = svgRoot;
+		//dup.svgRoot = svgRoot;
 		dup.svgWidth = svgWidth;
 		dup.svgHeight = svgHeight;
 
@@ -418,7 +425,7 @@ class ScratchCostume {
 		dup.fontName = fontName;
 		dup.fontSize = fontSize;
 
-		if(svgRoot && svgSprite) dup.setSVGSprite(cloneSprite(svgSprite));
+		//if(svgRoot && svgSprite) dup.setSVGSprite(cloneSprite(svgSprite));
 
 		return dup;
 	}
@@ -536,7 +543,7 @@ class ScratchCostume {
 	public function toString():String {
 		var result:String = 'ScratchCostume(' + costumeName + ' ';
 		result += rotationCenterX + ',' + rotationCenterY;
-		result += svgRoot ? ' svg)' : ' bitmap)';
+		result += /*svgRoot ? ' svg)' :*/ ' bitmap)';
 		return result;
 	}
 
@@ -582,14 +589,14 @@ class ScratchCostume {
 	}
 
 	public function prepareToSave():Void {
-		if (oldComposite) computeTextLayer();
+		if (oldComposite != null) computeTextLayer();
 		if (baseLayerID == WasEdited) baseLayerMD5 = null; // costume was edited; recompute hash
 		baseLayerID = textLayerID = -1;
-		if (baseLayerData == null) baseLayerData = PNG24Encoder.encode(baseLayerBitmap, PNGFilter.PAETH);
-		if (baseLayerMD5 == null) baseLayerMD5 = by.blooddy.crypto.MD5.hashBytes(baseLayerData) + fileExtension(baseLayerData);
+		//if (baseLayerData == null) baseLayerData = PNG24Encoder.encode(baseLayerBitmap, PNGFilter.PAETH);
+		//if (baseLayerMD5 == null) baseLayerMD5 = by.blooddy.crypto.MD5.hashBytes(baseLayerData) + fileExtension(baseLayerData);
 		if (textLayerBitmap != null) {
-			if (textLayerData == null) textLayerData = PNG24Encoder.encode(textLayerBitmap, PNGFilter.PAETH);
-			if (textLayerMD5 == null) textLayerMD5 = by.blooddy.crypto.MD5.hashBytes(textLayerData) + '.png';
+			//if (textLayerData == null) textLayerData = PNG24Encoder.encode(textLayerBitmap, PNGFilter.PAETH);
+			//if (textLayerMD5 == null) textLayerMD5 = by.blooddy.crypto.MD5.hashBytes(textLayerData) + '.png';
 		}
 	}
 

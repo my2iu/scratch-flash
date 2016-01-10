@@ -217,10 +217,10 @@ class StagePart extends UIPart
         projectTitle = getProjectTitle(fmt);
         addChild(projectTitle);
         
-        addChild(projectInfo = makeLabel("", CSS.projectInfoFormat));
+        addChild(projectInfo = UIPart.makeLabel("", CSS.projectInfoFormat));
         
         var versionFormat : TextFormat = new TextFormat(CSS.font, 9, 0x909090);
-        addChild(versionInfo = makeLabel(Scratch.versionString, versionFormat));
+        addChild(versionInfo = UIPart.makeLabel(Scratch.versionString, versionFormat));
     }
     
     private function getProjectTitle(fmt : TextFormat) : EditableLabel{
@@ -245,14 +245,14 @@ class StagePart extends UIPart
         readouts = new Sprite();
         addChild(readouts);
         
-        xLabel = makeLabel("x:", readoutLabelFormat);
+        xLabel = UIPart.makeLabel("x:", readoutLabelFormat);
         readouts.addChild(xLabel);
-        xReadout = makeLabel("-888", readoutFormat);
+        xReadout = UIPart.makeLabel("-888", readoutFormat);
         readouts.addChild(xReadout);
         
-        yLabel = makeLabel("y:", readoutLabelFormat);
+        yLabel = UIPart.makeLabel("y:", readoutLabelFormat);
         readouts.addChild(yLabel);
-        yReadout = makeLabel("-888", readoutFormat);
+        yReadout = UIPart.makeLabel("-888", readoutFormat);
         readouts.addChild(yReadout);
     }
     
@@ -415,7 +415,7 @@ class StagePart extends UIPart
         userNameWarning.alpha = 0.9;
         
         var versionFormat : TextFormat = new TextFormat(CSS.font, 16, 0x000000);
-        var userNameWarningText : TextField = makeLabel(Translator.map("This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."), versionFormat, 15, 45);
+        var userNameWarningText : TextField = UIPart.makeLabel(Translator.map("This project can detect who is using it, through the “username” block. To hide your identity, sign out before using the project."), versionFormat, 15, 45);
         userNameWarningText.width = userNameWarning.width - 10;
         userNameWarningText.multiline = true;
         userNameWarningText.wordWrap = true;

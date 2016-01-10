@@ -25,19 +25,6 @@
 
 package ui.media;
 
-import ui.media.Bitmap;
-import ui.media.BitmapData;
-import ui.media.DisplayObject;
-import ui.media.Graphics;
-import ui.media.IconButton;
-import ui.media.MediaLibrary;
-import ui.media.Scratch;
-import ui.media.ScratchCostume;
-import ui.media.ScrollFrameContents;
-import ui.media.Shape;
-import ui.media.Sprite;
-import ui.media.TextField;
-import ui.media.TextFormat;
 
 import flash.display.*;
 import flash.events.MouseEvent;

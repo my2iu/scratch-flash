@@ -32,7 +32,7 @@ import flash.geom.*;
 import flash.text.*;
 import assets.Resources;
 import scratch.*;
-import sound.WAVFile;
+//import sound.WAVFile;
 //import soundedit.SoundEditor;
 import translation.Translator;
 import ui.media.*;
@@ -290,6 +290,6 @@ class SoundsPart extends UIPart
     
     public function recordSound(b : Dynamic = null) : Void{
         var newName : String = app.viewedObj().unusedSoundName(Translator.map("recording1"));
-        app.addSound(new ScratchSound(newName, WAVFile.empty()));
+        //app.addSound(new ScratchSound(newName, WAVFile.empty()));
     }
 }

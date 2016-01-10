@@ -27,7 +27,7 @@ package ui.parts;
 
 import assets.Resources;
 
-import extensions.ExtensionDevManager;
+//import extensions.ExtensionDevManager;
 
 import flash.display.*;
 import flash.events.MouseEvent;
@@ -84,12 +84,12 @@ class TopBarPart extends UIPart
             
             addChild(exportButton = new Button("Save Project", function() : Void{app.exportProjectToFile();
                             }));
-            addChild(extensionLabel = makeLabel("My Extension", offlineNoticeFormat, 2, 2));
+            addChild(extensionLabel = UIPart.makeLabel("My Extension", offlineNoticeFormat, 2, 2));
             
-            var extensionDevManager : ExtensionDevManager = try cast(Scratch.app.extensionManager, ExtensionDevManager) catch(e:Dynamic) null;
-            if (extensionDevManager != null) {
-                addChild(loadExperimentalButton = extensionDevManager.makeLoadExperimentalExtensionButton());
-            }
+            //var extensionDevManager : ExtensionDevManager = try cast(Scratch.app.extensionManager, ExtensionDevManager) catch(e:Dynamic) null;
+            //if (extensionDevManager != null) {
+                //addChild(loadExperimentalButton = extensionDevManager.makeLoadExperimentalExtensionButton());
+            //}
         }
     }
     
@@ -202,10 +202,10 @@ class TopBarPart extends UIPart
             extensionLabel.visible = hasExperimental;
             loadExperimentalButton.visible = !hasExperimental;
             
-            var extensionDevManager : ExtensionDevManager = try cast(app.extensionManager, ExtensionDevManager) catch(e:Dynamic) null;
-            if (extensionDevManager != null) {
-                extensionLabel.text = extensionDevManager.getExperimentalExtensionNames().join(", ");
-            }
+            //var extensionDevManager : ExtensionDevManager = try cast(app.extensionManager, ExtensionDevManager) catch(e:Dynamic) null;
+            //if (extensionDevManager != null) {
+                //extensionLabel.text = extensionDevManager.getExperimentalExtensionNames().join(", ");
+            //}
         }
         fixLayout();
     }
@@ -308,7 +308,7 @@ class TopBarPart extends UIPart
     private function makeButtonImg(s : String, c : Int, isOn : Bool) : Sprite{
         var result : Sprite = new Sprite();
         
-        var label : TextField = makeLabel(Translator.map(s), CSS.topBarButtonFormat, 2, 2);
+        var label : TextField = UIPart.makeLabel(Translator.map(s), CSS.topBarButtonFormat, 2, 2);
         label.textColor = CSS.white;
         label.x = 6;
         result.addChild(label);  // label disabled for now  

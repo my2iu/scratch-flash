@@ -33,7 +33,7 @@
 package blocks;
 
 
-import extensions.ExtensionManager;
+//import extensions.ExtensionManager;
 
 import flash.display.*;
 import flash.events.*;
@@ -306,7 +306,7 @@ class Block extends Sprite
     
     public function isInPalette() : Bool{
         var o : DisplayObject = parent;
-        while (o){
+        while (o != null){
             if (Lambda.has(o, "isBlockPalette"))                 return true;
             o = o.parent;
         }
@@ -846,9 +846,9 @@ class Block extends Sprite
         var i : Int = -1;
         if ((i = op.indexOf(".")) > -1) {
             var extName : String = op.substr(0, i);
-            if (Scratch.app.extensionManager.isInternal(extName)) 
-                Scratch.app.showTip("ext:" + extName)
-            else 
+            //if (Scratch.app.extensionManager.isInternal(extName)) 
+                //Scratch.app.showTip("ext:" + extName)
+            //else 
             DialogBox.notify("Help Missing", "There is no documentation available for experimental extension \"" + extName + "\".", Scratch.app.stage);
         }
         else {
@@ -1023,7 +1023,7 @@ class Block extends Sprite
                 }
                 else {
                     var a : BlockArg = try cast(target.args[i], BlockArg) catch(e:Dynamic) null;
-                    if (a != null && a.field && a.isEditable) {
+                    if (a != null && a.field != null && a.isEditable) {
                         a.startEditing();
                         return;
                     }

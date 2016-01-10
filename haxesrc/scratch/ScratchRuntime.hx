@@ -33,7 +33,7 @@ import blocks.Block;
 import blocks.BlockArg;
 import interpreter.*;
 import primitives.VideoMotionPrims;
-import sound.ScratchSoundPlayer;
+//import sound.ScratchSoundPlayer;
 import translation.*;
 import ui.media.MediaInfo;
 import ui.BlockPalette;
@@ -141,7 +141,7 @@ class ScratchRuntime {
 		app.stagePane.deleteClones();
 		cloneCount = 0;
 		clearKeyDownArray();
-		ScratchSoundPlayer.stopAllSounds();
+		//ScratchSoundPlayer.stopAllSounds();
 		app.extensionManager.stopButtonPressed();
 		app.stagePane.clearFilters();
 		for (s in app.stagePane.sprites()) {

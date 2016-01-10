@@ -26,7 +26,7 @@
 package scratch;
 import blocks.*;
 
-import extensions.*;
+//import extensions.*;
 
 import flash.display.*;
 import flash.events.Event;
@@ -371,128 +371,128 @@ class PaletteBuilder {
 	}
 
 	private function getExtensionMenu(ext:ScratchExtension):Menu {
-		function showAbout():Void {
-			if (ext.isInternal) {
-				// Internal extensions are handled specially by tip-bar.js
-				app.showTip('ext:' + ext.name);
-			}
-			else if (ext.url) {
-				// Open in the tips window if the URL starts with /info/ and another tab otherwise
-				if (ext.url.indexOf('/info/') == 0) app.showTip(ext.url);
-				else if (ext.url.indexOf('http') == 0) navigateToURL(new URLRequest(ext.url));
-				else DialogBox.notify('Extensions', 'Unable to load about page: the URL given for extension "' + ext.name + '" is not formatted correctly.');
-			}
-		}
-
-		function hideExtension():Void {
-			app.extensionManager.setEnabled(ext.name, false);
-			app.updatePalette();
-		}
+		//function showAbout():Void {
+			//if (ext.isInternal) {
+				//// Internal extensions are handled specially by tip-bar.js
+				//app.showTip('ext:' + ext.name);
+			//}
+			//else if (ext.url) {
+				//// Open in the tips window if the URL starts with /info/ and another tab otherwise
+				//if (ext.url.indexOf('/info/') == 0) app.showTip(ext.url);
+				//else if (ext.url.indexOf('http') == 0) navigateToURL(new URLRequest(ext.url));
+				//else DialogBox.notify('Extensions', 'Unable to load about page: the URL given for extension "' + ext.name + '" is not formatted correctly.');
+			//}
+		//}
+//
+		//function hideExtension():Void {
+			//app.extensionManager.setEnabled(ext.name, false);
+			//app.updatePalette();
+		//}
 
 		var m:Menu = new Menu();
-		m.addItem(Translator.map('About') + ' ' + ext.name + ' ' + Translator.map('extension') + '...', showAbout, !!ext.url);
-		m.addItem('Remove extension blocks', hideExtension);
-
-		var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
-
-		if (!ext.isInternal && extensionDevManager) {
-			m.addLine();
-			var localFileName:String = extensionDevManager.getLocalFileName(ext);
-			if (localFileName) {
-				if (extensionDevManager.isLocalExtensionDirty()) {
-					m.addItem('Load changes from ' + localFileName, function ():Void {
-						extensionDevManager.loadLocalCode();
-					});
-				}
-				m.addItem('Disconnect from ' + localFileName, function ():Void {
-					extensionDevManager.stopWatchingExtensionFile();
-				});
-			}
-		}
-
+		//m.addItem(Translator.map('About') + ' ' + ext.name + ' ' + Translator.map('extension') + '...', showAbout, !!ext.url);
+		//m.addItem('Remove extension blocks', hideExtension);
+//
+		//var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
+//
+		//if (!ext.isInternal && extensionDevManager) {
+			//m.addLine();
+			//var localFileName:String = extensionDevManager.getLocalFileName(ext);
+			//if (localFileName) {
+				//if (extensionDevManager.isLocalExtensionDirty()) {
+					//m.addItem('Load changes from ' + localFileName, function ():Void {
+						//extensionDevManager.loadLocalCode();
+					//});
+				//}
+				//m.addItem('Disconnect from ' + localFileName, function ():Void {
+					//extensionDevManager.stopWatchingExtensionFile();
+				//});
+			//}
+		//}
+//
 		return m;
 	}
 
 	private static inline var pwidth:Int = 215;
 
 	private function addExtensionSeparator(ext:ScratchExtension):Void {
-		function extensionMenu(ignore:Dynamic):Void {
-			var m:Menu = getExtensionMenu(ext);
-			m.showOnStage(app.stage);
-		}
+		//function extensionMenu(ignore:Dynamic):Void {
+			//var m:Menu = getExtensionMenu(ext);
+			//m.showOnStage(app.stage);
+		//}
 
-		nextY += 7;
+		//nextY += 7;
+//
+		//var titleButton:IconButton = UIPart.makeMenuButton(ext.name, extensionMenu, true, CSS.textColor);
+		//titleButton.x = 5;
+		//titleButton.y = nextY;
+		//app.palette.addChild(titleButton);
+//
+		//addLineForExtensionTitle(titleButton, ext);
+//
+		//var indicator:IndicatorLight = new IndicatorLight(ext);
+		//indicator.addEventListener(MouseEvent.CLICK, function (e:Event):Void {
+			//Scratch.app.showTip('extensions');
+		//}, false, 0, true);
+		//app.extensionManager.updateIndicator(indicator, ext);
+		//indicator.x = pwidth - 40;
+		//indicator.y = nextY + 2;
+		//app.palette.addChild(indicator);
+//
+		//nextY += titleButton.height + 10;
 
-		var titleButton:IconButton = UIPart.makeMenuButton(ext.name, extensionMenu, true, CSS.textColor);
-		titleButton.x = 5;
-		titleButton.y = nextY;
-		app.palette.addChild(titleButton);
-
-		addLineForExtensionTitle(titleButton, ext);
-
-		var indicator:IndicatorLight = new IndicatorLight(ext);
-		indicator.addEventListener(MouseEvent.CLICK, function (e:Event):Void {
-			Scratch.app.showTip('extensions');
-		}, false, 0, true);
-		app.extensionManager.updateIndicator(indicator, ext);
-		indicator.x = pwidth - 40;
-		indicator.y = nextY + 2;
-		app.palette.addChild(indicator);
-
-		nextY += titleButton.height + 10;
-
-		var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
-		if (extensionDevManager) {
-			// Show if this extension is being updated by a file
-			var fileName:String = extensionDevManager.getLocalFileName(ext);
-			if (fileName) {
-				var extensionEditStatus:TextField = UIPart.makeLabel('Connected to ' + fileName, CSS.normalTextFormat, 8, nextY - 5);
-				app.palette.addChild(extensionEditStatus);
-
-				nextY += extensionEditStatus.textHeight + 3;
-			}
-		}
+		//var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
+		//if (extensionDevManager) {
+			//// Show if this extension is being updated by a file
+			//var fileName:String = extensionDevManager.getLocalFileName(ext);
+			//if (fileName) {
+				//var extensionEditStatus:TextField = UIPart.makeLabel('Connected to ' + fileName, CSS.normalTextFormat, 8, nextY - 5);
+				//app.palette.addChild(extensionEditStatus);
+//
+				//nextY += extensionEditStatus.textHeight + 3;
+			//}
+		//}
 	}
 
     @:meta(Embed(source="../assets/reload.png"))
 	private static var ReloadIcon:Class<Dynamic>;
 
 	private function addLineForExtensionTitle(titleButton:IconButton, ext:ScratchExtension):Void {
-		var x:Int = titleButton.width + 12;
-		var w:Int = pwidth - x - 48;
-		var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
-		var dirty:Bool = extensionDevManager && extensionDevManager.isLocalExtensionDirty(ext);
-		if (dirty)
-			w -= 15;
-		addLine(x, nextY + 9, w);
-
-		if (dirty) {
-			var reload:Bitmap = new ReloadIcon();
-			reload.scaleX = 0.75;
-			reload.scaleY = 0.75;
-			var reloadBtn:Sprite = new Sprite();
-			reloadBtn.addChild(reload);
-			reloadBtn.x = x + w + 6;
-			reloadBtn.y = nextY + 2;
-			app.palette.addChild(reloadBtn);
-			SimpleTooltips.add(reloadBtn, {
-				text: 'Click to load changes (running old code from ' + extensionDevManager.getLocalCodeDate() + ')',
-				direction: 'top'
-			});
-
-			reloadBtn.addEventListener(MouseEvent.MOUSE_DOWN, function (e:MouseEvent):Void {
-				SimpleTooltips.hideAll();
-				extensionDevManager.loadLocalCode();
-			});
-
-			reloadBtn.addEventListener(MouseEvent.ROLL_OVER, function (e:MouseEvent):Void {
-				reloadBtn.transform.colorTransform = new ColorTransform(2, 2, 2);
-			});
-
-			reloadBtn.addEventListener(MouseEvent.ROLL_OUT, function (e:MouseEvent):Void {
-				reloadBtn.transform.colorTransform = new ColorTransform();
-			});
-		}
+		//var x:Int = titleButton.width + 12;
+		//var w:Int = pwidth - x - 48;
+		//var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
+		//var dirty:Bool = extensionDevManager && extensionDevManager.isLocalExtensionDirty(ext);
+		//if (dirty)
+			//w -= 15;
+		//addLine(x, nextY + 9, w);
+//
+		//if (dirty) {
+			//var reload:Bitmap = new ReloadIcon();
+			//reload.scaleX = 0.75;
+			//reload.scaleY = 0.75;
+			//var reloadBtn:Sprite = new Sprite();
+			//reloadBtn.addChild(reload);
+			//reloadBtn.x = x + w + 6;
+			//reloadBtn.y = nextY + 2;
+			//app.palette.addChild(reloadBtn);
+			//SimpleTooltips.add(reloadBtn, {
+				//text: 'Click to load changes (running old code from ' + extensionDevManager.getLocalCodeDate() + ')',
+				//direction: 'top'
+			//});
+//
+			//reloadBtn.addEventListener(MouseEvent.MOUSE_DOWN, function (e:MouseEvent):Void {
+				//SimpleTooltips.hideAll();
+				//extensionDevManager.loadLocalCode();
+			//});
+//
+			//reloadBtn.addEventListener(MouseEvent.ROLL_OVER, function (e:MouseEvent):Void {
+				//reloadBtn.transform.colorTransform = new ColorTransform(2, 2, 2);
+			//});
+//
+			//reloadBtn.addEventListener(MouseEvent.ROLL_OUT, function (e:MouseEvent):Void {
+				//reloadBtn.transform.colorTransform = new ColorTransform();
+			//});
+		//}
 	}
 
 	private function addBlocksForExtension(ext:ScratchExtension):Void {
