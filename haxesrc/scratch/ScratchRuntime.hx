@@ -32,7 +32,7 @@ import flash.utils.*;
 import blocks.Block;
 import blocks.BlockArg;
 import interpreter.*;
-import primitives.VideoMotionPrims;
+//import primitives.VideoMotionPrims;
 //import sound.ScratchSoundPlayer;
 import translation.*;
 import ui.media.MediaInfo;
@@ -45,7 +45,7 @@ class ScratchRuntime {
 
 	public var app:Scratch;
 	public var interp:Interpreter;
-	public var motionDetector:VideoMotionPrims;
+	//public var motionDetector:VideoMotionPrims;
 	public var keyIsDown:Array<Dynamic> = new Array<Dynamic>(128); // records key up/down state
 	public var shiftIsDown:Bool;
 	public var lastAnswer:String = '';
@@ -120,19 +120,19 @@ class ScratchRuntime {
 		trace('mem: ' + System.totalMemory);
 	}
 
-	// TODO: If keeping this then make it write each frame while recording AND add sound recording
-	public function saveRecording():Void {
-		var myWriter:SimpleFlvWriter = SimpleFlvWriter.getInstance();
-		var data:ByteArray = new ByteArray();
-		myWriter.createFile(data, 480, 360, 30, frames.length / 30.0);
-		for (i in 0...frames.length) {
-			myWriter.saveFrame(frames[i]);
-			frames[i] = null;
-		}
-		frames = [];
-		trace('data: ' + data.length);
-		new FileReference().save(data, 'movie.flv');
-	}
+	//// TODO: If keeping this then make it write each frame while recording AND add sound recording
+	//public function saveRecording():Void {
+		//var myWriter:SimpleFlvWriter = SimpleFlvWriter.getInstance();
+		//var data:ByteArray = new ByteArray();
+		//myWriter.createFile(data, 480, 360, 30, frames.length / 30.0);
+		//for (i in 0...frames.length) {
+			//myWriter.saveFrame(frames[i]);
+			//frames[i] = null;
+		//}
+		//frames = [];
+		//trace('data: ' + data.length);
+		//new FileReference().save(data, 'movie.flv');
+	//}
 
 //----------
 	public function stopAll():Void {
@@ -150,7 +150,7 @@ class ScratchRuntime {
 		}
 		clearAskPrompts();
 		app.removeLoadProgressBox();
-		motionDetector = null;
+		//motionDetector = null;
 	}
 
 	// -----------------------------
@@ -281,43 +281,44 @@ class ScratchRuntime {
 	// hats whose triggering condition is currently true
 	private var activeHats:Array<Dynamic> = [];
 	private function startEdgeTriggeredHats(hat:Block, target:ScratchObj):Void {
-		if (!hat.isHat || hat.nextBlock == null) return; // skip disconnected hats
-
-		if ('whenSensorGreaterThan' == hat.op) {
-			var sensorName:String = interp.arg(hat, 0);
-			var threshold:Float = interp.numarg(hat, 1);
-			if (('loudness' == sensorName && soundLevel() > threshold) ||
-					('timer' == sensorName && timer() > threshold) ||
-					('video motion' == sensorName && target.visible && VideoMotionPrims.readMotionSensor('motion', target) > threshold)) {
-				if (triggeredHats.indexOf(hat) == -1) { // not already trigged
-					// only start the stack if it is not already running
-					if (!interp.isRunning(hat, target)) interp.toggleThread(hat, target);
-				}
-				activeHats.push(hat);
-			}
-		} else if ('whenSensorConnected' == hat.op) {
-			if (getBooleanSensor(interp.arg(hat, 0))) {
-				if (triggeredHats.indexOf(hat) == -1) { // not already trigged
-					// only start the stack if it is not already running
-					if (!interp.isRunning(hat, target)) interp.toggleThread(hat, target);
-				}
-				activeHats.push(hat);
-			}
-		} else if (app.jsEnabled) {
-			var dotIndex:Int = hat.op.indexOf('.');
-			if (dotIndex > -1) {
-				var extName:String = hat.op.substr(0, dotIndex);
-				//if (app.extensionManager.extensionActive(extName)) {
-					//var op:String = hat.op.substr(dotIndex+1);
-					//var args:Array<Dynamic> = hat.args;
-					//var finalArgs:Array<Dynamic> = new Array(args.length);
-					//for (i in 0...args.length)
-						//finalArgs[i] = interp.arg(hat, i);
+		return;
+		//if (!hat.isHat || hat.nextBlock == null) return; // skip disconnected hats
 //
-					//processExtensionReporter(hat, target, extName, op, finalArgs);
+		//if ('whenSensorGreaterThan' == hat.op) {
+			//var sensorName:String = interp.arg(hat, 0);
+			//var threshold:Float = interp.numarg(hat, 1);
+			//if (('loudness' == sensorName && soundLevel() > threshold) ||
+					//('timer' == sensorName && timer() > threshold) ||
+					//('video motion' == sensorName && target.visible && VideoMotionPrims.readMotionSensor('motion', target) > threshold)) {
+				//if (triggeredHats.indexOf(hat) == -1) { // not already trigged
+					//// only start the stack if it is not already running
+					//if (!interp.isRunning(hat, target)) interp.toggleThread(hat, target);
 				//}
-			}
-		}
+				//activeHats.push(hat);
+			//}
+		//} else if ('whenSensorConnected' == hat.op) {
+			//if (getBooleanSensor(interp.arg(hat, 0))) {
+				//if (triggeredHats.indexOf(hat) == -1) { // not already trigged
+					//// only start the stack if it is not already running
+					//if (!interp.isRunning(hat, target)) interp.toggleThread(hat, target);
+				//}
+				//activeHats.push(hat);
+			//}
+		//} else if (app.jsEnabled) {
+			//var dotIndex:Int = hat.op.indexOf('.');
+			//if (dotIndex > -1) {
+				//var extName:String = hat.op.substr(0, dotIndex);
+				////if (app.extensionManager.extensionActive(extName)) {
+					////var op:String = hat.op.substr(dotIndex+1);
+					////var args:Array<Dynamic> = hat.args;
+					////var finalArgs:Array<Dynamic> = new Array(args.length);
+					////for (i in 0...args.length)
+						////finalArgs[i] = interp.arg(hat, i);
+////
+					////processExtensionReporter(hat, target, extName, op, finalArgs);
+				////}
+			//}
+		//}
 	}
 
 	private function processExtensionReporter(hat:Block, target:ScratchObj, extName:String, op:String, finalArgs:Array<Dynamic>):Void {

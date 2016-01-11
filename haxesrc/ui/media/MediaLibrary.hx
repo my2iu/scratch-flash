@@ -554,13 +554,13 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 			} catch(e:Dynamic) {
 				decodeError();
 			}
-		} else if (fExt == '.gif') {
-			try {
-				importGIF(fName, data);
-			} catch(e:Dynamic) {
-				decodeError();
-			}
-		} else if (ScratchCostume.isSVGData(data)) {
+		//} else if (fExt == '.gif') {
+			//try {
+				//importGIF(fName, data);
+			//} catch(e:Dynamic) {
+				//decodeError();
+			//}
+		//} else if (ScratchCostume.isSVGData(data)) {
 			data = svgAddGroupIfNeeded(data); // wrap group around imported elements
 			costumeOrSprite = new ScratchCostume(fName, null);
 			costumeOrSprite.setSVGData(data, true);
@@ -592,21 +592,21 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		}
 	}
 
-	private function importGIF(fName:String, data:ByteArray):Void {
-		var gifReader:GIFDecoder = new GIFDecoder();
-		gifReader.read(data);
-		if (gifReader.frames.length == 0) return; // bad GIF (error; no images)
-		var newCostumes:Array<Dynamic> = [];
-		for (i in 0...gifReader.frames.length) {
-			newCostumes.push(new ScratchCostume(fName + '-' + i, gifReader.frames[i]));
-		}
-
-		gifImported(newCostumes);
-	}
-
-	private function gifImported(newCostumes:Array<Dynamic>):Void {
-		whenDone(newCostumes);
-	}
+	//private function importGIF(fName:String, data:ByteArray):Void {
+		//var gifReader:GIFDecoder = new GIFDecoder();
+		//gifReader.read(data);
+		//if (gifReader.frames.length == 0) return; // bad GIF (error; no images)
+		//var newCostumes:Array<Dynamic> = [];
+		//for (i in 0...gifReader.frames.length) {
+			//newCostumes.push(new ScratchCostume(fName + '-' + i, gifReader.frames[i]));
+		//}
+//
+		//gifImported(newCostumes);
+	//}
+//
+	//private function gifImported(newCostumes:Array<Dynamic>):Void {
+		//whenDone(newCostumes);
+	//}
 
 	private function svgAddGroupIfNeeded(svgData:ByteArray):ByteArray {
 		var xml:XML = XML(svgData);
