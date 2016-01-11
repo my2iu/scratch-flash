@@ -124,7 +124,8 @@ class ReadStream
     
     public static function unescape(s : String) : String{
         var result : String = "";
-        for (i in 0...s.length){
+		var i: Int = 0;
+		while (i < s.length) {
             var ch : String = s.charAt(i);
             if (ch == "\\") {
                 result += s.charAt(i + 1);
@@ -133,6 +134,7 @@ class ReadStream
             else {
                 result += ch;
             }
+			i++;
         }
         return result;
     }

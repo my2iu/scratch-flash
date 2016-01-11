@@ -194,7 +194,7 @@ class GestureHandler
             handleDoubleClick(mouseDownEvent);
             return;
         }
-        if (CursorTool.tool) {
+        if (CursorTool.tool != null) {
             handleTool(evt);
             return;
         }
@@ -336,7 +336,7 @@ class GestureHandler
             return;
         }
         if (gesture == "menu")             handleMenu(evt);
-        if (app.scriptsPane)             app.scriptsPane.draggingDone();
+        if (app.scriptsPane != null)             app.scriptsPane.draggingDone();
         mouseTarget = null;
         gesture = "idle";
         if (objToGrabOnUp != null) {
@@ -606,7 +606,7 @@ class GestureHandler
     }
     
     private function removeDropShadowFrom(o : DisplayObject) : Void{
-        var newFilters : Array<Dynamic> = [];
+        var newFilters : Array<flash.filters.BitmapFilter> = [];
         for (f/* AS3HX WARNING could not determine type for var: f exp: EField(EIdent(o),filters) type: null */ in o.filters){
             if (!(Std.is(f, DropShadowFilter)))                 newFilters.push(f);
         }
@@ -634,7 +634,7 @@ class GestureHandler
         f.distance = 4;
         f.blurX = f.blurY = 8;
         f.alpha = 0.2;
-        bubble.filters = bubble.filters.concat(f);
+        bubble.filters = bubble.filters.concat([f]);
         
         stage.addChild(bubble);
     }
@@ -680,7 +680,7 @@ class GestureHandler
     }
     
     private function addDebugGlow(o : DisplayObject) : Void{
-        var newFilters : Array<Dynamic> = [];
+        var newFilters : Array<flash.filters.BitmapFilter> = [];
         if (o.filters != null)             newFilters = o.filters;
         var f : GlowFilter = new GlowFilter(0xFFFF00);
         f.strength = 15;
@@ -691,7 +691,7 @@ class GestureHandler
     }
     
     private function removeDebugGlow(o : DisplayObject) : Void{
-        var newFilters : Array<Dynamic> = [];
+        var newFilters : Array<flash.filters.BitmapFilter> = [];
         for (f/* AS3HX WARNING could not determine type for var: f exp: EField(EIdent(o),filters) type: null */ in o.filters){
             if (!(Std.is(f, GlowFilter)))                 newFilters.push(f);
         }

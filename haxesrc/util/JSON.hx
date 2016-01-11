@@ -353,19 +353,20 @@ class JSON
     private function needsMultipleLines(arrayValue : Array<Dynamic>, limit : Int) : Bool{
         // Return true if this array is short enough to fit on one line.
         // (This is simply to make the JSON representation of stacks more readable.)
-        var i : Int;
         var count : Int;
         var toDo : Array<Dynamic> = [arrayValue];
         while (toDo.length > 0){
             var a : Array<Dynamic> = toDo.pop();
             count += a.length;
             if (count > limit)                 return true;
-            for (i in 0...a.length){
+			var i : Int = 0;
+			while (i < a.length) {
                 var item : Dynamic = a[i];
-                if ((Std.is(item, Float)) || (Std.is(item, Bool)) || (Std.is(item, String)) || (item == null))                     {i++;continue;
+                if ((Std.is(item, Float)) || (Std.is(item, Bool)) || (Std.is(item, String)) || (item == null))                     { i++; i++; continue;
                 }  // atomic value  ;
                 if (Std.is(item, Array))                     toDo.push(item)
                 else return true;
+				i++;
             }
         }
         return false;
@@ -373,7 +374,8 @@ class JSON
     
     private function encodeString(s : String) : String{
         var result : String = "";
-        for (i in 0...s.length){
+		var i: Int = 0;
+        while (i < s.length){
             var ch : String = s.charAt(i);
             var code : Int = s.charCodeAt(i);
             if (code < 32) {
@@ -385,13 +387,14 @@ class JSON
                     while (hex.length < 4)hex = "0" + hex;
                     result += "\\u" + hex;
                 }
-                {i++;continue;
+                {i++; i++; continue;
                 }
             }
             else if (ch == "\\")                 result += "\\\\"
             else if (ch == "\"")                 result += "\\\""
             else if (ch == "/")                 result += "\\/"
             else result += ch;
+			i++;
         }
         return result;
     }

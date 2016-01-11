@@ -86,7 +86,7 @@ class ScratchCostume {
 	public var undoList:Array<Dynamic> = [];
 	public var undoListIndex:Int;
 
-	public function ScratchCostume(name:String, data:Dynamic, centerX:Int = 99999, centerY:Int = 99999, bmRes:Int = 1) {
+	public function new(name:String, data:Dynamic, centerX:Int = 99999, centerY:Int = 99999, bmRes:Int = 1) {
 		costumeName = name;
 		rotationCenterX = centerX;
 		rotationCenterY = centerY;
@@ -95,8 +95,8 @@ class ScratchCostume {
 		} else if (Std.is(data, BitmapData)) {
 			bitmap = baseLayerBitmap = data;
 			bitmapResolution = bmRes;
-			if (centerX == 99999) rotationCenterX = bitmap.rect.width / 2;
-			if (centerY == 99999) rotationCenterY = bitmap.rect.height / 2;
+			if (centerX == 99999) rotationCenterX = Std.int(bitmap.rect.width / 2);
+			if (centerY == 99999) rotationCenterY = Std.int(bitmap.rect.height / 2);
 			prepareToSave();
 		} else if (Std.is(data, ByteArray)) {
 			setSVGData(data, (centerX == 99999));

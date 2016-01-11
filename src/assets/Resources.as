@@ -29,7 +29,7 @@ public class Resources {
 			trace('missing resource: ', resourceName);
 			return new Bitmap(new BitmapData(10, 10, false, 0x808080));
 		}
-		return new resourceClass();
+		return new resourceClass() as Bitmap;
 	}
 
 	public static function makeLabel(s:String, fmt:TextFormat, x:int = 0, y:int = 0):TextField {

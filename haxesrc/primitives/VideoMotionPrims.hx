@@ -107,7 +107,7 @@ class VideoMotionPrims
     public function step() : Void{
         frameNum++;
         var sprites : Array<Dynamic> = app.stagePane.sprites();
-        if (!(app.stagePane && app.stagePane.videoImage)) {
+        if (!(app.stagePane != null && app.stagePane.videoImage != null)) {
             prev = curr = null;
             motionAmount = motionDirection = 0;
             for (i in 0...sprites.length){
@@ -312,7 +312,7 @@ class VideoMotionPrims
         vv /= n;
         motionAmount = Math.round(AMOUNT_SCALE * Math.sqrt((uu * uu) + (vv * vv)));
         if (motionAmount > THRESHOLD) {
-            motionDirection = ((Math.atan2(vv, uu) * toDegree + 270) % 360) - 180;
+            motionDirection = Std.int(((Math.atan2(vv, uu) * toDegree + 270) % 360) - 180);
         }
         analysisDone = true;
     }

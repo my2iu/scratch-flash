@@ -80,16 +80,16 @@ class Log
         if (Capabilities.isDebugger) {
             trace(getEntryString());
         }
-        if (Scratch.app.jsEnabled) {
-            if (echoToJS) {
-                Scratch.app.externalCall(
-                        "console.log", null, getEntryString() + ((extraData != null) ? "\n" + getExtraString() : ""));
-            }
-            if (LogLevel.TRACK == severity) {
-                Scratch.app.externalCall(
-                        "JStrackEvent", null, messageKey, (extraData != null) ? getExtraString() : null);
-            }
-        }
+        //if (Scratch.app.jsEnabled) {
+            //if (echoToJS) {
+                //Scratch.app.externalCall(
+                        //"console.log", null, getEntryString() + ((extraData != null) ? "\n" + getExtraString() : ""));
+            //}
+            //if (LogLevel.TRACK == severity) {
+                //Scratch.app.externalCall(
+                        //"JStrackEvent", null, messageKey, (extraData != null) ? getExtraString() : null);
+            //}
+        //}
         return entry;
     }
     

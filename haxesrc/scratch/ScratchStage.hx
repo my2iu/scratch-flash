@@ -167,19 +167,21 @@ class ScratchStage extends ScratchObj {
 	public function scratchMouseX():Int { return Std.int(Math.max( -240, Math.min(mouseX - (ScratchObj.STAGEW / 2), 240))); }
 	public function scratchMouseY():Int { return Std.int(-Math.max( -180, Math.min(mouseY - (ScratchObj.STAGEH / 2), 180))); }
 
-	public override function allObjects():Array<Dynamic> {
+	public override function allObjects():Array<ScratchObj> {
 		// Return an array of all sprites in this project plus the stage.
-		var result:Array<Dynamic> = sprites();
+		var result:Array<ScratchObj> = [];
+		for (spr in sprites())
+			result.push(spr);
 		result.push(this);
 		return result;
 	}
 
-	public function sprites():Array<Dynamic> {
+	public function sprites():Array<ScratchSprite> {
 		// Return an array of all sprites in this project.
-		var result:Array<Dynamic> = [];
+		var result:Array<ScratchSprite> = [];
 		for (i in 0...numChildren) {
 			var o:Dynamic = getChildAt(i);
-			if (Std.is(o, ScratchSprite) && !o.isClone) result.push(o);
+			if (Std.is(o, ScratchSprite) && !o.isClone) result.push(cast(o,ScratchSprite));
 		}
 		return result;
 	}

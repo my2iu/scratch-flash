@@ -121,9 +121,9 @@ class FilterPack
         return result;
     }
     
-    private static var emptyArray : Array<Dynamic> = [];
-    private var newFilters : Array<Dynamic> = [];
-    public function buildFilters(force : Bool = false) : Array<Dynamic>{
+    private static var emptyArray : Array<flash.filters.BitmapFilter> = [];
+    private var newFilters : Array<flash.filters.BitmapFilter> = [];
+    public function buildFilters(force : Bool = false) : Array<flash.filters.BitmapFilter>{
         // disable filters not running on x86 because PixelBender is really slow
         if ((Scratch.app.isIn3D || Capabilities.cpuArchitecture != "x86") && !force)             return emptyArray;
         
@@ -131,7 +131,7 @@ class FilterPack
         var srcWidth : Float = targetObj.width * scale;
         var srcHeight : Float = targetObj.height * scale;
         var n : Float;
-        newFilters.length = 0;
+        newFilters = [];
         /*
         if (Reflect.field(filterDict, "whirl") != 0) {
             // range: -infinity..infinity

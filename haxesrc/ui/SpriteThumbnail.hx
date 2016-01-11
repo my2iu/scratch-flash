@@ -104,7 +104,7 @@ class SpriteThumbnail extends Sprite
         
         var frame : Shape = new Shape();
         var g : Graphics = frame.graphics;
-        g.lineStyle(NaN);
+        g.lineStyle(Math.NaN);
         g.beginFill(0xFFFFFF);
         g.drawRoundRect(0, 0, frameW, frameH, 12, 12);
         g.endFill();

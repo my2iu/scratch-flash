@@ -30,6 +30,8 @@ package util {
 import flash.display.*;
 import flash.events.*;
 import flash.net.URLLoader;
+import flash.system.ApplicationDomain;
+import flash.system.LoaderContext;
 import flash.utils.*;
 
 import logging.LogLevel;
@@ -336,9 +338,10 @@ public class ProjectIO {
 				whenDone(c);
 			} else {
 				var loader:Loader = new Loader();
+				var loaderContext:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, null);
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
 				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, imageError);
-				loader.loadBytes(data);
+				loader.loadBytes(data, loaderContext);
 			}
 		}
 		function imageError(event:IOErrorEvent):void {

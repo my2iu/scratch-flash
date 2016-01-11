@@ -62,7 +62,7 @@ class Color
     }
     
     // Convert RGB to an array containing the hue, saturation, and brightness.
-    public static function rgb2hsv(rgb : Float) : Array<Dynamic>{
+    public static function rgb2hsv(rgb : Float) : Array<Float>{
         var h : Float;
         var s : Float;
         var v : Float;

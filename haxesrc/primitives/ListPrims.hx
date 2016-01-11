@@ -24,7 +24,6 @@
 
 package primitives;
 
-import primitives.Scratch;
 
 import blocks.Block;
 import interpreter.Interpreter;

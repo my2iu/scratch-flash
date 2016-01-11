@@ -178,8 +178,8 @@ class ScratchSprite extends ScratchObj {
 	}
 
 	public function setScratchXY(newX:Float, newY:Float):Void {
-		scratchX = isFinite(newX) ? newX : newX > 0 ? 1e6 : -1e6;
-		scratchY = isFinite(newY) ? newY : newY > 0 ? 1e6 : -1e6;
+		scratchX = Math.isFinite(newX) ? newX : newX > 0 ? 1e6 : -1e6;
+		scratchY = Math.isFinite(newY) ? newY : newY > 0 ? 1e6 : -1e6;
 		x = 240 + Math.round(scratchX);
 		y = 180 - Math.round(scratchY);
 		updateBubble();
@@ -265,7 +265,7 @@ class ScratchSprite extends ScratchObj {
 	}
 
 	public function setPenColor(c:Float):Void {
-		var hsv:Array = Color.rgb2hsv(c);
+		var hsv:Array<Float> = Color.rgb2hsv(c);
 		penHue = (200 * hsv[0]) / 360 ;
 		penShade = 50 * hsv[2];  // not quite right; doesn't account for saturation
 		penColorCache = c;
@@ -456,7 +456,7 @@ class ScratchSprite extends ScratchObj {
 		if ('setSizeTo:' == op) return [Math.round(getSize() * 10) / 10];
 		if ((['startScene', 'startSceneAndWait', 'whenSceneStarts'].indexOf(op)) > -1) {
 			var stg:ScratchStage = cast(parent, ScratchStage);
-			if (stg) return [stg.costumes[stg.costumes.length - 1].costumeName];
+			if (stg != null) return [stg.costumes[stg.costumes.length - 1].costumeName];
 		}
 		if ('senseVideoMotion' == op) return ['motion', 'this sprite'];
 		return super.defaultArgsFor(op, specDefaults);
@@ -517,7 +517,7 @@ class ScratchSprite extends ScratchObj {
 
 	public function unusedSpriteName(baseName:String):String {
 		var stg:ScratchStage = cast(parent, ScratchStage);
-		return stg ? stg.unusedSpriteName(baseName) : baseName;
+		return stg != null ? stg.unusedSpriteName(baseName) : baseName;
 	}
 
 	public function deleteSprite():Void {
@@ -535,7 +535,7 @@ class ScratchSprite extends ScratchObj {
 			parent.removeChild(this);
 			if (app != null) {
 				app.stagePane.removeObsoleteWatchers();
-				var sprites:Array = app.stagePane.sprites();
+				var sprites:Array<ScratchSprite> = app.stagePane.sprites();
 				if (sprites.length > 0) {
 					// Pick the sprite just before the deleted sprite in the sprite library to select next.
 					sprites.sortOn('indexInLibrary');
@@ -606,8 +606,8 @@ class ScratchSprite extends ScratchObj {
 		if (!visible) return;
 		var pad:Int = 3;
 		var stageL:Int = pad;
-		var stageR:Int = STAGEW - pad;
-		var stageH:Int = STAGEH;
+		var stageR:Int = ScratchObj.STAGEW - pad;
+		var stageH:Int = ScratchObj.STAGEH;
 		var r:Rectangle = bubbleRect();
 
 		// decide which side of the sprite the bubble should be on

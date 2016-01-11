@@ -38,8 +38,8 @@ import logging.LogLevel;
 
 import scratch.*;
 
-import sound.WAVFile;
-import sound.mp3.MP3Loader;
+//import sound.WAVFile;
+//import sound.mp3.MP3Loader;
 
 import svgutils.*;
 

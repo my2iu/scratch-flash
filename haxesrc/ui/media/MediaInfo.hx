@@ -66,7 +66,8 @@ class MediaInfo extends Sprite {
 	private var info:TextField;
 	private var deleteButton:IconButton;
 
-	public function MediaInfo(obj:Dynamic, owningObj:ScratchObj = null) {
+	public function new(obj:Dynamic, owningObj:ScratchObj = null) {
+		super();
 		owner = owningObj;
 		mycostume = cast(obj, ScratchCostume);
 		mysound = cast(obj, ScratchSound);

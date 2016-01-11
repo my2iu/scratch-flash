@@ -196,7 +196,7 @@ class BlockArg extends Sprite
         field.selectable = false;
     }
     
-    private function blockArgFilters() : Array<Dynamic>{
+    private function blockArgFilters() : Array<flash.filters.BitmapFilter>{
         // filters for BlockArg outlines
         var f : BevelFilter = new BevelFilter(1);
         f.blurX = f.blurY = 2;

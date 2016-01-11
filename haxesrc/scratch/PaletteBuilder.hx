@@ -48,7 +48,7 @@ class PaletteBuilder {
 	private var app:Scratch;
 	private var nextY:Int;
 
-	public function PaletteBuilder(app:Scratch) {
+	public function new(app:Scratch) {
 		this.app = app;
 	}
 

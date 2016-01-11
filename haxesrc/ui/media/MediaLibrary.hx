@@ -78,7 +78,7 @@ class MediaLibrary extends Sprite {
 
 	private static var libraryCache:Object = {}; // cache of all mediaLibrary entries
 
-	public function MediaLibrary(app:Scratch, type:String, whenDone:Function) {
+	public function new(app:Scratch, type:String, whenDone:Function) {
 		this.app = app;
 		this.assetType = type;
 		this.whenDone = whenDone;

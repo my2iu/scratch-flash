@@ -95,7 +95,7 @@ class SimpleTooltip
     private var sprite : Sprite;
     private var textField : TextField;
     private var stage : Stage;
-    private function new()
+    function new()
     {
         // Setup timers
         showTimer = new Timer(delay);

@@ -78,10 +78,10 @@ class SensingPrims
         });
         
         // sensor
-        Reflect.setField(primTable, "sensor:", function(b : Dynamic) : Dynamic{return app.runtime.getSensor(interp.arg(b, 0));
-        });
-        Reflect.setField(primTable, "sensorPressed:", function(b : Dynamic) : Dynamic{return app.runtime.getBooleanSensor(interp.arg(b, 0));
-        });
+        //Reflect.setField(primTable, "sensor:", function(b : Dynamic) : Dynamic{return app.runtime.getSensor(interp.arg(b, 0));
+        //});
+        //Reflect.setField(primTable, "sensorPressed:", function(b : Dynamic) : Dynamic{return app.runtime.getBooleanSensor(interp.arg(b, 0));
+        //});
         
         // variable and list watchers
         Reflect.setField(primTable, "showVariable:", primShowWatcher);
@@ -119,7 +119,7 @@ class SensingPrims
         // True if the mouse touches the given sprite. This test is independent
         // of whether the sprite is hidden or 100% ghosted.
         // Note: p and r are in the coordinate system of the sprite's parent (i.e. the ScratchStage).
-        if (!s.parent)             return false;
+        if (s.parent == null)             return false;
         if (!s.getBounds(s).contains(s.mouseX, s.mouseY))             return false;
         var r : Rectangle = s.bounds();
         if (!r.contains(s.parent.mouseX, s.parent.mouseY))             return false;

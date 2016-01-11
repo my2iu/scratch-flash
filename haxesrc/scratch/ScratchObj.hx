@@ -189,39 +189,39 @@ private static var Pop : Class<Dynamic>;
     }
     
     private function updateRenderDetails(reason : Int) : Void{
-        /* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
-            if (Std.is(this, ScratchStage) || Std.is(this, ScratchSprite) || (parent && Std.is(parent, ScratchStage))) {
-                var renderOpts : Dynamic = { };
-                var costume : ScratchCostume = currentCostume();
-                
-                // 0 - costume change, 1 - rotation style change
-                if (reason == 0) {
-                    if (costume != null && costume.baseLayerID == ScratchCostume.WasEdited) 
-                        costume.prepareToSave();
-                    
-                    var id : String = ((costume != null) ? costume.baseLayerMD5 : null);
-                    if (id == null)                         id = objName + ((costume != null) ? costume.costumeName : "_" + currentCostumeIndex)
-                    else if (costume != null && costume.textLayerMD5 != null)                         id += costume.textLayerMD5;
-                    
-                    renderOpts.bitmap = (costume != null && (costume.bitmap != null) ? costume.bitmap : null);
-                }  // TODO: Clip original bitmap to match visible bounds?  
-                
-                
-                
-                if (reason == 1) 
-                    renderOpts.costumeFlipped = (Std.is(this, (ScratchSprite) ? (try cast(this, ScratchSprite) catch(e:Dynamic) null).isCostumeFlipped() : false));
-                
-                if (reason == 0) {
-                    if (Std.is(this, ScratchSprite)) {
-                        renderOpts.bounds = (try cast(this, ScratchSprite) catch(e:Dynamic) null).getVisibleBounds(this);
-                        renderOpts.raw_bounds = getBounds(this);
-                    }
-                    else 
-                    renderOpts.bounds = getBounds(this);
-                }
-                //if (Scratch.app.isIn3D)                     Scratch.app.render3D.updateRender((Std.is(this, (ScratchStage) ? img : this)), id, renderOpts);
-            }
-        }
+        ///* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
+            //if (Std.is(this, ScratchStage) || Std.is(this, ScratchSprite) || (parent != null&& Std.is(parent, ScratchStage))) {
+                //var renderOpts : Dynamic = { };
+                //var costume : ScratchCostume = currentCostume();
+                //
+                //// 0 - costume change, 1 - rotation style change
+                //if (reason == 0) {
+                    //if (costume != null && costume.baseLayerID == ScratchCostume.WasEdited) 
+                        //costume.prepareToSave();
+                    //
+                    //var id : String = ((costume != null) ? costume.baseLayerMD5 : null);
+                    //if (id == null)                         id = objName + ((costume != null) ? costume.costumeName : "_" + currentCostumeIndex)
+                    //else if (costume != null && costume.textLayerMD5 != null)                         id += costume.textLayerMD5;
+                    //
+                    //renderOpts.bitmap = (costume != null && (costume.bitmap != null) ? costume.bitmap : null);
+                //}  // TODO: Clip original bitmap to match visible bounds?  
+                //
+                //
+                //
+                //if (reason == 1) 
+                    //renderOpts.costumeFlipped = (Std.is(this, ScratchSprite) ? cast(this, ScratchSprite).isCostumeFlipped() : false);
+                //
+                //if (reason == 0) {
+                    //if (Std.is(this, ScratchSprite)) {
+                        //renderOpts.bounds = cast(this, ScratchSprite).getVisibleBounds(this);
+                        //renderOpts.raw_bounds = getBounds(this);
+                    //}
+                    //else 
+                    //renderOpts.bounds = getBounds(this);
+                //}
+                ////if (Scratch.app.isIn3D)                     Scratch.app.render3D.updateRender((Std.is(this, (ScratchStage) ? img : this)), id, renderOpts);
+            //}
+        //}
     }
     
     private function adjustForRotationCenter() : Void{
@@ -273,15 +273,15 @@ private static var Pop : Class<Dynamic>;
     }
     
     public function updateEffectsFor3D() : Void{
-        /* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
-            if ((parent != null && Std.is(parent, ScratchStage)) || Std.is(this, ScratchStage)) {
-                if (Std.is(parent, ScratchStage)) 
-                    (try cast(parent, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(this, filterPack.getAllSettings())
-                else {
-                    (try cast(this, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(img, filterPack.getAllSettings());
-                }
-            }
-        }
+        ///* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
+            //if ((parent != null && Std.is(parent, ScratchStage)) || Std.is(this, ScratchStage)) {
+                //if (Std.is(parent, ScratchStage)) 
+                    //(try cast(parent, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(this, filterPack.getAllSettings())
+                //else {
+                    //(try cast(this, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(img, filterPack.getAllSettings());
+                //}
+            //}
+        //}
     }
     
     private function shapeChangedByFilter() : Bool{
@@ -296,11 +296,11 @@ private static var Pop : Class<Dynamic>;
         img.transform.colorTransform = clearColorTrans;
         clearCachedBitmap();
         
-        /* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
-            if (parent != null && Std.is(parent, ScratchStage)) {
-                (try cast(parent, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(this, null);
-            }
-        }
+        ///* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
+            //if (parent != null && Std.is(parent, ScratchStage)) {
+                //(try cast(parent, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(this, null);
+            //}
+        //}
     }
     
     public function setMedia(media : Array<Dynamic>, currentCostume : ScratchCostume) : Void{

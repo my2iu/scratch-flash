@@ -58,7 +58,7 @@ class ScratchRuntime {
 	private var projectToInstall:ScratchStage;
 	private var saveAfterInstall:Bool;
 
-	public function ScratchRuntime(app:Scratch, interp:Interpreter) {
+	public function new(app:Scratch, interp:Interpreter) {
 		this.app = app;
 		this.interp = interp;
 		timerBase = interp.currentMSecs;
@@ -221,7 +221,7 @@ class ScratchRuntime {
 		var palette:BlockPalette = app.palette;
 		for (i in 0...palette.numChildren) {
 			var b:Block = cast(palette.getChildAt(i), Block);
-			if (b) addBlock(b);
+			if (b != null) addBlock(b);
 		}
 		result.sort();
 		return result;
@@ -507,7 +507,7 @@ class ScratchRuntime {
 	public function hideAskPrompt(p:AskPrompter):Void {
 		interp.askThread = null;
 		lastAnswer = p.answer();
-		if (p.parent) {
+		if (p.parent != null) {
 			p.parent.removeChild(p);
 		}
 		app.stage.focus = null;
@@ -700,7 +700,7 @@ class ScratchRuntime {
 				microphone.soundTransform = new SoundTransform(0, 0);
 			}
 		}
-		return microphone != null ? microphone.activityLevel : 0;
+		return microphone != null ? Std.int(microphone.activityLevel) : 0;
 	}
 
 	// -----------------------------
@@ -1048,7 +1048,7 @@ class ScratchRuntime {
 			else
 				for (i in 0...uiLayer.numChildren) {
 					var varW:Watcher = cast(uiLayer.getChildAt(i), Watcher);
-					if (varW && varW.isVarWatcherFor(targetObj, varName) && varW.visible) return true;
+					if (varW != null && varW.isVarWatcherFor(targetObj, varName) && varW.visible) return true;
 				}
 		}
 		if ('reporter' == data.type) {
@@ -1062,7 +1062,7 @@ class ScratchRuntime {
 		var uiLayer:Sprite = app.stagePane.getUILayer();
 		for (i in 0...uiLayer.numChildren) {
 			var w:Watcher = cast(uiLayer.getChildAt(i), Watcher);
-			if (w && w.isReporterWatcher(data.targetObj, data.cmd, data.param)) return w;
+			if (w != null && w.isReporterWatcher(data.targetObj, data.cmd, data.param)) return w;
 		}
 		return null;
 	}

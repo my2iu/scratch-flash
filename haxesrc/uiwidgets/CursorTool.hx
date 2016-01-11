@@ -111,7 +111,7 @@ class CursorTool
         
         if (("" == name) && reuse == null) {
             // disposable cursors for bitmap pen and eraser (sometimes they are too large for hardware cursor)
-            showSoftwareCursor(new Bitmap(bmp), hotSpot.x, hotSpot.y);
+            showSoftwareCursor(new Bitmap(bmp), Std.int(hotSpot.x), Std.int(hotSpot.y));
             return;
         }
         
@@ -124,7 +124,7 @@ class CursorTool
         
         if (bmp != null && hotSpot != null) {
             Reflect.setField(registeredCursors, name, [bmp, hotSpot]);
-            if (isLinux())                 showSoftwareCursor(new Bitmap(bmp), hotSpot.x, hotSpot.y)
+            if (isLinux())                 showSoftwareCursor(new Bitmap(bmp), Std.int(hotSpot.x), Std.int(hotSpot.y));
             else registerHardwareCursor(name, bmp, hotSpot);
         }
     }

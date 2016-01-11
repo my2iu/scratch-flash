@@ -224,7 +224,7 @@ class Primitives
     private function primDeleteClone(b : Block) : Void{
         var clone : ScratchSprite = interp.targetSprite();
         if ((clone == null) || (!clone.isClone) || (clone.parent == null))             return;
-        if (clone.bubble && clone.bubble.parent)             clone.bubble.parent.removeChild(clone.bubble);
+        if (clone.bubble != null && clone.bubble.parent != null)             clone.bubble.parent.removeChild(clone.bubble);
         clone.parent.removeChild(clone);
         app.interp.stopThreadsFor(clone);
         app.runtime.cloneCount--;

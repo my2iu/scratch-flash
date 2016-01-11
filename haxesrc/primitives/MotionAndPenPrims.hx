@@ -247,9 +247,9 @@ class MotionAndPenPrims
     private function touch(s : ScratchSprite, x : Float, y : Float) : Void{
         var g : Graphics = app.stagePane.newPenStrokes.graphics;
         g.lineStyle();
-        var alpha : Float = (0xFF & (s.penColorCache >> 24)) / 0xFF;
+        var alpha : Float = (0xFF & (Std.int(s.penColorCache) >> 24)) / 0xFF;
         if (alpha == 0)             alpha = 1;
-        g.beginFill(0xFFFFFF & s.penColorCache, alpha);
+        g.beginFill(0xFFFFFF & Std.int(s.penColorCache), alpha);
         g.drawCircle(240 + x, 180 - y, s.penWidth / 2);
         g.endFill();
         app.stagePane.penActivity = true;
@@ -313,20 +313,21 @@ class MotionAndPenPrims
     }
     
     private function moveSpriteTo(s : ScratchSprite, newX : Float, newY : Float) : Void{
-        if (!(Std.is(s.parent, ScratchStage)))             return  // don't move while being dragged  ;
+        if (!(Std.is(s.parent, ScratchStage)))             return;  // don't move while being dragged  ;
         var oldX : Float = s.scratchX;
         var oldY : Float = s.scratchY;
         s.setScratchXY(newX, newY);
         s.keepOnStage();
-        if (s.penIsDown)             stroke(s, oldX, oldY, s.scratchX, s.scratchY);
+        if (s.penIsDown)
+			stroke(s, oldX, oldY, s.scratchX, s.scratchY);
         if ((s.penIsDown) || (s.visible))             interp.redraw();
     }
     
     private function stroke(s : ScratchSprite, oldX : Float, oldY : Float, newX : Float, newY : Float) : Void{
         var g : Graphics = app.stagePane.newPenStrokes.graphics;
-        var alpha : Float = (0xFF & (s.penColorCache >> 24)) / 0xFF;
+        var alpha : Float = (0xFF & (Std.int(s.penColorCache) >> 24)) / 0xFF;
         if (alpha == 0)             alpha = 1;
-        g.lineStyle(s.penWidth, 0xFFFFFF & s.penColorCache, alpha);
+        g.lineStyle(s.penWidth, 0xFFFFFF & Std.int(s.penColorCache), alpha);
         g.moveTo(240 + oldX, 180 - oldY);
         g.lineTo(240 + newX, 180 - newY);
         //trace('pen line('+oldX+', '+oldY+', '+newX+', '+newY+')');

@@ -123,7 +123,7 @@ class SimpleFlvWriter
     private function flvTagVideo() : ByteArray{
         var tag : ByteArray = new ByteArray();
         var dat : ByteArray = videoData();
-        var timeStamp : Int = Int(1000 / frameRate * iteration++);
+        var timeStamp : Int = Std.int(1000 / frameRate * iteration++);
         
         // tag 'header'
         tag.writeByte(0x09);  // tagType = video  

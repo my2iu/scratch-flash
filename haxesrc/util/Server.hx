@@ -242,7 +242,7 @@ class Server implements IServer
             request.method = URLRequestMethod.POST;
             request.data = data;
             
-            if (mimeType != null)                 request.requestHeaders.push(new URLRequestHeader("Content-type", mimeType))  // header for CSRF authentication when sending data  ;
+            if (mimeType != null)                 request.requestHeaders.push(new URLRequestHeader("Content-type", mimeType));  // header for CSRF authentication when sending data  ;
             
             
             

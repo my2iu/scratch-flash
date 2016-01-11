@@ -39,9 +39,9 @@ import uiwidgets.*;
 class StagePart extends UIPart
 {
     
-    private var readoutTextColor : Int = (Scratch.app.isExtensionDevMode) ? CSS.white : CSS.textColor;
-    private var readoutLabelFormat : TextFormat = new TextFormat(CSS.font, 12, readoutTextColor, true);
-    private var readoutFormat : TextFormat = new TextFormat(CSS.font, 10, readoutTextColor);
+    private var readoutTextColor : Int = CSS.textColor;
+    private var readoutLabelFormat : TextFormat = new TextFormat(CSS.font, 12, CSS.textColor, true);
+    private var readoutFormat : TextFormat = new TextFormat(CSS.font, 10, CSS.textColor);
     
     private static inline var topBarHeightNormal : Int = 39;
     private static inline var topBarHeightSmallPlayerMode : Int = 26;
@@ -163,7 +163,7 @@ class StagePart extends UIPart
         
         var g : Graphics = outline.graphics;
         g.clear();
-        drawTopBar(g, topBarColors, getTopBarPath(w - 1, topBarHeight), w, topBarHeight, CSS.borderColor);
+        UIPart.drawTopBar(g, topBarColors, UIPart.getTopBarPath(w - 1, topBarHeight), w, topBarHeight, CSS.borderColor);
         g.lineStyle(1, CSS.borderColor, 1, true);
         g.drawRect(0, topBarHeight - 1, w - 1, h - topBarHeight);
         

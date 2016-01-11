@@ -37,6 +37,7 @@ package blocks;
 
 import flash.display.*;
 import flash.events.*;
+import flash.filters.BitmapFilter;
 import flash.filters.GlowFilter;
 import flash.geom.*;
 import flash.net.URLLoader;
@@ -63,7 +64,7 @@ class Block extends Sprite
     //	private static const blockLabelFormat:TextFormat = new TextFormat('LucidaBoldEmbedded', 10, 0xFFFFFF, true);
     private static var useEmbeddedFont : Bool = false;
     
-    public static var MenuHandlerFunction : Dynamic->Dynamic->Void;  // optional function to handle block and blockArg menus  
+    public static var MenuHandlerFunction : MouseEvent->Block->Null<BlockArg>->Null<String>->Void;  // optional function to handle block and blockArg menus  
     
     public var spec : String;
     public var type : String;
@@ -364,7 +365,7 @@ class Block extends Sprite
     
     public function hideRunFeedback() : Void{
         if (filters != null && filters.length > 0) {
-            var newFilters : Array<Dynamic> = [];
+            var newFilters : Array<BitmapFilter> = [];
             for (f/* AS3HX WARNING could not determine type for var: f exp: EIdent(filters) type: null */ in filters){
                 if (!(Std.is(f, GlowFilter)))                     newFilters.push(f);
             }
@@ -372,7 +373,7 @@ class Block extends Sprite
         }
     }
     
-    private function runFeedbackFilters() : Array<Dynamic>{
+    private function runFeedbackFilters() : Array<flash.filters.BitmapFilter>{
         // filters for showing that a stack is running
         var f : GlowFilter = new GlowFilter(0xfeffa0);
         f.strength = 2;
@@ -383,7 +384,7 @@ class Block extends Sprite
     
     public function saveOriginalState() : Void{
         originalParent = parent;
-        if (parent) {
+        if (parent != null) {
             var b : Block = try cast(parent, Block) catch(e:Dynamic) null;
             if (b == null) {
                 originalRole = ROLE_ABSOLUTE;
@@ -575,7 +576,7 @@ class Block extends Sprite
     public function duplicate(forClone : Bool, forStage : Bool = false) : Block{
         var newSpec : String = spec;
         if (op == "whenClicked")             newSpec = (forStage) ? "when Stage clicked" : "when this sprite clicked";
-        var dup : Block = new Block(newSpec, type, (Int)((forClone) ? -1 : base.color), op);
+        var dup : Block = new Block(newSpec, type, Std.int((forClone) ? -1 : base.color), op);
         dup.isRequester = isRequester;
         dup.forcedRequester = forcedRequester;
         dup.parameterNames = parameterNames;
@@ -728,7 +729,7 @@ class Block extends Sprite
     
     public function replaceArgWithBlock(oldArg : DisplayObject, b : Block, pane : DisplayObjectContainer) : Void{
         var i : Int = Lambda.indexOf(labelsAndArgs, oldArg);
-        if (i < 0)             return  // remove the old argument  ;
+        if (i < 0)             return;  // remove the old argument  ;
         
         
         
@@ -857,7 +858,7 @@ class Block extends Sprite
     }
     
     public function duplicateStack(deltaX : Float, deltaY : Float) : Void{
-        if (isProcDef() || op == "proc_declaration")             return  // don't duplicate procedure definition  ;
+        if (isProcDef() || op == "proc_declaration")             return;  // don't duplicate procedure definition  ;
         var forStage : Bool = Scratch.app.viewedObj()!= null && Scratch.app.viewedObj().isStage;
         var newStack : Block = BlockIO.stringToStack(BlockIO.stackToString(this), forStage);
         var p : Point = localToGlobal(new Point(0, 0));
@@ -872,7 +873,7 @@ class Block extends Sprite
         }
         var app : Scratch = Scratch.app;
         var top : Block = topBlock();
-        if (op == Specs.PROCEDURE_DEF && app.runtime.allCallsOf(spec, app.viewedObj(), false).length) {
+        if (op == Specs.PROCEDURE_DEF && app.runtime.allCallsOf(spec, app.viewedObj(), false).length != 0) {
             DialogBox.notify("Cannot Delete", "To delete a block definition, first remove all uses of the block.", stage);
             return false;
         }
@@ -887,7 +888,7 @@ class Block extends Sprite
         x = top.x;
         y = top.y;
         if (top != this)             x += top.width + 5;
-        app.runtime.recordForUndelete(this, x, y, 0, app.viewedObj());
+        app.runtime.recordForUndelete(this, Std.int(x), Std.int(y), 0, app.viewedObj());
         app.scriptsPane.saveScripts();
         ///* AS3HX WARNING namespace modifier SCRATCH::allow3d */{app.runtime.checkForGraphicEffects();
         //}

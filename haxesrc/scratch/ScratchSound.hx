@@ -65,7 +65,7 @@ class ScratchSound {
 	public var undoList:Array<Dynamic> = [];
 	public var undoListIndex:Int;
 
-	public function ScratchSound(name:String, sndData:ByteArray) {
+	public function new(name:String, sndData:ByteArray) {
 		this.soundName = name;
 		/*
 		if (sndData != null) {

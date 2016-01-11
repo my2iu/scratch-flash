@@ -146,14 +146,14 @@ class LooksPrims
     }
     
     private function startScene(s : String, waitFlag : Bool) : Void{
-        if ("next backdrop" == s)             s = backdropNameAt(app.stagePane.currentCostumeIndex + 1)
-        else if ("previous backdrop" == s)             s = backdropNameAt(app.stagePane.currentCostumeIndex - 1)
+        if ("next backdrop" == s)             s = backdropNameAt(Std.int(app.stagePane.currentCostumeIndex + 1))
+        else if ("previous backdrop" == s)             s = backdropNameAt(Std.int(app.stagePane.currentCostumeIndex - 1))
         else {
             var n : Float = Interpreter.asNumber(s);
             if (!Math.isNaN(n)) {
                 n = (Math.round(n) - 1) % app.stagePane.costumes.length;
                 if (n < 0)                     n += app.stagePane.costumes.length;
-                s = app.stagePane.costumes[n].costumeName;
+                s = app.stagePane.costumes[Std.int(n)].costumeName;
             }
         }
         interp.startScene(s, waitFlag);
@@ -177,7 +177,7 @@ class LooksPrims
             interp.startTimer(secs);
         }
         else {
-            if (interp.checkTimer() && s.bubble && (s.bubble.getSource() == b)) {
+            if (interp.checkTimer() && s.bubble != null && (s.bubble.getSource() == b)) {
                 s.hideBubble();
             }
         }
@@ -299,8 +299,8 @@ class LooksPrims
     private function primGoBack(b : Block) : Void{
         var s : ScratchSprite = interp.targetSprite();
         if ((s == null) || (s.parent == null))             return;
-        var newIndex : Int = s.parent.getChildIndex(s) - interp.numarg(b, 0);
-        newIndex = Math.max(minSpriteLayer(), Math.min(newIndex, s.parent.numChildren - 1));
+        var newIndex : Int = Std.int(s.parent.getChildIndex(s) - interp.numarg(b, 0));
+        newIndex = Std.int(Math.max(minSpriteLayer(), Math.min(newIndex, s.parent.numChildren - 1)));
         
         if (newIndex > 0 && newIndex < s.parent.numChildren) {
             s.parent.setChildIndex(s, newIndex);
@@ -311,7 +311,7 @@ class LooksPrims
     private function minSpriteLayer() : Int{
         // Return the lowest sprite layer.
         var stg : ScratchStage = app.stagePane;
-        return stg.getChildIndex((stg.videoImage) ? stg.videoImage : stg.penLayer) + 1;
+        return stg.getChildIndex((stg.videoImage != null) ? stg.videoImage : stg.penLayer) + 1;
     }
     
     private function primSetVideoState(b : Block) : Void{

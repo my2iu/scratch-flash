@@ -198,6 +198,7 @@ class ProcedureSpecEditor extends Sprite
         
         var lightGray : Int = 0xA0A0A0;
         
+		var icon : BlockShape;
         icon = new BlockShape(BlockShape.NumberShape, lightGray);
         icon.setWidthAndTopHeight(25, 14, true);
         buttons[0].setIcon(icon);
@@ -206,7 +207,7 @@ class ProcedureSpecEditor extends Sprite
         icon.setWidthAndTopHeight(22, 14, true);
         buttons[1].setIcon(icon);
         
-        var icon : BlockShape = new BlockShape(BlockShape.BooleanShape, lightGray);
+        icon = new BlockShape(BlockShape.BooleanShape, lightGray);
         icon.setWidthAndTopHeight(25, 14, true);
         buttons[2].setIcon(icon);
         
@@ -303,7 +304,7 @@ class ProcedureSpecEditor extends Sprite
     private function appendObj(o : DisplayObject) : Void{
         row.push(o);
         addChild(o);
-        if (stage) {
+        if (stage != null) {
             if (Std.is(o, TextField))                 stage.focus = cast((o), TextField);
             if (Std.is(o, BlockArg))                 cast((o), BlockArg).startEditing();
         }
@@ -457,9 +458,10 @@ class ProcedureSpecEditor extends Sprite
         var params : Array<Dynamic> = [];
         var change : Bool = false;
         // Update label fields to show focus.
+		var tf : TextField ;
         for (o in row){
             if (Std.is(o, TextField)) {
-                var tf : TextField = cast((o), TextField);
+                tf = cast((o), TextField);
                 var hasFocus : Bool = (stage != null) && (tf == stage.focus);
                 tf.textColor = (hasFocus) ? 0 : 0xFFFFFF;
                 tf.backgroundColor = (hasFocus) ? selectedLabelColor : labelColor;

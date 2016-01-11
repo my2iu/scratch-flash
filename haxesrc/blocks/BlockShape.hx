@@ -56,9 +56,9 @@ class BlockShape extends Shape
     private static inline var BottomBarH : Int = 16;  // height of the bottom bar of a C or E block  
     private static inline var DividerH : Int = 18;  // height of the divider bar in an E block  
     private static inline var NotchL1 : Int = 13;
-    private var NotchL2 : Int = NotchL1 + NotchDepth;
-    private var NotchR1 : Int = NotchL2 + 8;
-    private var NotchR2 : Int = NotchR1 + NotchDepth;
+    private static inline var NotchL2 : Int = NotchL1 + NotchDepth;
+    private static inline var NotchR1 : Int = NotchL1 + NotchDepth + 8;
+    private static inline var NotchR2 : Int = NotchL1 + NotchDepth + 8 + NotchDepth;
     
     // Variables
     public var color : Int;
@@ -173,7 +173,7 @@ class BlockShape extends Shape
         return [f];
     }
     
-    private function dropFeedbackFilters(forReporter : Bool) : Array<Dynamic>{
+    private function dropFeedbackFilters(forReporter : Bool) : Array<flash.filters.BitmapFilter>{
         // filters for command/reporter block drop feedback
         var f : GlowFilter;
         if (forReporter) {

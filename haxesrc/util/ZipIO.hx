@@ -39,7 +39,7 @@ class ZipIO
     
     private var buf : ByteArray;
     private var entries : Array<Dynamic> = [];
-    private var writtenFiles : Dynamic = new Dynamic();
+    private var writtenFiles : Dynamic = {};
     
     //************************************
     // Reading
@@ -197,7 +197,7 @@ class ZipIO
         buf = new ByteArray();
         buf.endian = Endian.LITTLE_ENDIAN;
         entries = [];
-        writtenFiles = new Dynamic();
+        writtenFiles = {};
     }
     
     public function write(fileName : String, stringOrByteArray : Dynamic, useCompression : Bool = false) : Void{
