@@ -45,7 +45,7 @@ class Watcher extends Sprite implements DragClient
     
     private static inline var decimalPlaces : Int = 6;
     public static function formatValue(value : Dynamic) : String{
-        if (Std.is(value, Float) || (Std.is(value, String) && Std.string(parseFloat(value)) == value)) {
+        if (Std.is(value, Float) || (Std.is(value, String) && Std.string(Std.parseFloat(value)) == value)) {
             // show at most N digits after the decimal point
             value = Std.parseFloat(Std.parseFloat(value).toFixed(decimalPlaces));
         }
@@ -336,7 +336,7 @@ class Watcher extends Sprite implements DragClient
     }
     
     private function adjustReadoutSize() : Void{
-        frame.w = label.width + readout.width + 15;
+        frame.w = Std.int(label.width + readout.width + 15);
         frame.h = ((mode == NORMAL_MODE)) ? 21 : 31;
         frame.setWidthHeight(frame.w, frame.h);
     }

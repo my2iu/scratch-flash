@@ -316,13 +316,15 @@ class Interpreter
         if (b == null)             return 0;  // arg() and friends can pass null if arg index is out of range  ;
         var op : String = b.op;
         if (b.opFunction == null) {
-            if (op.indexOf(".") > -1)                 b.opFunction = app.extensionManager.primExtensionOp
-            else b.opFunction = ((Reflect.field(primTable, op) == null)) ? primNoop : Reflect.field(primTable, op);
+            if (op.indexOf(".") > -1)                 
+				b.opFunction = app.extensionManager.primExtensionOp;
+            else 
+			b.opFunction = ((Reflect.field(primTable, op) == null)) ? primNoop : Reflect.field(primTable, op);
         }  // TODO: Optimize this into a cached check if the args *could* block at all  
         
         
         
-        if (b.args.length && checkBlockingArgs(b)) {
+        if (b.args.length > 0 && checkBlockingArgs(b)) {
             doYield();
             return null;
         }  // Debug code  
@@ -418,7 +420,7 @@ class Interpreter
     /* Timer */
     
     public function startTimer(secs : Float) : Void{
-        var waitMSecs : Int = 1000 * secs;
+        var waitMSecs : Int = Std.int(1000 * secs);
         if (waitMSecs < 0)             waitMSecs = 0;
         activeThread.tmp = currentMSecs + waitMSecs;  // end time in milliseconds  
         activeThread.firstTime = false;
@@ -578,7 +580,7 @@ class Interpreter
     private function primRepeat(b : Block) : Void{
         if (activeThread.firstTime) {
             var repeatCount : Float = Math.max(0, Math.min(Math.round(numarg(b, 0)), 2147483647));  // clip to range: 0 to 2^31-1  
-            activeThread.tmp = repeatCount;
+            activeThread.tmp = Std.int(repeatCount);
             activeThread.firstTime = false;
         }
         if (activeThread.tmp > 0) {
@@ -615,7 +617,7 @@ class Interpreter
             var receivers : Array<Dynamic> = [];
             var newThreads : Array<Dynamic> = [];
             msg = msg.toLowerCase();
-            var findReceivers : Function = function(stack : Block, target : ScratchObj) : Void{
+            var findReceivers : Block->ScratchObj->Void = function(stack : Block, target : ScratchObj) : Void{
                 if ((stack.op == "whenIReceive") && (stack.args[0].argValue.toLowerCase() == msg)) {
                     receivers.push([stack, target]);
                 }

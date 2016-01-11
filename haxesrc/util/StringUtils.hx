@@ -27,7 +27,7 @@ class StringUtils
     // Tokens not contained in the dictionary will not be modified.
     public static function substitute(s : String, context : Dictionary) : String{
         for (token in Reflect.fields(context)){
-            s = s.replace("{" + token + "}", Reflect.field(context, token));
+            s = StringTools.replace(s, "{" + token + "}", Reflect.field(context, token));
         }
         return s;
     }

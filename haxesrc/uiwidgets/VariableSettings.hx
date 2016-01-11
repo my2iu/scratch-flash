@@ -86,7 +86,7 @@ class VariableSettings extends Sprite
         globalLabel.x = (nextX += 16);
         globalLabel.y = baseY;
         
-        nextX += globalLabel.textWidth + 20;
+        nextX += Std.int(globalLabel.textWidth + 20);
         
         localButton.x = nextX;
         localButton.y = baseY + 3;
@@ -104,7 +104,7 @@ class VariableSettings extends Sprite
     
     private function drawLine() : Void{
         var lineY : Int = 36;
-        var w : Int = getRect(this).width;
+        var w : Int = Std.int(getRect(this).width);
         if (isStage)             w += 10;
         var g : Graphics = graphics;
         g.clear();

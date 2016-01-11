@@ -44,14 +44,6 @@
 
 package util;
 
-import util.Dictionary;
-import util.IDataInput;
-import util.ListWatcher;
-import util.ScratchCostume;
-import util.ScratchSound;
-import util.ScratchSprite;
-import util.ScratchStage;
-import util.Watcher;
 
 import flash.display.BitmapData;
 import flash.errors.IOError;
@@ -192,7 +184,7 @@ class ObjReader
                 return num;
             case 8:
                 num = s.readDouble();
-                if (Std.is(num, Int))                     num += BlockArg.epsilon  // ensure result is a float, even if it has no fractional part  ;
+                if (Std.is(num, Int))                     num += BlockArg.epsilon;  // ensure result is a float, even if it has no fractional part  ;
                 return num;
             case 9, 10:
                 count = s.readInt();
@@ -253,7 +245,7 @@ class ObjReader
                 for (i in 0...5){
                     fields[i] = readField();
                 }
-                if (classID == 35)                     fields[5] = readField()  // colormap  ;
+                if (classID == 35)                     fields[5] = readField();  // colormap  ;
                 return fields;
             default:
                 throw new IOError("Unknown fixed-format class " + classID);

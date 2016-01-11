@@ -62,7 +62,7 @@ class JSON
     public static function escapeForJS(s : String) : String{
         var ch : String;
         var result : String = "";
-        for (i=0 ...s.length){
+        for (i in 0 ...s.length){
             result += (ch = s.charAt(i));
             if ("\\" == ch)                 result += "\\";
         }
@@ -87,19 +87,19 @@ class JSON
 
                 switch (ch)
                 {case "t":
-                        if (src.nextString(4) == "true")                             return true
+                        if (src.nextString(4) == "true")                             return true;
                         else error("Expected 'true'");
                 }
 
                 switch (ch)
                 {case "f":
-                        if (src.nextString(5) == "false")                             return false
+                        if (src.nextString(5) == "false")                             return false;
                         else error("Expected 'false'");
                 }
 
                 switch (ch)
                 {case "n":
-                        if (src.nextString(4) == "null")                             return null
+                        if (src.nextString(4) == "null")                             return null;
                         else error("Expected 'null'");
                 }
 
@@ -107,20 +107,20 @@ class JSON
                 {case "-":
                         if (src.peekString(9) == "-Infinity") {
                             src.skip(9);
-                            return Float.NEGATIVE_INFINITY;
+                            return Math.NEGATIVE_INFINITY;
                         }
                         else return readNumber();
                 }
 
                 switch (ch)
                 {case "I":
-                        if (src.nextString(8) == "Infinity")                             return Float.POSITIVE_INFINITY
+                        if (src.nextString(8) == "Infinity")                             return Math.POSITIVE_INFINITY
                         else error("Expected 'Infinity'");
                 }
 
                 switch (ch)
                 {case "N":
-                        if (src.nextString(3) == "NaN")                             return NaN
+                        if (src.nextString(3) == "NaN")                             return Math.NaN;
                         else error("Expected 'NaN'");
                 }
                 error("Incomplete JSON data");

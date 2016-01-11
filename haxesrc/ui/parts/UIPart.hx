@@ -48,9 +48,9 @@ class UIPart extends Sprite
     public var app : Scratch;
     public var w : Int;public var h : Int;
     
-    public function right() : Int{return x + w;
+    public function right() : Int{return Std.int(x + w);
     }
-    public function bottom() : Int{return y + h;
+    public function bottom() : Int{return Std.int(y + h);
     }
     
     public static function makeLabel(s : String, fmt : TextFormat, x : Int = 0, y : Int = 0) : TextField{
@@ -121,7 +121,7 @@ class UIPart extends Sprite
         label.textColor = labelColor;
         var img : Sprite = new Sprite();
         img.addChild(label);
-        if (hasArrow)             img.addChild(menuArrow(label.textWidth + 5, 6, labelColor));
+        if (hasArrow)             img.addChild(menuArrow(Std.int(label.textWidth + 5), 6, labelColor));
         return img;
     }
     

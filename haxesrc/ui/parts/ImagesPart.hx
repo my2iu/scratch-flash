@@ -180,7 +180,7 @@ class ImagesPart extends UIPart
         }
     }
     
-    private function isStage() : Bool{return app.viewedObj() && app.viewedObj().isStage;
+    private function isStage() : Bool{return app.viewedObj() != null && app.viewedObj().isStage;
     }
     
     public function step() : Void{
@@ -208,7 +208,7 @@ class ImagesPart extends UIPart
     }
     
     private function fixlayout() : Void{
-        var extraSpace : Int = Math.max(0, (w - 590) / 3);
+        var extraSpace : Int = Std.int(Math.max(0, (w - 590) / 3));
         bigSpace = smallSpace + extraSpace;
         
         newCostumeLabel.x = 7;
@@ -216,10 +216,10 @@ class ImagesPart extends UIPart
         
         listFrame.x = 1;
         listFrame.y = 58;
-        listFrame.setWidthHeight(columnWidth, h - listFrame.y);
+        listFrame.setWidthHeight(columnWidth, Std.int(h - listFrame.y));
         
         var contentsW : Int = w - contentsX - 15;
-        nameField.setWidth(Math.min(135, contentsW));
+        nameField.setWidth(Std.int(Math.min(135, contentsW)));
         nameField.x = contentsX;
         nameField.y = 15;
         
@@ -231,7 +231,7 @@ class ImagesPart extends UIPart
         undoButton.y = redoButton.y = nameField.y - 2;
         
         fixEditorLayout();
-        if (parent)             refresh();
+        if (parent != null)             refresh();
     }
     
     public function selectCostume() : Void{
@@ -244,7 +244,7 @@ class ImagesPart extends UIPart
         //var zoomAndScroll : Array<Dynamic> = editor.getZoomAndScroll();
         //editor.shutdown();
         var c : ScratchCostume = obj.currentCostume();
-        useBitmapEditor(c.isBitmap() && !c.text);
+        useBitmapEditor(c.isBitmap() && c.text == null);
         //editor.editCostume(c, obj.isStage);
         //editor.setZoomAndScroll(zoomAndScroll);
         if (changed)             app.setSaveNeeded();
@@ -277,8 +277,8 @@ class ImagesPart extends UIPart
     public function useBitmapEditor(flag : Bool) : Void{
         // Switch editors based on flag. Do nothing if editor is already of the correct type.
         // NOTE: After switching editors, the caller must install costume and other state in the new editor.
-        var oldSettings : DrawProperties;
-        var oldZoomAndScroll : Array<Dynamic>;
+        //var oldSettings : DrawProperties;
+        //var oldZoomAndScroll : Array<Dynamic>;
 		/*
         if (editor != null) {
             oldSettings = editor.getShapeProps();
@@ -600,8 +600,8 @@ class ImagesPart extends UIPart
     
     private function addAndSelectCostume(c : ScratchCostume) : Void{
         var obj : ScratchObj = app.viewedObj();
-        if (!c.baseLayerData)             c.prepareToSave();
-        if (!app.okayToAdd(c.baseLayerData.length))             return  // not enough room  ;
+        if (c.baseLayerData == null)             c.prepareToSave();
+        if (!app.okayToAdd(c.baseLayerData.length))             return;  // not enough room  ;
         c.costumeName = obj.unusedCostumeName(c.costumeName);
         obj.costumes.push(c);
         obj.showCostume(obj.costumes.length - 1);

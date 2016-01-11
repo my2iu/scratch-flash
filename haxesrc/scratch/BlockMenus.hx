@@ -282,12 +282,13 @@ class BlockMenus implements DragClient
     }
     
     private function extensionMenu(evt : MouseEvent, menuName : String) : Bool{
-        var items : Array<Dynamic> = app.extensionManager.menuItemsFor(block.op, menuName);
-        if (items == null)             return false;
-        var m : Menu = new Menu(setBlockArg);
-        for (s in items)m.addItem(s);
-        showMenu(m);
-        return true;
+        //var items : Array<Dynamic> = app.extensionManager.menuItemsFor(block.op, menuName);
+        //if (items == null)             return false;
+        //var m : Menu = new Menu(setBlockArg);
+        //for (s in items)m.addItem(s);
+        //showMenu(m);
+        //return true;
+		return false;
     }
     
     private function instrumentMenu(evt : MouseEvent) : Void{
@@ -402,7 +403,7 @@ class BlockMenus implements DragClient
             if (block.op == "getAttribute:of:") {
                 var obj : ScratchObj = app.stagePane.objNamed(s);
                 var attr : String = block.args[0].argValue;
-                var validAttrs : Array<Dynamic> = obj && (obj.isStage) ? stageAttributes : spriteAttributes;
+                var validAttrs : Array<Dynamic> = obj != null && (obj.isStage) ? stageAttributes : spriteAttributes;
                 if (Lambda.indexOf(validAttrs, attr) == -1 && !obj.ownsVar(attr)) {
                     block.args[0].setArgValue(validAttrs[0]);
                 }
@@ -441,7 +442,7 @@ class BlockMenus implements DragClient
             Scratch.app.setSaveNeeded();
         };
         var m : Menu = new Menu(setStopType, "stop");
-        if (!block.nextBlock) {
+        if (block.nextBlock == null) {
             m.addItem("all");
             m.addItem("this script");
         }
@@ -586,7 +587,7 @@ class BlockMenus implements DragClient
             block.defaultArgValues = cast((dialog.widget), ProcedureSpecEditor).defaultArgValues();
             block.warpProcFlag = cast((dialog.widget), ProcedureSpecEditor).warpFlag();
             block.setSpec(newSpec);
-            if (block.nextBlock)                 block.nextBlock.allBlocksDo(function(b : Block) : Void{
+            if (block.nextBlock != null)                 block.nextBlock.allBlocksDo(function(b : Block) : Void{
                         if (b.op == Specs.GET_PARAM)                             b.parameterIndex = -1;  // parameters may have changed; clear cached indices  ;
                     });
             for (caller/* AS3HX WARNING could not determine type for var: caller exp: ECall(EField(EField(EIdent(app),runtime),allCallsOf),[EIdent(oldSpec),ECall(EField(EIdent(app),viewedObj),[])]) type: null */ in app.runtime.allCallsOf(oldSpec, app.viewedObj())){
@@ -743,7 +744,7 @@ class BlockMenus implements DragClient
     
     public function dragMove(evt : MouseEvent) : Void{
         if (pickingColor) {
-            blockArg.setArgValue(pixelColorAt(evt.stageX, evt.stageY));
+            blockArg.setArgValue(pixelColorAt(Std.int(evt.stageX), Std.int(evt.stageY)));
             Scratch.app.setSaveNeeded();
         }
     }

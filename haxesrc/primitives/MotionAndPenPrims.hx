@@ -24,12 +24,6 @@
 
 package primitives;
 
-import primitives.Graphics;
-import primitives.Point;
-import primitives.Rectangle;
-import primitives.Scratch;
-import primitives.ScratchSprite;
-import primitives.ScratchStage;
 
 import blocks.*;
 
@@ -360,7 +354,7 @@ class MotionAndPenPrims
         }
         if (d4 < minDist) {minDist = d4;e = 4;
         }
-        if (minDist > 0)             return false  // point away from nearest edge    // not touching to any edge  ;
+        if (minDist > 0)             return false;  // point away from nearest edge    // not touching to any edge  ;
         
         var radians : Float = ((90 - s.direction) * Math.PI) / 180;
         var dx : Float = Math.cos(radians);

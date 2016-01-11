@@ -70,6 +70,6 @@ class CameraDialog extends DialogBox
     
     public function closeDialog() : Void{
         if (video != null)             video.attachCamera(null);
-        if (parent)             parent.removeChild(this);
+        if (parent != null)             parent.removeChild(this);
     }
 }

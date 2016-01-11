@@ -242,11 +242,11 @@ class SpriteThumbnail extends Sprite
         var item : MediaInfo = try cast(obj, MediaInfo) catch(e:Dynamic) null;
         if (item != null) {
             // accept dropped costumes and sounds from another sprite, but not yet from Backpack
-            if (item.mycostume) {
+            if (item.mycostume != null) {
                 addCostume(item.mycostume.duplicate());
                 return true;
             }
-            if (item.mysound) {
+            if (item.mysound != null) {
                 addSound(item.mysound.duplicate());
                 return true;
             }

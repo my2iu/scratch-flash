@@ -25,11 +25,6 @@
 
 package ui;
 
-import ui.Graphics;
-import ui.Sprite;
-import ui.TextField;
-import ui.TextFormat;
-
 import flash.display.*;
 import flash.events.MouseEvent;
 import flash.text.*;
@@ -65,7 +60,7 @@ class PaletteSelectorItem extends Sprite
     
     public function setSelected(flag : Bool) : Void{
         var w : Int = 100;
-        var h : Int = label.height + 2;
+        var h : Int = Std.int(label.height + 2);
         var tabInset : Int = 8;
         var tabW : Int = 7;
         isSelected = flag;

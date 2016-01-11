@@ -43,8 +43,8 @@ class LoadProgress extends Sprite
     {
         super();
         addBackground(310, 120);
-        addChild(titleField = Resources.makeLabel("", titleFormat, 20, bkg.height - 61));
-        addChild(infoField = Resources.makeLabel("", infoFormat, 20, bkg.height - 35));
+        addChild(titleField = Resources.makeLabel("", titleFormat, 20, Std.int(bkg.height - 61)));
+        addChild(infoField = Resources.makeLabel("", infoFormat, 20, Std.int(bkg.height - 35)));
         
         addChild(groove = new Shape());
         addChild(progressBar = new Shape());
@@ -69,7 +69,7 @@ class LoadProgress extends Sprite
     }
     
     public function setProgress(p : Float) : Void{
-        drawBar(progressBar.graphics, CSS.overColor, Math.floor(groove.width * p), groove.height);
+        drawBar(progressBar.graphics, CSS.overColor, Math.floor(groove.width * p), Std.int(groove.height));
     }
     
     private function addBackground(w : Int, h : Int) : Void{
@@ -91,7 +91,7 @@ class LoadProgress extends Sprite
     }
     
     private function drawBar(g : Graphics, c : Int, w : Int, h : Int) : Void{
-        var radius : Int = h / 2;
+        var radius : Int = Std.int(h / 2);
         g.clear();
         g.beginFill(c);
         g.drawRoundRect(0, 0, w, h, radius, radius);

@@ -212,11 +212,11 @@ class LibraryPart extends UIPart
         
         spritesFrame.y = CSS.titleBarH + 1;
         spritesFrame.allowHorizontalScrollbar = false;
-        spritesFrame.setWidthHeight(w - spritesFrame.x, h - spritesFrame.y);
+        spritesFrame.setWidthHeight(Std.int(w - spritesFrame.x), Std.int(h - spritesFrame.y));
         
         spriteDetails.x = spritesFrame.x;
         spriteDetails.y = spritesFrame.y;
-        spriteDetails.setWidthHeight(w - spritesFrame.x, h - spritesFrame.y);
+        spriteDetails.setWidthHeight(Std.int(w - spritesFrame.x), Std.int(h - spritesFrame.y));
     }
     
     public function highlight(highlightList : Array<Dynamic>) : Void{
@@ -243,7 +243,7 @@ class LibraryPart extends UIPart
                     return spr1.indexInLibrary - spr2.indexInLibrary;
                 });
         var inset : Int = 2;
-        var rightEdge : Int = w - spritesFrame.x;
+        var rightEdge : Int = Std.int(w - spritesFrame.x);
         var nextX : Int = inset;
         var nextY : Int = inset;
         var index : Int = 1;
@@ -253,10 +253,10 @@ class LibraryPart extends UIPart
             tn.x = nextX;
             tn.y = nextY;
             spritesPane.addChild(tn);
-            nextX += tn.width;
+            nextX += Std.int(tn.width);
             if ((nextX + tn.width) > rightEdge) {  // start new line  
                 nextX = inset;
-                nextY += tn.height;
+                nextY += Std.int(tn.height);
             }
         }
         spritesPane.updateSize();
@@ -272,8 +272,8 @@ class LibraryPart extends UIPart
             if (tn != null && (tn.targetObj == viewedObj))                 sel = tn;
         }
         if (sel != null) {
-            var selTop : Int = sel.y + spritesPane.y - 1;
-            var selBottom : Int = selTop + sel.height;
+            var selTop : Int = Std.int(sel.y + spritesPane.y - 1);
+            var selBottom : Int = Std.int(selTop + sel.height);
             spritesPane.y -= Math.max(0, selBottom - spritesFrame.visibleH());
             spritesPane.y -= Math.min(0, selTop);
             spritesFrame.updateScrollbars();

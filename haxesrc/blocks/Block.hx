@@ -881,7 +881,7 @@ class Block extends Sprite
         }  // TODO: Remove any waiting reporter data in the Scratch.app.extensionManager  
         
         if (Std.is(parent, Block))             cast((parent), Block).removeBlock(this)
-        else if (parent)             parent.removeChild(this);
+        else if (parent != null)             parent.removeChild(this);
         this.cacheAsBitmap = false;
         // set position for undelete
         x = top.x;
@@ -889,8 +889,8 @@ class Block extends Sprite
         if (top != this)             x += top.width + 5;
         app.runtime.recordForUndelete(this, x, y, 0, app.viewedObj());
         app.scriptsPane.saveScripts();
-        /* AS3HX WARNING namespace modifier SCRATCH::allow3d */{app.runtime.checkForGraphicEffects();
-        }
+        ///* AS3HX WARNING namespace modifier SCRATCH::allow3d */{app.runtime.checkForGraphicEffects();
+        //}
         app.updatePalette();
         return true;
     }
@@ -904,7 +904,7 @@ class Block extends Sprite
         if (scriptsPane == null)             return result;
         for (i in 0...scriptsPane.numChildren){
             var c : ScratchComment = try cast(scriptsPane.getChildAt(i), ScratchComment) catch(e:Dynamic) null;
-            if (c != null && c.blockRef && Lambda.indexOf(allBlocks, c.blockRef) != -1) {
+            if (c != null && c.blockRef != null && Lambda.indexOf(allBlocks, c.blockRef) != -1) {
                 result.push(c);
             }
         }

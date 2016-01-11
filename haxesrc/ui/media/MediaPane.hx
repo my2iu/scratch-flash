@@ -123,8 +123,8 @@ class MediaPane extends ScrollFrameContents
     private function scrollToItem(item : MediaInfo) : Void{
         var frame : ScrollFrame = try cast(parent, ScrollFrame) catch(e:Dynamic) null;
         if (frame == null)             return;
-        var itemTop : Int = item.y + y - 1;
-        var itemBottom : Int = itemTop + item.height;
+        var itemTop : Int = Std.int(item.y + y - 1);
+        var itemBottom : Int = Std.int(itemTop + item.height);
         y -= Math.max(0, itemBottom - frame.visibleH());
         y -= Math.min(0, itemTop);
         frame.updateScrollbars();
@@ -134,10 +134,10 @@ class MediaPane extends ScrollFrameContents
         var viewedObj : ScratchObj = app.viewedObj();
         if ((viewedObj == null) || !isSound)             return;
         if (viewedObj.sounds.length < 1)             return;
-        if (!this.parent || !this.parent.parent)             return;
+        if (this.parent == null || this.parent.parent == null)             return;
         var sp : SoundsPart = try cast(this.parent.parent, SoundsPart) catch(e:Dynamic) null;
         if (sp == null)             return;
-        sp.currentIndex = Math.min(sp.currentIndex, viewedObj.sounds.length - 1);
+        sp.currentIndex = Std.int(Math.min(sp.currentIndex, viewedObj.sounds.length - 1));
         var current : ScratchSound = try cast(viewedObj.sounds[sp.currentIndex], ScratchSound) catch(e:Dynamic) null;
         for (i in 0...numChildren){
             var si : MediaInfo = try cast(getChildAt(i), MediaInfo) catch(e:Dynamic) null;
@@ -164,7 +164,7 @@ class MediaPane extends ScrollFrameContents
     private function changeMediaOrder(dropped : MediaInfo) : Void{
         var inserted : Bool = false;
         var newItems : Array<Dynamic> = [];
-        var dropY : Int = globalToLocal(new Point(dropped.x, dropped.y)).y;
+        var dropY : Int = Std.int(globalToLocal(new Point(dropped.x, dropped.y)).y);
         for (i in 0...numChildren){
             var item : MediaInfo = try cast(getChildAt(i), MediaInfo) catch(e:Dynamic) null;
             if (item == null)                 {i++;continue;
@@ -180,8 +180,8 @@ class MediaPane extends ScrollFrameContents
     }
     
     private function sameMedia(item1 : MediaInfo, item2 : MediaInfo) : Bool{
-        if (item1.mycostume && (item1.mycostume == item2.mycostume))             return true;
-        if (item1.mysound && (item1.mysound == item2.mysound))             return true;
+        if (item1.mycostume  != null&& (item1.mycostume == item2.mycostume))             return true;
+        if (item1.mysound != null && (item1.mysound == item2.mysound))             return true;
         return false;
     }
     

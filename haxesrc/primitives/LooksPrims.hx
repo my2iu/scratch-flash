@@ -24,10 +24,6 @@
 
 package primitives;
 
-import primitives.Scratch;
-import primitives.ScratchSprite;
-import primitives.ScratchStage;
-
 import flash.utils.Dictionary;
 import blocks.*;
 import interpreter.*;

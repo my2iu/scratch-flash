@@ -57,7 +57,7 @@ class ZoomWidget extends Sprite
     private function changeZoomBy(delta : Int) : Void{
         var scaleFactors : Array<Dynamic> = [25, 50, 75, 100, 125, 150, 200];
         zoom += delta;
-        zoom = Math.max(-3, Math.min(zoom, 3));
+        zoom = Std.int(Math.max(-3, Math.min(zoom, 3)));
         smaller.setDisabled(zoom < -2, 0.5);
         bigger.setDisabled(zoom > 2, 0.5);
         scriptsPane.setScale(scaleFactors[3 + zoom] / 100);

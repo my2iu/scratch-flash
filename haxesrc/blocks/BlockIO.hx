@@ -148,8 +148,8 @@ class BlockIO
         for (entry/* AS3HX WARNING could not determine type for var: entry exp: EField(EIdent(Specs),commands) type: null */ in Specs.commands){
             if (entry[3] == op)                 return entry;
         }
-        var extensionSpec : Array<Dynamic> = Scratch.app.extensionManager.specForCmd(op);
-        if (extensionSpec != null)             return extensionSpec;
+        //var extensionSpec : Array<Dynamic> = Scratch.app.extensionManager.specForCmd(op);
+        //if (extensionSpec != null)             return extensionSpec;
         
         var spec : String = "undefined";
         for (i in 1...cmd.length){spec += " %n";

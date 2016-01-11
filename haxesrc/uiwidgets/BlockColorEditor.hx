@@ -1,21 +1,5 @@
 package uiwidgets;
 
-import uiwidgets.BlockShape;
-import uiwidgets.EditableLabel;
-import uiwidgets.Event;
-import uiwidgets.FileReference;
-import uiwidgets.FileReferenceList;
-import uiwidgets.Graphics;
-import uiwidgets.IconButton;
-import uiwidgets.Menu;
-import uiwidgets.MouseEvent;
-import uiwidgets.Point;
-import uiwidgets.Scrollbar;
-import uiwidgets.Shape;
-import uiwidgets.Sprite;
-import uiwidgets.TextField;
-import uiwidgets.TextFormat;
-
 import blocks.*;
 
 import flash.display.*;

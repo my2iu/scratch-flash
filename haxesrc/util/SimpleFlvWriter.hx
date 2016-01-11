@@ -57,8 +57,8 @@ class SimpleFlvWriter
     private var duration : Float;
     
     private var fs : ByteArray = new ByteArray();
-    private inline var blockWidth : Int = 32;
-    private inline var blockHeight : Int = 32;
+    private static inline var blockWidth : Int = 32;
+    private static inline var blockHeight : Int = 32;
     private var previousTagSize : Int = 0;
     private var iteration : Int = 0;
     private var bmp : BitmapData;
@@ -111,12 +111,12 @@ class SimpleFlvWriter
     
     private function header() : ByteArray{
         var ba : ByteArray = new ByteArray();
-        ba.writeByte(0x46)  // 'F'  ;
-        ba.writeByte(0x4C)  // 'L'  ;
-        ba.writeByte(0x56)  // 'V'  ;
-        ba.writeByte(0x01)  // Version 1  ;
-        ba.writeByte(0x01)  // misc flags - video stream only  ;
-        ba.writeUnsignedInt(0x09)  // header length  ;
+        ba.writeByte(0x46);  // 'F'  ;
+        ba.writeByte(0x4C);  // 'L'  ;
+        ba.writeByte(0x56);  // 'V'  ;
+        ba.writeByte(0x01);  // Version 1  ;
+        ba.writeByte(0x01);  // misc flags - video stream only  ;
+        ba.writeUnsignedInt(0x09);  // header length  ;
         return ba;
     }
     
@@ -226,7 +226,7 @@ class SimpleFlvWriter
         // ObjectData (type SCRIPTDATAVALUE):
         
         b.writeByte(8);  // Type (ECMA array = 8)  
-        b.writeUnsignedInt(7)  // SCRIPTDATAVARIABLES...    // // Elements in array  ;
+        b.writeUnsignedInt(7);  // SCRIPTDATAVARIABLES...    // // Elements in array  ;
         
         
         

@@ -68,13 +68,13 @@ class MenuItem extends Sprite
         this.w = w;
         this.h = 1;
         if (label != null) {
-            this.h = Math.max(label.height, itemHeight);
-            label.y = Math.max(0, (h - label.height) / 2);
+            this.h = Std.int(Math.max(label.height, itemHeight));
+            label.y = Std.int(Math.max(0, (h - label.height) / 2));
         }
         setBaseColor(menu.color);
     }
     
-    public function isLine() : Bool{return !label;
+    public function isLine() : Bool{return label == null;
     }
     
     public function getLabel() : String{return (label != null) ? label.text : "";
@@ -119,8 +119,8 @@ class MenuItem extends Sprite
         label.x = leftMargin;
         label.y = 0;
         label.alpha = (enabled) ? 1 : 0.5;
-        w = label.width + leftMargin + rightMargin;
-        h = Math.max(label.height, menu.itemHeight);
+        w = Std.int(label.width + leftMargin + rightMargin);
+        h = Std.int(Math.max(label.height, menu.itemHeight));
         addChild(label);
         setBaseColor(menu.color);
     }

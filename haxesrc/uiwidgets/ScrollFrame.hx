@@ -163,9 +163,9 @@ class ScrollFrame extends Sprite implements DragClient
         fixLayout();
     }
     
-    public function visibleW() : Int{return mask.width;
+    public function visibleW() : Int{return Std.int(mask.width);
     }
-    public function visibleH() : Int{return mask.height;
+    public function visibleH() : Int{return Std.int(mask.height);
     }
     
     public function updateScrollbars() : Void{
@@ -199,11 +199,11 @@ class ScrollFrame extends Sprite implements DragClient
     }
     
     public function maxScrollH() : Int{
-        return Math.max(0, contents.width - visibleW());
+        return Std.int(Math.max(0, contents.width - visibleW()));
     }
     
     public function maxScrollV() : Int{
-        return Math.max(0, contents.height - visibleH());
+        return Std.int(Math.max(0, contents.height - visibleH()));
     }
     
     public function canScrollLeft() : Bool{return contents.x < 0;
@@ -218,12 +218,12 @@ class ScrollFrame extends Sprite implements DragClient
     private function fixLayout() : Void{
         var inset : Int = 2;
         if (hScrollbar != null) {
-            hScrollbar.setWidthHeight(mask.width - 14, hScrollbar.h);
+            hScrollbar.setWidthHeight(Std.int(mask.width - 14), hScrollbar.h);
             hScrollbar.x = inset;
             hScrollbar.y = mask.height - hScrollbar.h - inset;
         }
         if (vScrollbar != null) {
-            vScrollbar.setWidthHeight(vScrollbar.w, mask.height - (2 * inset));
+            vScrollbar.setWidthHeight(vScrollbar.w, Std.int(mask.height - (2 * inset)));
             vScrollbar.x = mask.width - vScrollbar.w - inset;
             vScrollbar.y = inset;
         }
@@ -238,7 +238,7 @@ class ScrollFrame extends Sprite implements DragClient
     private function mouseDown(evt : MouseEvent) : Void{
         if (evt.shiftKey || !dragScrolling)             return;
         if (evt.target == contents) {
-            cast((root), Object).gh.setDragClient(this, evt);
+            cast(root, Dynamic).gh.setDragClient(this, evt);
             contents.mouseChildren = false;
         }
     }
@@ -246,8 +246,8 @@ class ScrollFrame extends Sprite implements DragClient
     public function dragBegin(evt : MouseEvent) : Void{
         xHistory = [mouseX, mouseX, mouseX];
         yHistory = [mouseY, mouseY, mouseY];
-        xOffset = mouseX - contents.x;
-        yOffset = mouseY - contents.y;
+        xOffset = Std.int(mouseX - contents.x);
+        yOffset = Std.int(mouseY - contents.y);
         
         if (visibleW() < contents.width)             showHScrollbar(true);
         if (visibleH() < contents.height)             showVScrollbar(true);

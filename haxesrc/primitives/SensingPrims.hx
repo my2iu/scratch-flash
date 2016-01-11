@@ -24,12 +24,6 @@
 
 package primitives;
 
-import primitives.Bitmap;
-import primitives.BitmapData;
-import primitives.Point;
-import primitives.Rectangle;
-import primitives.Scratch;
-import primitives.ScratchStage;
 
 import flash.display.*;
 import flash.geom.*;
@@ -284,12 +278,12 @@ class SensingPrims
             if ("size" == attribute)                 return s.getSize();
             if ("volume" == attribute)                 return s.volume;
         }if (Std.is(obj, ScratchStage)) {
-            if ("background #" == attribute)                 return obj.costumeNumber()  // support for old 1.4 blocks  ;
+            if ("background #" == attribute)                 return obj.costumeNumber();  // support for old 1.4 blocks  ;
             if ("backdrop #" == attribute)                 return obj.costumeNumber();
             if ("backdrop name" == attribute)                 return obj.currentCostume().costumeName;
             if ("volume" == attribute)                 return obj.volume;
         }
-        if (obj.ownsVar(attribute))             return obj.lookupVar(attribute).value  // variable  ;
+        if (obj.ownsVar(attribute))             return obj.lookupVar(attribute).value;  // variable  ;
         return 0;
     }
     

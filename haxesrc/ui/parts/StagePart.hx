@@ -100,7 +100,7 @@ class StagePart extends UIPart
     public function setWidthHeight(w : Int, h : Int, scale : Float) : Void{
         this.w = w;
         this.h = h;
-        if (app.stagePane)             app.stagePane.scaleX = app.stagePane.scaleY = scale;
+        if (app.stagePane != null)             app.stagePane.scaleX = app.stagePane.scaleY = scale;
         topBarHeight = computeTopBarHeight();
         drawOutline();
         fixLayout();
@@ -171,7 +171,7 @@ class StagePart extends UIPart
     }
     
     private function fixLayout() : Void{
-        if (app.stagePane)             app.stagePane.y = topBarHeight;
+        if (app.stagePane != null)             app.stagePane.y = topBarHeight;
         
         projectTitle.x = 50;
         projectTitle.y = (app.isOffline) ? 8 : 2;
@@ -193,7 +193,7 @@ class StagePart extends UIPart
         versionInfo.x = fullscreenButton.x + 1;
         versionInfo.y = 27;
         
-        projectTitle.setWidth(runButton.x - projectTitle.x - 15);
+        projectTitle.setWidth(Std.int(runButton.x - projectTitle.x - 15));
         
         // x-y readouts
         var left : Int = w - 98;  // w - 95  
@@ -434,7 +434,7 @@ class StagePart extends UIPart
         
         
         
-        SoundMixer.soundTransform = new SoundTransform((evt && (evt.ctrlKey) ? 0 : 1));
+        SoundMixer.soundTransform = new SoundTransform((evt != null && (evt.ctrlKey) ? 0 : 1));
         
         if (evt != null && evt.shiftKey) {
             app.toggleTurboMode();

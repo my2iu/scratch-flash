@@ -54,7 +54,7 @@ class WatcherReadout extends Sprite
     }
     
     public function setContents(s : String) : Void{
-        if (s == tf.text)             return  // no change  ;
+        if (s == tf.text)             return;  // no change  ;
         tf.text = s;
         fixLayout();
     }
@@ -72,7 +72,7 @@ class WatcherReadout extends Sprite
         var w : Int = (isLarge) ? 48 : 40;
         var h : Int = (isLarge) ? 20 : 14;
         var hPad : Int = (isLarge) ? 12 : 5;
-        w = Math.max(w, tf.textWidth + hPad);
+        w = Std.int(Math.max(w, tf.textWidth + hPad));
         tf.width = w;
         tf.height = h;
         tf.y = (isLarge) ? 0 : -1;

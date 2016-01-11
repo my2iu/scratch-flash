@@ -94,7 +94,7 @@ class TopBarPart extends UIPart
     }
     
     public static function strings() : Array<Dynamic>{
-        if (Scratch.app) {
+        if (Scratch.app != null) {
             Scratch.app.showFileMenu(Menu.dummyButton());
             Scratch.app.showEditMenu(Menu.dummyButton());
         }
@@ -131,7 +131,7 @@ class TopBarPart extends UIPart
         if (logoButton != null) {
             logoButton.x = nextX;
             logoButton.y = 5;
-            nextX += logoButton.width + buttonSpace;
+            nextX += Std.int(logoButton.width + buttonSpace);
         }
         return nextX;
     }
@@ -144,16 +144,16 @@ class TopBarPart extends UIPart
         
         languageButton.x = nextX;
         languageButton.y = buttonY - 1;
-        nextX += languageButton.width + buttonSpace;
+        nextX += Std.int(languageButton.width + buttonSpace);
         
         // new/more/tips buttons
         fileMenu.x = nextX;
         fileMenu.y = buttonY;
-        nextX += fileMenu.width + buttonSpace;
+        nextX += Std.int(fileMenu.width + buttonSpace);
         
         editMenu.x = nextX;
         editMenu.y = buttonY;
-        nextX += editMenu.width + buttonSpace;
+        nextX += Std.int(editMenu.width + buttonSpace);
         
         // cursor tool buttons
         var space : Int = 3;
@@ -181,13 +181,13 @@ class TopBarPart extends UIPart
         if (exportButton != null) {
             exportButton.x = nextX - exportButton.width;
             exportButton.y = h + 5;
-            nextX = exportButton.x - 5;
+            nextX = Std.int(exportButton.x - 5);
         }
         
         if (extensionLabel != null) {
             extensionLabel.x = nextX - extensionLabel.width;
             extensionLabel.y = h + 5;
-            nextX = extensionLabel.x - 5;
+            nextX = Std.int(extensionLabel.x - 5);
         }
     }
     
@@ -197,7 +197,7 @@ class TopBarPart extends UIPart
         }
         
         if (Scratch.app.isExtensionDevMode) {
-            var hasExperimental : Bool = app.extensionManager.hasExperimentalExtensions();
+            var hasExperimental : Bool = false; // app.extensionManager.hasExperimentalExtensions();
             exportButton.visible = hasExperimental;
             extensionLabel.visible = hasExperimental;
             loadExperimentalButton.visible = !hasExperimental;
@@ -313,7 +313,7 @@ class TopBarPart extends UIPart
         label.x = 6;
         result.addChild(label);  // label disabled for now  
         
-        var w : Int = label.textWidth + 16;
+        var w : Int = Std.int(label.textWidth + 16);
         var h : Int = 22;
         var g : Graphics = result.graphics;
         g.clear();

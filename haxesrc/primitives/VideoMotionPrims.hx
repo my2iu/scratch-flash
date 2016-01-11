@@ -162,9 +162,9 @@ class VideoMotionPrims
             C1 = 0;
             C2 = 0;
             activePixelNum = 0;
-            for (i in ymin...ymax){  // y  
-                for (j in xmin...xmax){  // x  
-                    if (j > 0 && (j < WIDTH - 1) && i > 0 && (i < HEIGHT - 1) && ((s.bitmap().getPixel32(j - xmin, i - ymin) >> 24 & 0xff) == 0xff)) 
+            for (i in Std.int(ymin)...Std.int(ymax)){  // y  
+                for (j in Std.int(xmin)...Std.int(xmax)){  // x  
+                    if (j > 0 && (j < WIDTH - 1) && i > 0 && (i < HEIGHT - 1) && ((s.bitmap().getPixel32(Std.int(j - xmin), Std.int(i - ymin)) >> 24 & 0xff) == 0xff)) 
                     {
                         address = i * WIDTH + j;
                         A2 += gradA2Array[address];
@@ -200,7 +200,7 @@ class VideoMotionPrims
             }
             
             if (scaleFactor != 0) {
-                activePixelNum = scaleFactor;  //store the area of the sprite in pixels  
+                activePixelNum = Std.int(scaleFactor);  //store the area of the sprite in pixels  
                 scaleFactor /= (2 * WINSIZE * 2 * WINSIZE);
                 
                 u = u / scaleFactor;
@@ -211,7 +211,7 @@ class VideoMotionPrims
             if (s.localMotionAmount > 100)                   //clip all magnitudes greater than 100  
             s.localMotionAmount = 100;
             if (s.localMotionAmount > (THRESHOLD / 3)) {
-                s.localMotionDirection = ((Math.atan2(v, u) * toDegree + 270) % 360) - 180;
+                s.localMotionDirection = Std.int(((Math.atan2(v, u) * toDegree + 270) % 360) - 180);
             }
             s.localFrameNum = frameNum;
         }

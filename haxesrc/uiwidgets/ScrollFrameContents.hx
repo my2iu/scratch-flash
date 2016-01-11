@@ -68,15 +68,15 @@ class ScrollFrameContents extends Sprite
         var i : Int;
         for (i in 0...numChildren){
             child = getChildAt(i);
-            minX = Math.min(minX, child.x);
-            minY = Math.min(minY, child.y);
-            maxX = Math.max(maxX, child.x + child.width);
-            maxY = Math.max(maxY, child.y + child.height);
+            minX = Std.int(Math.min(minX, child.x));
+            minY = Std.int(Math.min(minY, child.y));
+            maxX = Std.int(Math.max(maxX, child.x + child.width));
+            maxY = Std.int(Math.max(maxY, child.y + child.height));
         }  // Move children, if necessary, to ensure that all positions are positive.  
         
         if ((minX < 0) || (minY < 0)) {
-            var deltaX : Int = Math.max(0, -minX + 5);
-            var deltaY : Int = Math.max(0, -minY + 5);
+            var deltaX : Int = Std.int(Math.max(0, -minX + 5));
+            var deltaY : Int = Std.int(Math.max(0, -minY + 5));
             for (i in 0...numChildren){
                 child = getChildAt(i);
                 child.x += deltaX;
@@ -88,8 +88,8 @@ class ScrollFrameContents extends Sprite
         maxX += hExtra;
         maxY += vExtra;
         if (Std.is(parent, ScrollFrame)) {
-            maxX = Math.max(maxX, ((cast((parent), ScrollFrame).visibleW() - x) / scaleX));
-            maxY = Math.max(maxY, ((cast((parent), ScrollFrame).visibleH() - y) / scaleY));
+            maxX = Std.int(Math.max(maxX, ((cast((parent), ScrollFrame).visibleW() - x) / scaleX)));
+            maxY = Std.int(Math.max(maxY, ((cast((parent), ScrollFrame).visibleH() - y) / scaleY)));
         }
         setWidthHeight(maxX, maxY);
         if (Std.is(parent, ScrollFrame))             (try cast(parent, ScrollFrame) catch(e:Dynamic) null).updateScrollbarVisibility();

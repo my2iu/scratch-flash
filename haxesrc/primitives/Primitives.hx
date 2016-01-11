@@ -25,12 +25,6 @@
 
 package primitives;
 
-import primitives.BlockArg;
-import primitives.Scratch;
-import primitives.SensingPrims;
-import primitives.SoundPrims;
-import primitives.VideoMotionPrims;
-
 import flash.utils.Dictionary;
 import blocks.*;
 import interpreter.*;
@@ -40,7 +34,7 @@ import translation.Translator;
 class Primitives
 {
     
-    private inline var MaxCloneCount : Int = 300;
+    private static inline var MaxCloneCount : Int = 300;
     
     private var app : Scratch;
     private var interp : Interpreter;
@@ -122,7 +116,7 @@ class Primitives
         var n2 : Float = interp.numarg(b, 1);
         var low : Float = ((n1 <= n2)) ? n1 : n2;
         var hi : Float = ((n1 <= n2)) ? n2 : n1;
-        if (low == hi)             return low  // if both low and hi are ints, truncate the result to an int  ;
+        if (low == hi)             return low;  // if both low and hi are ints, truncate the result to an int  ;
         
         
         
@@ -138,7 +132,7 @@ class Primitives
     
     private function primLetterOf(b : Block) : String{
         var s : String = interp.arg(b, 1);
-        var i : Int = interp.numarg(b, 0) - 1;
+        var i : Int = Std.int(interp.numarg(b, 0) - 1);
         if ((i < 0) || (i >= s.length))             return "";
         return s.charAt(i);
     }
@@ -185,7 +179,7 @@ class Primitives
         if (n1 != n1 || n2 != n2) {
             // Suffix the strings to avoid properties and methods of the Dictionary class (constructor, hasOwnProperty, etc)
             if (Std.is(a1, String) && Reflect.field(emptyDict, Std.string(a1)))                 a1 += "_";
-            if (Std.is(a2, String) && Reflect.field(emptyDict, Std.string(a2)))                 a2 += "_"  // at least one argument can't be converted to a number: compare as strings  ;
+            if (Std.is(a2, String) && Reflect.field(emptyDict, Std.string(a2)))                 a2 += "_";  // at least one argument can't be converted to a number: compare as strings  ;
             
             
             

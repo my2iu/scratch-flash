@@ -60,7 +60,7 @@ class ScratchComment extends Sprite
         addExpandButton();
         addTitle();
         addContents();
-        contents.text = s || Translator.map("add comment here...");
+        contents.text = s != null ? s : Translator.map("add comment here...");
         contents.mask = clipMask;
         frame.setWidthHeight(width, 200);
         expandedSize = new Point(width, 200);
@@ -75,8 +75,8 @@ class ScratchComment extends Sprite
     public function fixLayout() : Void{
         contents.x = 5;
         contents.y = 20;
-        var w : Int = frame.w - contents.x - 6;
-        var h : Int = frame.h - contents.y - 2;
+        var w : Int = Std.int(frame.w - contents.x - 6);
+        var h : Int = Std.int(frame.h - contents.y - 2);
         contents.width = w;
         contents.height = h;
         
@@ -150,12 +150,12 @@ class ScratchComment extends Sprite
         if (flag) {
             frame.showResizer();
             frame.setColor(bodyColor);
-            frame.setWidthHeight(expandedSize.x, expandedSize.y);
-            if (parent)                 parent.addChild(this);  // go to front  ;
+            frame.setWidthHeight(Std.int(expandedSize.x), Std.int(expandedSize.y));
+            if (parent != null)                 parent.addChild(this);  // go to front  ;
             fixLayout();
         }
         else {
-            if (stage && stage.focus == contents)                 stage.focus = null;  // give up focus  ;
+            if (stage != null && stage.focus == contents)                 stage.focus = null;  // give up focus  ;
             expandedSize = new Point(frame.w, frame.h);
             updateTitleText();
             frame.hideResizer();
@@ -168,7 +168,7 @@ class ScratchComment extends Sprite
     
     private function updateTitleText() : Void{
         var ellipses : String = "...";
-        var maxW : Int = frame.w - title.x - 5;
+        var maxW : Int = Std.int(frame.w - title.x - 5);
         var s : String = contents.text;
         var i : Int = s.indexOf("\r");
         if (i > -1)             s = s.substring(0, i);
@@ -210,13 +210,13 @@ class ScratchComment extends Sprite
     }
     
     public function deleteComment() : Void{
-        if (parent)             parent.removeChild(this);
-        Scratch.app.runtime.recordForUndelete(this, x, y, 0, Scratch.app.viewedObj());
+        if (parent != null)             parent.removeChild(this);
+        Scratch.app.runtime.recordForUndelete(this, Std.int(x), Std.int(y), 0, Scratch.app.viewedObj());
         Scratch.app.scriptsPane.saveScripts();
     }
     
     public function duplicateComment(deltaX : Float, deltaY : Float) : Void{
-        if (!parent)             return;
+        if (parent == null)             return;
         var dup : ScratchComment = new ScratchComment(contents.text, isOpen);
         dup.x = x + deltaX;
         dup.y = y + deltaY;

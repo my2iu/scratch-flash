@@ -80,7 +80,7 @@ class TalkBubble extends Sprite
         var newValue : Bool = (dir == "left");
         if (pointsLeft == newValue)             return;
         pointsLeft = newValue;
-        setWidthHeight(text.width + padding * 2, text.height + padding * 2);
+        setWidthHeight(Std.int(text.width + padding * 2), Std.int(text.height + padding * 2));
     }
     
     public function getText() : String{return text.text;
@@ -94,7 +94,7 @@ class TalkBubble extends Sprite
         text.width = desiredWidth + 100;  // wider than desiredWidth  
         text.text = s;
         text.width = Math.max(minWidth, Math.min(text.textWidth + 8, desiredWidth));  // fix word wrap  
-        setWidthHeight(text.width + padding * 2, text.height + padding * 2);
+        setWidthHeight(Std.int(text.width + padding * 2), Std.int(text.height + padding * 2));
     }
     
     private function setWidthHeight(w : Int, h : Int) : Void{

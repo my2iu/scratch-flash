@@ -124,11 +124,11 @@ class ScriptsPart extends UIPart
             var spr : ScratchSprite = try cast(target, ScratchSprite) catch(e:Dynamic) null;
             if (spr == null)                 return;
             if (spr.scratchX != lastX) {
-                lastX = spr.scratchX;
+                lastX = Std.int(spr.scratchX);
                 xReadout.text = Std.string(lastX);
             }
             if (spr.scratchY != lastY) {
-                lastY = spr.scratchY;
+                lastY = Std.int(spr.scratchY);
                 yReadout.text = Std.string(lastY);
             }
         }
@@ -141,7 +141,7 @@ class ScriptsPart extends UIPart
         if ((Math.round(haxe.Timer.stamp() * 1000) - lastUpdateTime) < 500)             return;
         for (i in 0...app.palette.numChildren){
             var indicator : IndicatorLight = try cast(app.palette.getChildAt(i), IndicatorLight) catch(e:Dynamic) null;
-            if (indicator != null)                 app.extensionManager.updateIndicator(indicator, indicator.target);
+            //if (indicator != null)                 app.extensionManager.updateIndicator(indicator, indicator.target);
         }
         lastUpdateTime = Math.round(haxe.Timer.stamp() * 1000);
     }
@@ -159,7 +159,7 @@ class ScriptsPart extends UIPart
             selector.y = 5;
             paletteFrame.x = selector.x;
             paletteFrame.y = selector.y + selector.height + 2;
-            paletteFrame.setWidthHeight(selector.width + 1, h - paletteFrame.y - 2);  // 5  
+            paletteFrame.setWidthHeight(Std.int(selector.width + 1), Std.int(h - paletteFrame.y - 2));  // 5  
             
             scriptsFrame.x = selector.x + selector.width + 2;
             scriptsFrame.y = selector.y + 1;
@@ -175,7 +175,7 @@ class ScriptsPart extends UIPart
             paletteFrame.visible = false;
             zoomWidget.visible = false;
         }
-        scriptsFrame.setWidthHeight(w - scriptsFrame.x - 5, h - scriptsFrame.y - 5);
+        scriptsFrame.setWidthHeight(Std.int(w - scriptsFrame.x - 5), Std.int(h - scriptsFrame.y - 5));
         spriteWatermark.x = w - 60;
         spriteWatermark.y = scriptsFrame.y + 10;
         xyDisplay.x = spriteWatermark.x + 1;
@@ -195,14 +195,14 @@ class ScriptsPart extends UIPart
         g.drawRect(0, 0, w, h);
         g.endFill();
         
-        var lineY : Int = selector.y + selector.height;
+        var lineY : Int = Std.int(selector.y + selector.height);
         var darkerBorder : Int = CSS.borderColor - 0x141414;
         var lighterBorder : Int = 0xF2F2F2;
         if (!app.isMicroworld) {
             g.lineStyle(1, darkerBorder, 1, true);
-            hLine(g, paletteFrame.x + 8, lineY, paletteW - 20);
+            hLine(g, Std.int(paletteFrame.x + 8), lineY, paletteW - 20);
             g.lineStyle(1, lighterBorder, 1, true);
-            hLine(g, paletteFrame.x + 8, lineY + 1, paletteW - 20);
+            hLine(g, Std.int(paletteFrame.x + 8), lineY + 1, paletteW - 20);
         }
         
         g.lineStyle(1, darkerBorder, 1, true);

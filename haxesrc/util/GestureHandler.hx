@@ -153,7 +153,7 @@ class GestureHandler
     
     public function rightMouseClick(evt : MouseEvent) : Void{
         // You only get this event in AIR.
-        rightMouseDown(evt.stageX, evt.stageY, false);
+        rightMouseDown(Std.int(evt.stageX), Std.int(evt.stageY), false);
     }
     
     public function rightMouseDown(x : Int, y : Int, isChrome : Bool) : Void{
@@ -164,7 +164,7 @@ class GestureHandler
         if (menuTarget == null)             return;
         try{var menu : Menu = menuTarget.menu(new MouseEvent("right click"));
         }        catch (e : Error){ };
-        if (menu)             menu.showOnStage(stage, x, y);
+        if (menu != null)             menu.showOnStage(stage, x, y);
         if (!isChrome)             Menu.removeMenusFrom(stage);  // hack: clear menuJustCreated because there's no rightMouseUp  ;
     }
     
@@ -173,7 +173,7 @@ class GestureHandler
         // and implements the menu() method.
         if (!obj.visible || !obj.hitTestPoint(x, y, true))             return null;
         if (Std.is(obj, DisplayObjectContainer)) {
-            var i : Int = obj.numChildren - 1;
+            var i : Int = Std.int(obj.numChildren - 1);
             while (i >= 0){
                 var found : DisplayObject = findTargetFor(property, obj.getChildAt(i), x, y);
                 if (found != null)                     return found;
@@ -184,8 +184,8 @@ class GestureHandler
     }
     
     public function mouseDown(evt : MouseEvent) : Void{
-        if (inIE && app.editMode && app.jsEnabled) 
-            app.externalCall("tip_bar_api.fixIE");
+        //if (inIE && app.editMode && app.jsEnabled) 
+            //app.externalCall("tip_bar_api.fixIE");
         
         evt.updateAfterEvent();  // needed to avoid losing display updates with later version of Flash 11  
         hideBubble();
@@ -273,8 +273,8 @@ class GestureHandler
         }
         if (scrollTarget != null) {
             var p : Point = scrollTarget.localToGlobal(new Point(0, 0));
-            var mx : Int = stage.mouseX;
-            var my : Int = stage.mouseY;
+            var mx : Int = Std.int(stage.mouseX);
+            var my : Int = Std.int(stage.mouseY);
             var d : Float = mx - p.x;
             if (d >= 0 && d <= SCROLL_RANGE && scrollTarget.canScrollLeft()) {
                 scrollXVelocity = (1 - d / SCROLL_RANGE) * SCROLL_MAX_SPEED;
@@ -368,17 +368,17 @@ class GestureHandler
         var o : DisplayObject = try cast(evt.target, DisplayObject) catch(e:Dynamic) null;
         var mouseTarget : Bool = false;
         while (o != null){
-            if (isMouseTarget(o, evt.stageX / app.scaleX, evt.stageY / app.scaleY)) {
+            if (isMouseTarget(o, Std.int(evt.stageX / app.scaleX), Std.int(evt.stageY / app.scaleY))) {
                 mouseTarget = true;
                 break;
             }
             o = o.parent;
         }
         var rect : Rectangle = app.stageObj().getRect(stage);
-        if (!mouseTarget && rect.contains(evt.stageX, evt.stageY))             return findMouseTargetOnStage(evt.stageX / app.scaleX, evt.stageY / app.scaleY);
+        if (!mouseTarget && rect.contains(evt.stageX, evt.stageY))             return findMouseTargetOnStage(Std.int(evt.stageX / app.scaleX), Std.int(evt.stageY / app.scaleY));
         if (o == null)             return null;
         if ((Std.is(o, Block)) && cast((o), Block).isEmbeddedInProcHat())             return o.parent;
-        if (Std.is(o, ScratchObj))             return findMouseTargetOnStage(evt.stageX / app.scaleX, evt.stageY / app.scaleY);
+        if (Std.is(o, ScratchObj))             return findMouseTargetOnStage(Std.int(evt.stageX / app.scaleX), Std.int(evt.stageY / app.scaleY));
         return o;
     }
     
@@ -467,8 +467,8 @@ class GestureHandler
     
     private function handleTool(evt : MouseEvent) : Void{
         var isGrowShrink : Bool = ("grow" == CursorTool.tool) || ("shrink" == CursorTool.tool);
-        var t : Dynamic = findTargetFor("handleTool", app, evt.stageX / app.scaleX, evt.stageY / app.scaleY);
-        if (t == null)             t = findMouseTargetOnStage(evt.stageX / app.scaleX, evt.stageY / app.scaleY);
+        var t : Dynamic = findTargetFor("handleTool", app, Std.int(evt.stageX / app.scaleX), Std.int(evt.stageY / app.scaleY));
+        if (t == null)             t = findMouseTargetOnStage(Std.int(evt.stageX / app.scaleX), Std.int(evt.stageY / app.scaleY));
         
         if (isGrowShrink && (Std.is(t, ScratchSprite))) {
             function clearTool(e : MouseEvent) : Void{
@@ -598,7 +598,7 @@ class GestureHandler
     
     private function addDropShadowTo(o : DisplayObject) : Void{
         var f : DropShadowFilter = new DropShadowFilter();
-        var blockScale : Float = ((app.scriptsPane)) ? app.scriptsPane.scaleX : 1;
+        var blockScale : Float = ((app.scriptsPane != null)) ? app.scriptsPane.scaleX : 1;
         f.distance = 8 * blockScale;
         f.blurX = f.blurY = 2;
         f.alpha = 0.4;
@@ -615,7 +615,7 @@ class GestureHandler
     
     public function showBubble(text : String, x : Float, y : Float, width : Float = 0) : Void{
         hideBubble();
-        bubble = new TalkBubble(text || " ", "say", "result", this);
+        bubble = new TalkBubble(text != null ? text : " ", "say", "result", this);
         bubbleStartX = stage.mouseX;
         bubbleStartY = stage.mouseY;
         var bx : Float = x + width;

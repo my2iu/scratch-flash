@@ -68,7 +68,7 @@ class ResizeableFrame extends Sprite implements DragClient
     }
     
     public function showResizer() : Void{
-        if (resizer != null)             return  // already showing  ;
+        if (resizer != null)             return;  // already showing  ;
         resizer = new Shape();
         var g : Graphics = resizer.graphics;
         g.lineStyle(1, 0x606060);
@@ -133,9 +133,9 @@ class ResizeableFrame extends Sprite implements DragClient
     
     public function dragMove(evt : MouseEvent) : Void{
         var pt : Point = this.globalToLocal(new Point(evt.stageX, evt.stageY));
-        var newW : Int = Math.max(minWidth, pt.x + 3);
-        var newH : Int = Math.max(minHeight, pt.y + 3);
+        var newW : Int = Std.int(Math.max(minWidth, pt.x + 3));
+        var newH : Int = Std.int(Math.max(minHeight, pt.y + 3));
         setWidthHeight(newW, newH);
-        if (parent && (Lambda.has(parent, "fixLayout")))             (try cast(parent, Dynamic) catch(e:Dynamic) null).fixLayout();
+        if (parent != null && (Lambda.has(parent, "fixLayout")))             (try cast(parent, Dynamic) catch(e:Dynamic) null).fixLayout();
     }
 }

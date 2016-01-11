@@ -170,7 +170,7 @@ class ScriptsPane extends ScrollFrameContents
                         o = t.subStack2;
                 }
                 if (o != null) {
-                    h = o.height;
+                    h = Std.int(o.height);
                     if (!o.bottomBlock().isTerminal)                         h -= BlockShape.NotchDepth;
                 }
             }
@@ -260,7 +260,7 @@ class ScriptsPane extends ScrollFrameContents
     public function findTargetsFor(b : Block) : Void{
         possibleTargets = [];
         var bEndWithTerminal : Bool = b.bottomBlock().isTerminal;
-        var bCanWrap : Bool = b.base.canHaveSubstack1() && !b.subStack1;  // empty C or E block  
+        var bCanWrap : Bool = b.base.canHaveSubstack1() && b.subStack1 == null;  // empty C or E block  
         var p : Point;
         for (i in 0...numChildren){
             var child : DisplayObject = getChildAt(i);
@@ -366,7 +366,7 @@ class ScriptsPane extends ScrollFrameContents
             var diff : Point = bTopLeft.subtract(item[0]);
             var dist : Float = Math.abs(diff.x / 2) + Math.abs(diff.y);
             if ((dist < minDist) && (dist < threshold) && dropCompatible(b, item[1])) {
-                minDist = dist;
+                minDist = Std.int(dist);
                 nearest = item;
             }
         }
@@ -399,7 +399,7 @@ class ScriptsPane extends ScrollFrameContents
         
         var info : MediaInfo = try cast(obj, MediaInfo) catch(e:Dynamic) null;
         if (info != null) {
-            if (!info.scripts)                 return false;
+            if (info.scripts == null)                 return false;
             localP.x += info.thumbnailX();
             localP.y += info.thumbnailY();
             addStacksFromBackpack(info, localP);
@@ -425,7 +425,7 @@ class ScriptsPane extends ScrollFrameContents
     }
     
     private function addStacksFromBackpack(info : MediaInfo, dropP : Point) : Void{
-        if (!info.scripts)             return;
+        if (info.scripts == null)             return;
         var forStage : Bool = app.viewedObj() && app.viewedObj().isStage;
         for (a/* AS3HX WARNING could not determine type for var: a exp: EField(EIdent(info),scripts) type: null */ in info.scripts){
             if (a.length < 1)                 continue;
@@ -498,14 +498,14 @@ class ScriptsPane extends ScrollFrameContents
         g.lineStyle(2, commentLineColor);
         for (i in 0...numChildren){
             var c : ScratchComment = try cast(getChildAt(i), ScratchComment) catch(e:Dynamic) null;
-            if (c != null && c.blockRef)                 updateCommentConnection(c, g);
+            if (c != null && c.blockRef != null)                 updateCommentConnection(c, g);
         }
     }
     
     private function updateCommentConnection(c : ScratchComment, g : Graphics) : Void{
         // Update the position of the given comment based on the position of the
         // block it references and update the line connecting it to that block.
-        if (!c.blockRef)             return  // update comment position  ;
+        if (c.blockRef == null)             return;  // update comment position  ;
         
         
         
@@ -520,7 +520,7 @@ class ScriptsPane extends ScrollFrameContents
         
         
         
-        var lineY : Int = c.y + 10;
+        var lineY : Int = Std.int(c.y + 10);
         g.moveTo(blockP.x + c.blockRef.base.width, lineY);
         g.lineTo(c.x, lineY);
     }
@@ -585,8 +585,8 @@ class ScriptsPane extends ScrollFrameContents
     }
     
     private function fitsInColumn(b : Block, c : Array<Dynamic>) : Bool{
-        var bTop : Int = b.y;
-        var bBottom : Int = bTop + b.height;
+        var bTop : Int = Std.int(b.y);
+        var bBottom : Int = Std.int(bTop + b.height);
         for (other in c){
             if (!((other.y > bBottom) || ((other.y + other.height) < bTop)))                 return false;
         }
@@ -596,10 +596,10 @@ class ScriptsPane extends ScrollFrameContents
     private function computeColumnWidths(columns : Array<Dynamic>) : Array<Dynamic>{
         var widths : Array<Dynamic> = [];
         for (c in columns){
-            c.sort(function(b1 : Block, b2 : Block) : Int{return b1.y - b2.y;
+            c.sort(function(b1 : Block, b2 : Block) : Int{return Std.int(b1.y - b2.y);
                     });  // sort by increasing y  
             var w : Int = 0;
-            for (b/* AS3HX WARNING could not determine type for var: b exp: EIdent(c) type: Dynamic */ in c)w = Math.max(w, b.width);
+            for (b/* AS3HX WARNING could not determine type for var: b exp: EIdent(c) type: Dynamic */ in c)w = Std.int(Math.max(w, b.width));
             widths.push(w);
         }
         return widths;

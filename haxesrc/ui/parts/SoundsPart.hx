@@ -169,12 +169,12 @@ class SoundsPart extends UIPart
         
         listFrame.x = 1;
         listFrame.y = 58;
-        listFrame.setWidthHeight(columnWidth, h - listFrame.y);
+        listFrame.setWidthHeight(columnWidth, Std.int(h - listFrame.y));
         
         var contentsX : Int = columnWidth + 13;
         var contentsW : Int = w - contentsX - 15;
         
-        nameField.setWidth(Math.min(135, contentsW));
+        nameField.setWidth(Std.int(Math.min(135, contentsW)));
         nameField.x = contentsX;
         nameField.y = 15;
         
@@ -217,7 +217,7 @@ class SoundsPart extends UIPart
     //------------------------------
     
     private function nameChanged() : Void{
-        currentIndex = Math.min(currentIndex, app.viewedObj().sounds.length - 1);
+        currentIndex = Std.int(Math.min(currentIndex, app.viewedObj().sounds.length - 1));
         var current : ScratchSound = try cast(app.viewedObj().sounds[currentIndex], ScratchSound) catch(e:Dynamic) null;
         app.runtime.renameSound(current, nameField.contents());
         nameField.setContents(current.soundName);

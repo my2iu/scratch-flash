@@ -63,8 +63,8 @@ class ListCell extends Sprite
     
     public function setWidth(w : Int) : Void{
         tf.width = Math.max(w, 15);  // forces line wrapping, possibly changing tf.height  
-        var frameH : Int = Math.max(tf.textHeight + 7, 20);
-        frame.setWidthHeight(tf.width, frameH);
+        var frameH : Int = Std.int(Math.max(tf.textHeight + 7, 20));
+        frame.setWidthHeight(Std.int(tf.width), frameH);
         deleteButton.x = tf.width - deleteButton.width - 3;
         deleteButton.y = (frameH - deleteButton.height) / 2;
     }
@@ -100,7 +100,7 @@ class ListCell extends Sprite
     }
     
     private function removeDeleteButton() : Void{
-        if (deleteButton.parent)             removeChild(deleteButton);
+        if (deleteButton.parent != null)             removeChild(deleteButton);
     }
     
     private function addDeleteButton() : Void{

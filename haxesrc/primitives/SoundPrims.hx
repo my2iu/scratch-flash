@@ -24,11 +24,6 @@
 
 package primitives;
 
-import primitives.NotePlayer;
-import primitives.Scratch;
-import primitives.ScratchSound;
-import primitives.ScratchSoundPlayer;
-import primitives.Thread;
 
 import blocks.Block;
 import flash.utils.Dictionary;

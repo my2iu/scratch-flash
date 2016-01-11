@@ -58,6 +58,7 @@ import mx.utils.URLUtil;
 //import render3d.DisplayObjectContainerIn3D;
 
 import scratch.*;
+import scratch.PaletteBuilder;
 
 //import svgeditor.tools.SVGTool;
 
@@ -745,8 +746,8 @@ class Scratch extends Sprite {
 	}
 
 	public function selectSprite(obj:ScratchObj):Void {
-		if (isShowing(imagesPart)) imagesPart.editor.shutdown();
-		if (isShowing(soundsPart)) soundsPart.editor.shutdown();
+		//if (isShowing(imagesPart)) imagesPart.editor.shutdown();
+		//if (isShowing(soundsPart)) soundsPart.editor.shutdown();
 		viewedObject = obj;
 		libraryPart.refresh();
 		tabsPart.refresh();
@@ -765,8 +766,8 @@ class Scratch extends Sprite {
 	}
 
 	public function setTab(tabName:String):Void {
-		if (isShowing(imagesPart)) imagesPart.editor.shutdown();
-		if (isShowing(soundsPart)) soundsPart.editor.shutdown();
+		//if (isShowing(imagesPart)) imagesPart.editor.shutdown();
+		//if (isShowing(soundsPart)) soundsPart.editor.shutdown();
 		hide(scriptsPart);
 		hide(imagesPart);
 		hide(soundsPart);
@@ -777,7 +778,7 @@ class Scratch extends Sprite {
 		} else if (tabName == 'sounds') {
 			soundsPart.refresh();
 			show(soundsPart);
-		} else if (tabName && (tabName.length > 0)) {
+		} else if (tabName != null && (tabName.length > 0)) {
 			tabName = 'scripts';
 			scriptsPart.updatePalette();
 			scriptsPane.viewScriptsFor(viewedObject);
@@ -862,7 +863,7 @@ class Scratch extends Sprite {
 	}
 
 	private function hide(obj:DisplayObject):Void {
-		if (obj.parent) obj.parent.removeChild(obj);
+		if (obj.parent != null) obj.parent.removeChild(obj);
 	}
 
 	private function show(obj:DisplayObject):Void {
@@ -916,7 +917,7 @@ class Scratch extends Sprite {
 			scale = scaledW / 480;
 			var playerW:Float = (scale * 480) + extraW;
 			var playerH:Float = (scale * 360) + extraH;
-			stagePart.setWidthHeight(playerW, playerH, scale);
+			stagePart.setWidthHeight(Std.int(playerW), Std.int(playerH), scale);
 			stagePart.x = Std.int((w - playerW) / 2);
 			stagePart.y = Std.int((h - playerH) / 2);
 			fixLoadProgressLayout();
@@ -924,7 +925,7 @@ class Scratch extends Sprite {
 		}
 		libraryPart.x = stagePart.x;
 		libraryPart.y = stagePart.bottom() + 18;
-		libraryPart.setWidthHeight(stagePart.w, h - libraryPart.y);
+		libraryPart.setWidthHeight(Std.int(stagePart.w), Std.int(h - libraryPart.y));
 
 		tabsPart.x = stagePart.right() + 5;
 		if (!isMicroworld) {
@@ -935,7 +936,7 @@ class Scratch extends Sprite {
 			tabsPart.visible = false;
 
 		// the content area shows the part associated with the currently selected tab:
-		var contentY:Int = tabsPart.y + 27;
+		var contentY:Int = Std.int(tabsPart.y + 27);
 		if (!isMicroworld)
 			w -= tipsWidth();
 		updateContentArea(Std.int(tabsPart.x), Std.int(contentY), Std.int(w - tabsPart.x - 6), Std.int(h - contentY - 5), Std.int(h));
@@ -948,8 +949,8 @@ class Scratch extends Sprite {
 		soundsPart.setWidthHeight(contentW, contentH);
 		scriptsPart.setWidthHeight(contentW, contentH);
 
-		if (mediaLibrary) mediaLibrary.setWidthHeight(topBarPart.w, fullH);
-		if (frameRateGraph) {
+		if (mediaLibrary != null) mediaLibrary.setWidthHeight(topBarPart.w, fullH);
+		if (frameRateGraph != null) {
 			frameRateGraph.y = stage.stageHeight - frameRateGraphH;
 			addChild(frameRateGraph); // put in front
 		}
@@ -1018,9 +1019,9 @@ class Scratch extends Sprite {
 			o.updateScriptsAfterTranslation();
 		}
 		var uiLayer:Sprite = app.stagePane.getUILayer();
-		for (i= 0...uiLayer.numChildren) {
+		for (i in 0...uiLayer.numChildren) {
 			var lw:ListWatcher = cast(uiLayer.getChildAt(i), ListWatcher);
-			if (lw) lw.updateTranslation();
+			if (lw != null) lw.updateTranslation();
 		}
 		topBarPart.updateTranslation();
 		stagePart.updateTranslation();
@@ -1198,7 +1199,7 @@ class Scratch extends Sprite {
 		// Replace illegal characters in the given string with dashes.
 		var illegal:String = '\\/:*?"<>|%';
 		var result:String = '';
-		for (i= 0...s.length) {
+		for (i in 0...s.length) {
 			var ch:String = s.charAt(i);
 			if ((i == 0) && ('.' == ch)) ch = '-'; // don't allow leading period
 			result += (illegal.indexOf(ch) > -1) ? '-' : ch;
@@ -1207,7 +1208,7 @@ class Scratch extends Sprite {
 	}
 
 	public function saveSummary():Void {
-		var name:String = (projectName() || "project") + ".txt";
+		var name:String = (projectName() != null ? projectName() : "project") + ".txt";
 		var file:FileReference = new FileReference();
 		file.save(stagePane.getSummary(), fixFileName(name));
 	}
@@ -1307,12 +1308,12 @@ class Scratch extends Sprite {
 			doRevert();
 		}
 
-		if (!originalProj) return;
+		if (originalProj == null) return;
 		DialogBox.confirm('Throw away all changes since opening this project?', stage, preDoRevert);
 	}
 
 	private function undoRevert():Void {
-		if (!revertUndo) return;
+		if (revertUndo == null) return;
 		runtime.installProjectFromData(revertUndo, false);
 		revertUndo = null;
 	}
@@ -1352,8 +1353,8 @@ class Scratch extends Sprite {
 	}
 
 	public function addSound(snd:ScratchSound, targetObj:ScratchObj = null):Void {
-		if (snd.soundData && !okayToAdd(snd.soundData.length)) return; // not enough room
-		if (!targetObj) targetObj = viewedObj();
+		if (snd.soundData != null && !okayToAdd(snd.soundData.length)) return; // not enough room
+		if (targetObj == null) targetObj = viewedObj();
 		snd.soundName = targetObj.unusedSoundName(snd.soundName);
 		targetObj.sounds.push(snd);
 		setSaveNeeded(true);
@@ -1364,9 +1365,9 @@ class Scratch extends Sprite {
 	}
 
 	public function addCostume(c:ScratchCostume, targetObj:ScratchObj = null):Void {
-		if (!c.baseLayerData) c.prepareToSave();
+		if (c.baseLayerData == null) c.prepareToSave();
 		if (!okayToAdd(c.baseLayerData.length)) return; // not enough room
-		if (!targetObj) targetObj = viewedObj();
+		if (targetObj == null) targetObj = viewedObj();
 		c.costumeName = targetObj.unusedCostumeName(c.costumeName);
 		targetObj.costumes.push(c);
 		targetObj.showCostumeNamed(c.costumeName);
@@ -1382,12 +1383,12 @@ class Scratch extends Sprite {
 		for (obj in stagePane.allObjects()) {
 			for (c in obj.costumes) {
 				if (!c.baseLayerData) c.prepareToSave();
-				assetByteCount += c.baseLayerData.length;
+				assetByteCount += Std.int(c.baseLayerData.length);
 			}
 			for (snd in obj.sounds) assetByteCount += snd.soundData.length;
 		}
 		if (assetByteCount > assetByteLimit) {
-			var overBy:Int = Math.max(1, (assetByteCount - assetByteLimit) / 1024);
+			var overBy:Int = Std.int(Math.max(1, (assetByteCount - assetByteLimit) / 1024));
 			DialogBox.notify(
 					'Sorry!',
 					'Adding that media asset would put this project over the size limit by ' + overBy + ' KB\n' +
@@ -1437,12 +1438,12 @@ class Scratch extends Sprite {
 	}
 
 	public function removeLoadProgressBox():Void {
-		if (lp && lp.parent) lp.parent.removeChild(lp);
+		if (lp != null && lp.parent != null) lp.parent.removeChild(lp);
 		lp = null;
 	}
 
 	private function fixLoadProgressLayout():Void {
-		if (!lp) return;
+		if (lp == null) return;
 		var p:Point = stagePane.localToGlobal(new Point(0, 0));
 		lp.scaleX = stagePane.scaleX;
 		lp.scaleY = stagePane.scaleY;

@@ -158,7 +158,7 @@ class Translator
         var b1 : Int = bytes.readUnsignedByte();
         var b2 : Int = bytes.readUnsignedByte();
         var b3 : Int = bytes.readUnsignedByte();
-        if ((b1 == 0xEF) && (b2 == 0xBB) && (b3 == 0xBF))             return  // found BOM  ;
+        if ((b1 == 0xEF) && (b2 == 0xBB) && (b3 == 0xBF))             return;  // found BOM  ;
         bytes.position = bytes.position - 3;
     }
     

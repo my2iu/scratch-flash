@@ -19,15 +19,6 @@
 
 package util;
 
-import util.Block;
-import util.ListWatcher;
-import util.ScratchComment;
-import util.ScratchCostume;
-import util.ScratchObj;
-import util.ScratchSprite;
-import util.ScratchStage;
-import util.Watcher;
-
 import flash.display.DisplayObject;
 import blocks.*;
 import interpreter.Variable;
@@ -114,7 +105,7 @@ class OldProjectReader
                         180 - (entry[3][1] + c.rotationCenterY));
             }
         }
-        i = stageContents.length - 1;
+        var i:Int = stageContents.length - 1;
         while (i >= 0){
             // filter out any SensorBoardMorphs on the stage
             if (Std.is(stageContents[i], DisplayObject))                 newStage.addChild(stageContents[i]);
@@ -190,7 +181,7 @@ class OldProjectReader
         for (stack in scripts){
             // stack is of form: [[x y] [blocks]]
             var a : Array<Dynamic> = stack[1][0];
-            if (a != null && (a[0] == "scratchComment"))                 continue  // skip comments  ;
+            if (a != null && (a[0] == "scratchComment"))                 continue;  // skip comments  ;
             var topBlock : Block = BlockIO.arrayToStack(stack[1]);
             topBlock.x = stack[0][0];
             topBlock.y = stack[0][1];
@@ -205,7 +196,7 @@ class OldProjectReader
         for (stack in scripts){
             // stack is of form: [[x y] [blocks]]
             var a : Array<Dynamic> = stack[1][0];
-            if (a != null && (a[0] != "scratchComment"))                 continue  // skip non-comments  ;
+            if (a != null && (a[0] != "scratchComment"))                 continue;  // skip non-comments  ;
             var blockID : Int = (a[4]) ? a[4] : -1;
             var comment : ScratchComment = new ScratchComment(a[1], a[2], a[3], blockID);
             comment.x = stack[0][0];
@@ -236,9 +227,9 @@ class OldProjectReader
     private function oldAddAllBlocksTo(b : Block, blockList : Array<Dynamic>) : Void{
         // Recursively enumerate all blocks of the given stack in Squeak order
         // and add them to blockList. Block arguments are not included.
-        if (b.subStack2)             oldAddAllBlocksTo(b.subStack2, blockList);
-        if (b.subStack1)             oldAddAllBlocksTo(b.subStack1, blockList);
-        if (b.nextBlock)             oldAddAllBlocksTo(b.nextBlock, blockList);
+        if (b.subStack2 != null)             oldAddAllBlocksTo(b.subStack2, blockList);
+        if (b.subStack1 != null)             oldAddAllBlocksTo(b.subStack1, blockList);
+        if (b.nextBlock != null)             oldAddAllBlocksTo(b.nextBlock, blockList);
         blockList.push(b);
     }
     
@@ -246,9 +237,9 @@ class OldProjectReader
         // Recursively enumerate all blocks of the given stack in Squeak order
         // and add them to blockList. Block arguments are not included.
         blockList.push(b);
-        if (b.subStack1)             newAddAllBlocksTo(b.subStack1, blockList);
-        if (b.subStack2)             newAddAllBlocksTo(b.subStack2, blockList);
-        if (b.nextBlock)             newAddAllBlocksTo(b.nextBlock, blockList);
+        if (b.subStack1 != null)             newAddAllBlocksTo(b.subStack1, blockList);
+        if (b.subStack2 != null)             newAddAllBlocksTo(b.subStack2, blockList);
+        if (b.nextBlock != null)             newAddAllBlocksTo(b.nextBlock, blockList);
     }
     
     private function arrayToString(a : Array<Dynamic>) : String{

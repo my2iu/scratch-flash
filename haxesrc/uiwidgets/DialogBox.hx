@@ -216,7 +216,7 @@ class DialogBox extends Sprite
             var d : DialogBox = try cast(stage.getChildAt(i), DialogBox) catch(e:Dynamic) null;
             if (d != null) {
                 if (targetTitle != null) {
-                    if (d.title && (d.title.text == targetTitle))                         result.push(d);
+                    if (d.title != null && (d.title.text == targetTitle))                         result.push(d);
                 }
                 else {
                     result.push(d);
@@ -285,14 +285,14 @@ class DialogBox extends Sprite
         var i : Int;
         var totalW : Int;
         fixSize();
-        var fieldX : Int = maxLabelWidth + 17;
-        var fieldY : Int = 15;
-        if (title != null) {
-            title.x = (w - title.width) / 2;
-            title.y = 5;
-            fieldY = title.y + title.height + 20;
-        }  // fields  
-        
+		var fieldX:Int = maxLabelWidth + 17;
+		var fieldY:Int = 15;
+		if (title != null) {
+			title.x = (w - title.width) / 2;
+			title.y = 5;
+			fieldY = Std.int(title.y + title.height + 20);
+		}
+		// fields  
         for (i in 0...labelsAndFields.length){
             label = labelsAndFields[i][0];
             var field : TextField = labelsAndFields[i][1];
@@ -308,7 +308,7 @@ class DialogBox extends Sprite
         if (widget != null) {
             widget.x = (width - widget.width) / 2;
             widget.y = fieldY;  // (title != null) ? title.y + title.height + 10 : 10;  
-            fieldY = widget.y + widget.height + 15;
+            fieldY = Std.int(widget.y + widget.height + 15);
         }  // boolean fields  
         
         for (i in 0...booleanLabelsAndFields.length){
@@ -335,8 +335,8 @@ class DialogBox extends Sprite
             totalW = (buttons.length - 1) * 10;
             for (i in 0...buttons.length){totalW += buttons[i].width;
             }
-            var buttonX : Int = (w - totalW) / 2;
-            var buttonY : Int = h - (buttons[0].height + 15);
+            var buttonX : Int = Std.int((w - totalW) / 2);
+            var buttonY : Int = Std.int(h - (buttons[0].height + 15));
             for (i in 0...buttons.length){
                 buttons[i].x = buttonX;
                 buttons[i].y = buttonY;
@@ -357,8 +357,9 @@ class DialogBox extends Sprite
         
         maxLabelWidth = 0;
         maxFieldWidth = 0;
+		var r : Array<Dynamic>;
         for (i in 0...labelsAndFields.length){
-            var r : Array<Dynamic> = labelsAndFields[i];
+            r = labelsAndFields[i];
             if (r[0] != null)                 maxLabelWidth = Std.int(Math.max(maxLabelWidth, r[0].width));
             maxFieldWidth = Std.int(Math.max(maxFieldWidth, r[1].width));
             h += heightPerField;
@@ -366,19 +367,19 @@ class DialogBox extends Sprite
         
         for (i in 0...booleanLabelsAndFields.length){
             r = booleanLabelsAndFields[i];
-            if (r[0] != null)                 maxLabelWidth = Math.max(maxLabelWidth, r[0].width);
-            maxFieldWidth = Math.max(maxFieldWidth, r[1].width);
+            if (r[0] != null)                 maxLabelWidth = Std.int(Math.max(maxLabelWidth, r[0].width));
+            maxFieldWidth = Std.int(Math.max(maxFieldWidth, r[1].width));
             h += heightPerField;
         }
-        w = Math.max(w, maxLabelWidth + maxFieldWidth + 5);
+        w = Std.int(Math.max(w, maxLabelWidth + maxFieldWidth + 5));
         // widget
         if (widget != null) {
-            w = Math.max(w, widget.width);
-            h += 10 + widget.height;
+            w = Std.int(Math.max(w, widget.width));
+            h += Std.int(10 + widget.height);
         }  // text lines  
         
         for (line in textLines){
-            w = Math.max(w, line.width);
+            w = Std.int(Math.max(w, line.width));
             h += line.height;
             if (line.length == 0)                 h += blankLineSpace;
         }
@@ -387,7 +388,7 @@ class DialogBox extends Sprite
         totalW = 0;
         for (i in 0...buttons.length){totalW += buttons[i].width + 10;
         }
-        w = Math.max(w, totalW);
+        w = Std.int(Math.max(w, totalW));
         if (buttons.length > 0)             h += buttons[0].height + 15;
         if ((labelsAndFields.length > 0) || (booleanLabelsAndFields.length > 0))             h += 15;
         w += 30;

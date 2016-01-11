@@ -258,15 +258,15 @@ class ProcedureSpecEditor extends Sprite
             addChild(warpLabel);
         }
         else {
-            for (label in buttonLabels)if (label.parent)                 removeChild(label);
-            for (b in buttons)if (b.parent)                 removeChild(b);
-            if (warpCheckbox.parent)                 removeChild(warpCheckbox);
-            if (warpLabel.parent)                 removeChild(warpLabel);
+            for (label in buttonLabels)if (label.parent != null)                 removeChild(label);
+            for (b in buttons)if (b.parent != null)                 removeChild(b);
+            if (warpCheckbox.parent != null)                 removeChild(warpCheckbox);
+            if (warpLabel.parent != null)                 removeChild(warpLabel);
         }
         
         moreButton.setOn(showParams);
         
-        setWidthHeight(base.width, (showParams) ? 215 : 55);
+        setWidthHeight(Std.int(base.width), (showParams) ? 215 : 55);
         deleteButton.visible = showParams && (row.length > 1);
         if (Std.is(parent, DialogBox))             cast((parent), DialogBox).fixLayout();
     }
@@ -344,17 +344,17 @@ class ProcedureSpecEditor extends Sprite
         removeDeletedElementsFromRow();
         blockShape.x = 10;
         blockShape.y = 10;
-        var nextX : Int = blockShape.x + 6;
-        var nextY : Int = blockShape.y + 5;
+        var nextX : Int = Std.int(blockShape.x + 6);
+        var nextY : Int = Std.int(blockShape.y + 5);
         var maxH : Int = 0;
-        for (o in row)maxH = Math.max(maxH, o.height);
+        for (o in row)maxH = Std.int(Math.max(maxH, o.height));
         for (o in row){
             o.x = nextX;
             o.y = nextY + as3hx.Compat.parseInt((maxH - o.height) / 2) + (((Std.is(o, TextField))) ? 1 : 1);
             nextX += o.width + 4;
             if ((Std.is(o, BlockArg)) && (cast((o), BlockArg).type == "s"))                 nextX -= 2;
         }
-        var blockW : Int = Math.max(40, nextX + 4 - blockShape.x);
+        var blockW : Int = Std.int(Math.max(40, nextX + 4 - blockShape.x));
         blockShape.setWidthAndTopHeight(blockW, maxH + 11, true);
         
         moreButton.x = 0;
@@ -363,13 +363,13 @@ class ProcedureSpecEditor extends Sprite
         moreLabel.x = 10;
         moreLabel.y = moreButton.y - 4;
         
-        var labelX : Int = blockShape.x + 45;
+        var labelX : Int = Std.int(blockShape.x + 45);
         var buttonX : Int = 240;
         for (l in buttonLabels){
-            buttonX = Math.max(buttonX, labelX + l.textWidth + 10);
+            buttonX = Std.int(Math.max(buttonX, labelX + l.textWidth + 10));
         }
         
-        var rowY : Int = blockShape.y + blockShape.height + 30;
+        var rowY : Int = Std.int(blockShape.y + blockShape.height + 30);
         for (i in 0...buttons.length){
             var label : TextField = buttonLabels[i];
             buttonLabels[i].x = labelX;
@@ -436,7 +436,7 @@ class ProcedureSpecEditor extends Sprite
     }
     
     private function setFocus(o : DisplayObject) : Void{
-        if (!stage)             return;
+        if (stage == null)             return;
         if (Std.is(o, TextField))             stage.focus = cast((o), TextField);
         if (Std.is(o, BlockArg))             cast((o), BlockArg).startEditing();
     }
@@ -446,7 +446,7 @@ class ProcedureSpecEditor extends Sprite
         var e : Array<Dynamic> = new EReg('\\d+$', "").exec(name);
         var n : String = (e != null) ? e[0] : "";
         var base : String = name.substring(0, name.length - n.length);
-        var i : Int = as3hx.Compat.parseInt(n || "1") + 1;
+        var i : Int = as3hx.Compat.parseInt(n != null ? n : "1") + 1;
         while (Lambda.indexOf(taken, base + i) != -1){
             i++;
         }

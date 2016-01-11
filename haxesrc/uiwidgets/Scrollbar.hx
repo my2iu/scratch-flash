@@ -94,16 +94,16 @@ class Scrollbar extends Sprite implements DragClient
         var maxSize : Int;
         isVertical = base.height > base.width;
         if (isVertical) {
-            maxSize = base.height;
-            w = base.width;
-            h = Math.max(10, Math.min(sliderSizeFraction * maxSize, maxSize));
+            maxSize = Std.int(base.height);
+            w = Std.int(base.width);
+            h = Std.int(Math.max(10, Math.min(sliderSizeFraction * maxSize, maxSize)));
             slider.x = 0;
             slider.y = positionFraction * (this.height - h);
         }
         else {
-            maxSize = base.width;
-            w = Math.max(10, Math.min(sliderSizeFraction * maxSize, maxSize));
-            h = base.height;
+            maxSize = Std.int(base.width);
+            w = Std.int(Math.max(10, Math.min(sliderSizeFraction * maxSize, maxSize)));
+            h = Std.int(base.height);
             slider.x = positionFraction * (this.width - w);
             slider.y = 0;
         }
@@ -141,12 +141,12 @@ class Scrollbar extends Sprite implements DragClient
     public function dragBegin(evt : MouseEvent) : Void{
         var sliderOrigin : Point = slider.localToGlobal(new Point(0, 0));
         if (isVertical) {
-            dragOffset = evt.stageY - sliderOrigin.y;
-            dragOffset = Math.max(5, Math.min(dragOffset, slider.height - 5));
+            dragOffset = Std.int(evt.stageY - sliderOrigin.y);
+            dragOffset = Std.int(Math.max(5, Math.min(dragOffset, slider.height - 5)));
         }
         else {
-            dragOffset = evt.stageX - sliderOrigin.x;
-            dragOffset = Math.max(5, Math.min(dragOffset, slider.width - 5));
+            dragOffset = Std.int(evt.stageX - sliderOrigin.x);
+            dragOffset = Std.int(Math.max(5, Math.min(dragOffset, slider.width - 5)));
         }
         dispatchEvent(new Event(Event.SCROLL));
         dragMove(evt);
@@ -157,11 +157,11 @@ class Scrollbar extends Sprite implements DragClient
         var frac : Float;
         var localP : Point = globalToLocal(new Point(evt.stageX, evt.stageY));
         if (isVertical) {
-            range = base.height - slider.height;
+            range = Std.int(base.height - slider.height);
             positionFraction = (localP.y - dragOffset) / range;
         }
         else {
-            range = base.width - slider.width;
+            range = Std.int(base.width - slider.width);
             positionFraction = (localP.x - dragOffset) / range;
         }
         positionFraction = Math.max(0, Math.min(positionFraction, 1));

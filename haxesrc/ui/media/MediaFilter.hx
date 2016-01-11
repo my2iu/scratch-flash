@@ -65,7 +65,7 @@ class MediaFilter extends Sprite
     
     private function fixLayout() : Void{
         title.x = title.y = 0;
-        var nextY : Int = title.height + 2;
+        var nextY : Int = Std.int(title.height + 2);
         for (sel in selectors){
             sel.x = 15;
             sel.y = nextY;

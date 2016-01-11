@@ -88,7 +88,7 @@ class SpriteInfoPart extends UIPart implements DragClient
         rotationStyleLabel.text = Translator.map("rotation style:");
         draggableLabel.text = Translator.map("can drag in player:");
         showSpriteLabel.text = Translator.map("show:");
-        if (app.viewedObj())             refresh();
+        if (app.viewedObj() != null)             refresh();
     }
     
     public function setWidthHeight(w : Int, h : Int) : Void{
@@ -163,7 +163,7 @@ class SpriteInfoPart extends UIPart implements DragClient
         spriteName.x = left;
         spriteName.y = 5;
         
-        var nextY : Int = spriteName.y + spriteName.height + 9;
+        var nextY : Int = Std.int(spriteName.y + spriteName.height + 9);
         xReadoutLabel.x = left;
         xReadoutLabel.y = nextY;
         xReadout.x = xReadoutLabel.x + 15;
@@ -185,7 +185,7 @@ class SpriteInfoPart extends UIPart implements DragClient
         nextY += 22;
         rotationStyleLabel.x = left;
         rotationStyleLabel.y = nextY;
-        var buttonsX : Int = rotationStyleLabel.x + rotationStyleLabel.width + 5;
+        var buttonsX : Int = Std.int(rotationStyleLabel.x + rotationStyleLabel.width + 5);
         rotationStyleButtons[0].x = buttonsX;
         rotationStyleButtons[1].x = buttonsX + 28;
         rotationStyleButtons[2].x = buttonsX + 55;
@@ -398,8 +398,8 @@ class SpriteInfoPart extends UIPart implements DragClient
         var spr : ScratchSprite = try cast(app.viewedObj(), ScratchSprite) catch(e:Dynamic) null;
         if (spr == null)             return;
         var p : Point = dirWheel.localToGlobal(new Point(0, 0));
-        var dx : Int = evt.stageX - p.x;
-        var dy : Int = evt.stageY - p.y;
+        var dx : Int = Std.int(evt.stageX - p.x);
+        var dy : Int = Std.int(evt.stageY - p.y);
         if ((dx == 0) && (dy == 0))             return;
         var degrees : Float = 90 + ((180 / Math.PI) * Math.atan2(dy, dx));
         spr.setDirection(degrees);

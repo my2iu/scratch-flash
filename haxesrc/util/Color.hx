@@ -98,9 +98,9 @@ class Color
         var r2 : Int = (rgb2 >> 16) & 255;
         var g2 : Int = (rgb2 >> 8) & 255;
         var b2 : Int = rgb2 & 255;
-        var r : Int = ((fraction * r2) + ((1.0 - fraction) * r1)) & 255;
-        var g : Int = ((fraction * g2) + ((1.0 - fraction) * g1)) & 255;
-        var b : Int = ((fraction * b2) + ((1.0 - fraction) * b1)) & 255;
+        var r : Int = Std.int(((fraction * r2) + ((1.0 - fraction) * r1))) & 255;
+        var g : Int = Std.int(((fraction * g2) + ((1.0 - fraction) * g1))) & 255;
+        var b : Int = Std.int(((fraction * b2) + ((1.0 - fraction) * b1))) & 255;
         return (r << 16) | (g << 8) | b;
     }
     

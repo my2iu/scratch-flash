@@ -80,7 +80,7 @@ class PaletteSelector extends Sprite
             }
             var entry : Array<Dynamic> = Specs.entryForCategory(categories[i]);
             var item : PaletteSelectorItem = new PaletteSelectorItem(entry[0], Translator.map(entry[1]), entry[2]);
-            itemH = item.height;
+            itemH = Std.int(item.height);
             item.x = x;
             item.y = y;
             addChild(item);

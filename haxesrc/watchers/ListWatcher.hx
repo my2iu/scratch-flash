@@ -164,13 +164,13 @@ class ListWatcher extends Sprite
     //------------------------------
     
     private function removeTrailingEmptyLines(lines : Array<Dynamic>) : Array<Dynamic>{
-        while (lines.length && !lines[lines.length - 1])lines.pop();
+        while (lines.length != 0 && !lines[lines.length - 1])lines.pop();
         return lines;
     }
     
     private function importLines(lines : Array<Dynamic>) : Void{
         function gotColumn(s : String) : Void{
-            var n : Float = parseInt(s);
+            var n : Float = Std.parseInt(s);
             if (Math.isNaN(n) || (n < 1) || (n > columnCount))                 contents = lines
             else contents = extractColumn(n, lines, delimiter);
             scrollToIndex(0);
@@ -259,7 +259,7 @@ class ListWatcher extends Sprite
     }
     
     private function ensureVisible() : Void{
-        var i : Int = Math.max(0, Math.min(lastActiveIndex, contents.length - 1));
+        var i : Int = Std.int(Math.max(0, Math.min(lastActiveIndex, contents.length - 1)));
         if ((firstVisibleIndex <= i) && (i < (firstVisibleIndex + visibleCells.length))) {
             return;
         }
@@ -281,7 +281,7 @@ class ListWatcher extends Sprite
                 var msecsSinceAccess : Int = now - lastAccessTime;
                 if (msecsSinceAccess < fadeoutMSecs) {
                     // Animate from yellow to black over fadeoutMSecs.
-                    var gray : Int = 255 * ((fadeoutMSecs - msecsSinceAccess) / fadeoutMSecs);
+                    var gray : Int = Std.int(255 * ((fadeoutMSecs - msecsSinceAccess) / fadeoutMSecs));
                     visibleCellNums[i].textColor = (gray << 16) | (gray << 8);
                 }
                 else {
@@ -357,7 +357,7 @@ class ListWatcher extends Sprite
                     updateScrollbar();
                 }
                 if (visibleCells.length) {
-                    selectCell(Math.min(j, contents.length - 1));
+                    selectCell(Std.int(Math.min(j, contents.length - 1)));
                 }
                 return;
             }
@@ -393,7 +393,7 @@ class ListWatcher extends Sprite
         g.drawRect(0, 0, frame.w - 17, frame.h - 42);
         g.endFill();
         
-        scrollbar.setWidthHeight(SCROLLBAR_W, cellPane.mask.height);
+        scrollbar.setWidthHeight(SCROLLBAR_W, Std.int(cellPane.mask.height));
         scrollbar.x = frame.w - SCROLLBAR_W - 2;
         scrollbar.y = 20;
         
@@ -408,7 +408,7 @@ class ListWatcher extends Sprite
     private function scrollToFraction(n : Float) : Void{
         var old : Int = firstVisibleIndex;
         n = Math.floor(n * contents.length);
-        firstVisibleIndex = Math.max(0, Math.min(n, contents.length - 1));
+        firstVisibleIndex = Std.int(Math.max(0, Math.min(n, contents.length - 1)));
         lastActiveIndex = firstVisibleIndex;
         if (firstVisibleIndex != old)             updateContents();
     }
@@ -437,10 +437,10 @@ class ListWatcher extends Sprite
         removeAllCells();
         visibleCells = [];
         visibleCellNums = [];
-        var visibleHeight : Int = cellPane.height;
+        var visibleHeight : Int = Std.int(cellPane.height);
         var cellNumRight : Int = cellNumWidth() + 14;
         var cellX : Int = cellNumRight;
-        var cellW : Int = cellPane.width - cellX - 1;
+        var cellW : Int = Std.int(cellPane.width - cellX - 1);
         var nextY : Int = 0;
         for (i in firstVisibleIndex...contents.length){
             var s : String = Watcher.formatValue(contents[i]);
@@ -459,11 +459,11 @@ class ListWatcher extends Sprite
             visibleCellNums.push(cellNum);
             cellPane.addChild(cellNum);
             
-            nextY += cell.height - 1;
+            nextY += Std.int(cell.height - 1);
             if (nextY > visibleHeight)                 break;
         }
         
-        if (!contents.length) {
+        if (contents.length == 0) {
             var tf : TextField = createTextField(Translator.map("(empty)"), cellNumFont);
             tf.x = (frame.w - SCROLLBAR_W - tf.textWidth) / 2;
             tf.y = (visibleHeight - tf.textHeight) / 2;
@@ -477,9 +477,9 @@ class ListWatcher extends Sprite
         // firstVisibleIndex + 20. Take the log base 10 to get the number of digits
         // and measure the width of a textfield with that many zeros.
         if (tempCellNum == null)             tempCellNum = createTextField("", cellNumFont);
-        var digitCount : Int = Math.log(firstVisibleIndex + 20) / Math.log(10);
+        var digitCount : Int = Std.int(Math.log(firstVisibleIndex + 20) / Math.log(10));
         tempCellNum.text = "000000000000000".substring(0, digitCount);
-        return tempCellNum.textWidth;
+        return Std.int(tempCellNum.textWidth);
     }
     
     private function removeAllCells() : Void{
@@ -570,7 +570,7 @@ class ListWatcher extends Sprite
             addItem();
             return;
         }
-        if (contents.length < 2)             return  // only one cell, and it's already selected  ;
+        if (contents.length < 2)             return;  // only one cell, and it's already selected  ;
         var direction : Int = 
         e.keyCode == (38) ? -1 : 
         e.keyCode == (40) ? 1 : 

@@ -92,14 +92,14 @@ private static var Pop : Class<Dynamic>;
         if (i < 0)             return;
         costumes.splice(i, 1);
         if (currentCostumeIndex >= i)             showCostume(currentCostumeIndex - 1);
-        if (Scratch.app)             Scratch.app.setSaveNeeded();
+        if (Scratch.app != null)             Scratch.app.setSaveNeeded();
     }
     
     public function deleteSound(snd : ScratchSound) : Void{
         var i : Int = Lambda.indexOf(sounds, snd);
         if (i < 0)             return;
         sounds.splice(i, 1);
-        if (Scratch.app)             Scratch.app.setSaveNeeded();
+        if (Scratch.app != null)             Scratch.app.setSaveNeeded();
     }
     
     public function showCostumeNamed(n : String) : Void{
@@ -119,7 +119,7 @@ private static var Pop : Class<Dynamic>;
         currentCostumeIndex = costumeIndex % costumes.length;
         if (currentCostumeIndex < 0)             currentCostumeIndex += costumes.length;
         var c : ScratchCostume = currentCostume();
-        if (c == lastCostume)             return  // optimization: already showing that costume  ;
+        if (c == lastCostume)             return;  // optimization: already showing that costume  ;
         lastCostume = (c.isBitmap()) ? c : null;  // cache only bitmap costumes for now  
         
         updateImage();
@@ -134,7 +134,7 @@ private static var Pop : Class<Dynamic>;
     
     public function costumeNumber() : Int{
         // One-based costume number as seen by user (currentCostumeIndex is 0-based)
-        return currentCostumeIndex + 1;
+        return Std.int(currentCostumeIndex + 1);
     }
     
     public function unusedCostumeName(baseName : String = "") : String{
@@ -201,9 +201,9 @@ private static var Pop : Class<Dynamic>;
                     
                     var id : String = ((costume != null) ? costume.baseLayerMD5 : null);
                     if (id == null)                         id = objName + ((costume != null) ? costume.costumeName : "_" + currentCostumeIndex)
-                    else if (costume != null && costume.textLayerMD5)                         id += costume.textLayerMD5;
+                    else if (costume != null && costume.textLayerMD5 != null)                         id += costume.textLayerMD5;
                     
-                    renderOpts.bitmap = (costume && (costume.bitmap) ? costume.bitmap : null);
+                    renderOpts.bitmap = (costume != null && (costume.bitmap != null) ? costume.bitmap : null);
                 }  // TODO: Clip original bitmap to match visible bounds?  
                 
                 
@@ -219,7 +219,7 @@ private static var Pop : Class<Dynamic>;
                     else 
                     renderOpts.bounds = getBounds(this);
                 }
-                if (Scratch.app.isIn3D)                     Scratch.app.render3D.updateRender((Std.is(this, (ScratchStage) ? img : this)), id, renderOpts);
+                //if (Scratch.app.isIn3D)                     Scratch.app.render3D.updateRender((Std.is(this, (ScratchStage) ? img : this)), id, renderOpts);
             }
         }
     }
@@ -274,7 +274,7 @@ private static var Pop : Class<Dynamic>;
     
     public function updateEffectsFor3D() : Void{
         /* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
-            if ((parent && Std.is(parent, ScratchStage)) || Std.is(this, ScratchStage)) {
+            if ((parent != null && Std.is(parent, ScratchStage)) || Std.is(this, ScratchStage)) {
                 if (Std.is(parent, ScratchStage)) 
                     (try cast(parent, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(this, filterPack.getAllSettings())
                 else {
@@ -297,7 +297,7 @@ private static var Pop : Class<Dynamic>;
         clearCachedBitmap();
         
         /* AS3HX WARNING namespace modifier SCRATCH::allow3d */{
-            if (parent && Std.is(parent, ScratchStage)) {
+            if (parent != null && Std.is(parent, ScratchStage)) {
                 (try cast(parent, ScratchStage) catch(e:Dynamic) null).updateSpriteEffects(this, null);
             }
         }
@@ -408,7 +408,7 @@ private static var Pop : Class<Dynamic>;
     }
     
     public function setInstrument(instr : Float) : Void{
-        instrument = Math.max(1, Math.min(Math.round(instr), 128));
+        instrument = Std.int(Math.max(1, Math.min(Math.round(instr), 128)));
     }
     
     /* Procedures */
@@ -454,7 +454,7 @@ private static var Pop : Class<Dynamic>;
     
     public function hasName(varName : String) : Bool{
         var p : ScratchObj = try cast(parent, ScratchObj) catch(e:Dynamic) null;
-        return ownsVar(varName) || ownsList(varName) || p && (p.ownsVar(varName) || p.ownsList(varName));
+        return ownsVar(varName) || ownsList(varName) || p != null && (p.ownsVar(varName) || p.ownsList(varName));
     }
     
     public function lookupOrCreateVar(varName : String) : Variable{
@@ -613,24 +613,24 @@ private static var Pop : Class<Dynamic>;
     
     public function readJSON(jsonObj : Dynamic) : Void{
         objName = jsonObj.objName;
-        variables = jsonObj.variables || [];
+        variables = jsonObj.variables != null ?  jsonObj.variables: [];
         for (i in 0...variables.length){
             var varObj : Dynamic = variables[i];
             variables[i] = Scratch.app.runtime.makeVariable(varObj);
         }
-        lists = jsonObj.lists || [];
-        scripts = jsonObj.scripts || [];
-        scriptComments = jsonObj.scriptComments || [];
-        sounds = jsonObj.sounds || [];
-        costumes = jsonObj.costumes || [];
+        lists = jsonObj.lists != null ? jsonObj.lists : [];
+        scripts = jsonObj.scripts != null ? jsonObj.scripts: [];
+        scriptComments = jsonObj.scriptComments != null ? jsonObj.scriptComments: [];
+        sounds = jsonObj.sounds != null ? jsonObj.sounds: [];
+        costumes = jsonObj.costumes != null ? jsonObj.costumes: [];
         currentCostumeIndex = jsonObj.currentCostumeIndex;
         if (isNaNOrInfinity(currentCostumeIndex))             currentCostumeIndex = 0;
     }
     
     private function isNaNOrInfinity(n : Float) : Bool{
         if (n != n)             return true;  // NaN  ;
-        if (n == Float.POSITIVE_INFINITY)             return true;
-        if (n == Float.NEGATIVE_INFINITY)             return true;
+        if (n == Math.POSITIVE_INFINITY)             return true;
+        if (n == Math.NEGATIVE_INFINITY)             return true;
         return false;
     }
     
@@ -686,14 +686,14 @@ private static var Pop : Class<Dynamic>;
     public function getSummary() : String{
         var s : Array<Dynamic> = [];
         s.push(h1(objName));
-        if (variables.length) {
+        if (variables.length != 0) {
             s.push(h2(Translator.map("Variables")));
             for (v in variables){
                 s.push("- " + v.name + " = " + v.value);
             }
             s.push("");
         }
-        if (lists.length) {
+        if (lists.length != 0) {
             s.push(h2(Translator.map("Lists")));
             for (list in lists){
                 s.push("- " + list.listName + ((list.contents.length) ? ":" : ""));
@@ -708,14 +708,14 @@ private static var Pop : Class<Dynamic>;
             s.push("- " + costume.costumeName);
         }
         s.push("");
-        if (sounds.length) {
+        if (sounds.length != 0) {
             s.push(h2(Translator.map("Sounds")));
             for (sound in sounds){
                 s.push("- " + sound.soundName);
             }
             s.push("");
         }
-        if (scripts.length) {
+        if (scripts.length != 0) {
             s.push(h2(Translator.map("Scripts")));
             for (script in scripts){
                 s.push(script.getSummary());

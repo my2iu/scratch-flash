@@ -79,8 +79,8 @@ class ScratchRuntime {
 		}
 
 		if (recording) saveFrame(); // Recording a YouTube video?  Old / Unused currently.
-		app.extensionManager.step();
-		if (motionDetector) motionDetector.step(); // Video motion detection
+		//app.extensionManager.step();
+		//if (motionDetector) motionDetector.step(); // Video motion detection
 
 		// Step the stage, sprites, and watchers
 		app.stagePane.step(this);
@@ -125,7 +125,7 @@ class ScratchRuntime {
 		var myWriter:SimpleFlvWriter = SimpleFlvWriter.getInstance();
 		var data:ByteArray = new ByteArray();
 		myWriter.createFile(data, 480, 360, 30, frames.length / 30.0);
-		for (i= 0...frames.length) {
+		for (i in 0...frames.length) {
 			myWriter.saveFrame(frames[i]);
 			frames[i] = null;
 		}
@@ -142,7 +142,7 @@ class ScratchRuntime {
 		cloneCount = 0;
 		clearKeyDownArray();
 		//ScratchSoundPlayer.stopAllSounds();
-		app.extensionManager.stopButtonPressed();
+		//app.extensionManager.stopButtonPressed();
 		app.stagePane.clearFilters();
 		for (s in app.stagePane.sprites()) {
 			s.clearFilters();
@@ -219,7 +219,7 @@ class ScratchRuntime {
 			stack.allBlocksDo(addBlock);
 		});
 		var palette:BlockPalette = app.palette;
-		for (i= 0...palette.numChildren) {
+		for (i in 0...palette.numChildren) {
 			var b:Block = cast(palette.getChildAt(i), Block);
 			if (b) addBlock(b);
 		}
@@ -241,10 +241,11 @@ class ScratchRuntime {
 	}
 
 	private function isUnofficialExtensionBlock(b:Block):Bool {
-		var i:Int = b.op.indexOf('.');
-		if(i == -1) return false;
-		var extName:String = b.op.substr(0, i);
-		return !app.extensionManager.isInternal(extName);
+		return true;
+		//var i:Int = b.op.indexOf('.');
+		//if(i == -1) return false;
+		//var extName:String = b.op.substr(0, i);
+		//return !app.extensionManager.isInternal(extName);
 	}
 
 	/*
@@ -280,7 +281,7 @@ class ScratchRuntime {
 	// hats whose triggering condition is currently true
 	private var activeHats:Array<Dynamic> = [];
 	private function startEdgeTriggeredHats(hat:Block, target:ScratchObj):Void {
-		if (!hat.isHat || !hat.nextBlock) return; // skip disconnected hats
+		if (!hat.isHat || hat.nextBlock == null) return; // skip disconnected hats
 
 		if ('whenSensorGreaterThan' == hat.op) {
 			var sensorName:String = interp.arg(hat, 0);
@@ -306,30 +307,30 @@ class ScratchRuntime {
 			var dotIndex:Int = hat.op.indexOf('.');
 			if (dotIndex > -1) {
 				var extName:String = hat.op.substr(0, dotIndex);
-				if (app.extensionManager.extensionActive(extName)) {
-					var op:String = hat.op.substr(dotIndex+1);
-					var args:Array<Dynamic> = hat.args;
-					var finalArgs:Array<Dynamic> = new Array(args.length);
-					for (i=0...args.length)
-						finalArgs[i] = interp.arg(hat, i);
-
-					processExtensionReporter(hat, target, extName, op, finalArgs);
-				}
+				//if (app.extensionManager.extensionActive(extName)) {
+					//var op:String = hat.op.substr(dotIndex+1);
+					//var args:Array<Dynamic> = hat.args;
+					//var finalArgs:Array<Dynamic> = new Array(args.length);
+					//for (i in 0...args.length)
+						//finalArgs[i] = interp.arg(hat, i);
+//
+					//processExtensionReporter(hat, target, extName, op, finalArgs);
+				//}
 			}
 		}
 	}
 
 	private function processExtensionReporter(hat:Block, target:ScratchObj, extName:String, op:String, finalArgs:Array<Dynamic>):Void {
 		// TODO: Is it safe to do this in a callback, or must it happen before we return from startEdgeTriggeredHats?
-		app.externalCall('ScratchExtensions.getReporter', function(triggerCondition:Bool):Void {
-			if (triggerCondition) {
-				if (triggeredHats.indexOf(hat) == -1) { // not already trigged
-					// only start the stack if it is not already running
-					if (!interp.isRunning(hat, target)) interp.toggleThread(hat, target);
-				}
-				activeHats.push(hat);
-			}
-		}, extName, op, finalArgs);
+		//app.externalCall('ScratchExtensions.getReporter', function(triggerCondition:Bool):Void {
+			//if (triggerCondition) {
+				//if (triggeredHats.indexOf(hat) == -1) { // not already trigged
+					//// only start the stack if it is not already running
+					//if (!interp.isRunning(hat, target)) interp.toggleThread(hat, target);
+				//}
+				//activeHats.push(hat);
+			//}
+		//}, extName, op, finalArgs);
 	}
 
 	private function processEdgeTriggeredHats():Void {
@@ -412,7 +413,7 @@ class ScratchRuntime {
 		if (data.length < 8 || data.readUTFBytes(8) != 'ScratchV') {
 			data.position = 0;
 			newProject = new ProjectIO(app).decodeProjectFromZipFile(data);
-			if (!newProject) {
+			if (newProject == null) {
 				projectLoadFailed();
 				return;
 			}
@@ -423,7 +424,7 @@ class ScratchRuntime {
 			var reader:ObjReader = new ObjReader(data);
 			try { info = reader.readInfo(); } catch (e:Error) { data.position = 0; }
 			try { objTable = reader.readObjTable(); } catch (e:Error) { }
-			if (!objTable) {
+			if (objTable == null) {
 				projectLoadFailed();
 				return;
 			}
@@ -432,7 +433,7 @@ class ScratchRuntime {
 			if (info != null) info.thumbnail = null; //delete info.thumbnail; // delete old thumbnail
 		}
 		if (saveForRevert) app.saveForRevert(data, false);
-		app.extensionManager.clearImportedExtensions();
+		//app.extensionManager.clearImportedExtensions();
 		decodeImagesAndInstall(newProject);
 	}
 
@@ -449,7 +450,7 @@ class ScratchRuntime {
 
 	private function installProject(project:ScratchStage):Void {
 		if (app.stagePane != null) stopAll();
-		if (app.scriptsPane) app.scriptsPane.viewScriptsFor(null);
+		if (app.scriptsPane != null) app.scriptsPane.viewScriptsFor(null);
 
 		/*
 		 SCRATCH::allow3d { if(app.isIn3D) app.render3D.setStage(project, project.penLayer); }
@@ -459,12 +460,12 @@ class ScratchRuntime {
 			obj.showCostume(obj.currentCostumeIndex);
 			if(Scratch.app.isIn3D) obj.updateCostume();
 			var spr:ScratchSprite = cast(obj, ScratchSprite);
-			if (spr) spr.setDirection(spr.direction);
+			if (spr != null) spr.setDirection(spr.direction);
 		}
 
 		app.resetPlugin();
-		app.extensionManager.clearImportedExtensions();
-		app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
+		//app.extensionManager.clearImportedExtensions();
+		//app.extensionManager.loadSavedExtensions(project.info.savedExtensions);
 		app.installStage(project);
 		app.updateSpriteLibrary(true);
 		// set the active sprite
@@ -475,7 +476,7 @@ class ScratchRuntime {
 		} else {
 			app.selectSprite(app.stagePane);
 		}
-		app.extensionManager.step();
+		//app.extensionManager.step();
 		app.projectLoaded();
 /*		
 		SCRATCH::allow3d { checkForGraphicEffects(); }
@@ -514,7 +515,7 @@ class ScratchRuntime {
 
 	public function askPromptShowing():Bool {
 		var uiLayer:Sprite = app.stagePane.getUILayer();
-		for (i= 0...uiLayer.numChildren) {
+		for (i in 0...uiLayer.numChildren) {
 			if (Std.is(uiLayer.getChildAt(i), AskPrompter))
 				return true;
 		}
@@ -526,7 +527,7 @@ class ScratchRuntime {
 		var allPrompts:Array<Dynamic> = [];
 		var uiLayer:Sprite = app.stagePane.getUILayer();
 		var c:DisplayObject;
-		for (i= 0...uiLayer.numChildren) {
+		for (i in 0...uiLayer.numChildren) {
 			if (Std.is((c = uiLayer.getChildAt(i)), AskPrompter)) allPrompts.push(c);
 		}
 		for (c in allPrompts) uiLayer.removeChild(c);
@@ -554,7 +555,7 @@ class ScratchRuntime {
 	}
 
 	private function clearKeyDownArray():Void {
-		for (i= 0...128) keyIsDown[i] = false;
+		for (i in 0...128) keyIsDown[i] = false;
 	}
 
 	private function mapArrowKey(keyCode:Int):Int {
@@ -570,30 +571,30 @@ class ScratchRuntime {
 	// Sensors
 	//------------------------------
 
-	public function getSensor(sensorName:String):Float {
-		return app.extensionManager.getStateVar('PicoBoard', sensorName, 0);
-	}
+	//public function getSensor(sensorName:String):Float {
+		//return app.extensionManager.getStateVar('PicoBoard', sensorName, 0);
+	//}
 
 	public function getBooleanSensor(sensorName:String):Bool {
-		if (sensorName == 'button pressed') return app.extensionManager.getStateVar('PicoBoard', 'button', 1023) < 10;
-		if (sensorName.indexOf('connected') > -1) { // 'A connected' etc.
-			sensorName = 'resistance-' + sensorName.charAt(0);
-			return app.extensionManager.getStateVar('PicoBoard', sensorName, 1023) < 10;
-		}
+		//if (sensorName == 'button pressed') return app.extensionManager.getStateVar('PicoBoard', 'button', 1023) < 10;
+		//if (sensorName.indexOf('connected') > -1) { // 'A connected' etc.
+			//sensorName = 'resistance-' + sensorName.charAt(0);
+			//return app.extensionManager.getStateVar('PicoBoard', sensorName, 1023) < 10;
+		//}
 		return false;
 	}
 
 	public function getTimeString(which:String):Dynamic {
 		// Return local time properties.
-		var now:Date = new Date();
+		var now:Date = Date.now();
 		switch (which) {
-			case 'hour': return now.hours;
-			case 'minute': return now.minutes;
-			case 'second': return now.seconds;
-			case 'year': return now.fullYear; // four digit year (e.g. 2012)
-			case 'month': return now.month + 1; // 1-12
-			case 'date': return now.date; // 1-31
-			case 'day of week': return now.day + 1; // 1-7, where 1 is Sunday
+			case 'hour': return now.getHours();
+			case 'minute': return now.getMinutes();
+			case 'second': return now.getSeconds();
+			case 'year': return now.getFullYear(); // four digit year (e.g. 2012)
+			case 'month': return now.getMonth() + 1; // 1-12
+			case 'date': return now.getDate(); // 1-31
+			case 'day of week': return now.getDay() + 1; // 1-7, where 1 is Sunday
 		}
 		return ''; // shouldn't happen
 	}
@@ -694,12 +695,12 @@ class ScratchRuntime {
 	public function soundLevel():Int {
 		if (microphone == null) {
 			microphone = Microphone.getMicrophone();
-			if(microphone) {
+			if(microphone != null) {
 				microphone.setLoopBack(true);
 				microphone.soundTransform = new SoundTransform(0, 0);
 			}
 		}
-		return microphone ? microphone.activityLevel : 0;
+		return microphone != null ? microphone.activityLevel : 0;
 	}
 
 	// -----------------------------
@@ -711,7 +712,7 @@ class ScratchRuntime {
 		var costume:ScratchCostume = obj.currentCostume();
 		costume.costumeName = '';
 		var oldName:String = costume.costumeName;
-		newName = obj.unusedCostumeName(newName || Translator.map('costume1'));
+		newName = obj.unusedCostumeName(newName != null ? newName : Translator.map('costume1'));
 		costume.costumeName = newName;
 		updateArgs(obj.isStage ? allUsesOfBackdrop(oldName) : allUsesOfCostume(oldName), newName);
 	}
@@ -720,7 +721,7 @@ class ScratchRuntime {
 		var obj:ScratchObj = app.viewedObj();
 		var oldName:String = obj.objName;
 		obj.objName = '';
-		newName = app.stagePane.unusedSpriteName(newName || 'Sprite1');
+		newName = app.stagePane.unusedSpriteName(newName != null ? newName : 'Sprite1');
 		obj.objName = newName;
 		for (lw  in app.viewedObj().lists) {
 			lw.updateTitle();
@@ -739,7 +740,7 @@ class ScratchRuntime {
 		var obj:ScratchObj = app.viewedObj();
 		var oldName:String = s.soundName;
 		s.soundName = '';
-		newName = obj.unusedSoundName(newName || Translator.map('sound1'));
+		newName = obj.unusedSoundName(newName != null ? newName : Translator.map('sound1'));
 		s.soundName = newName;
 		allUsesOfSoundDo(oldName, function (a:BlockArg):Void {
 			a.setArgValue(newName);
@@ -937,7 +938,7 @@ class ScratchRuntime {
 		while (i >= 0) {
 			var o:Dynamic = stage.getChildAt(i);
 			if (Std.is(o, ScratchObj)) {
-				for (stack in ScratchObj(o).scripts) f(stack, o);
+				for (stack in cast(o, ScratchObj).scripts) f(stack, o);
 			}
 			i--;
 		}
@@ -959,7 +960,7 @@ class ScratchRuntime {
 		}
 		if ('reporter' == data.type) {
 			var w:Watcher = findReporterWatcher(data);
-			if (w) {
+			if (w != null) {
 				w.visible = showFlag;
 			} else {
 				if (showFlag) {
@@ -981,7 +982,7 @@ class ScratchRuntime {
 		}
 		var w:DisplayObject = isList ? watcherForList(targetObj, varName) : watcherForVar(targetObj, varName);
 		if (Std.is(w, ListWatcher)) ListWatcher(w).prepareToShow();
-		if (w != null && (!w.visible || !w.parent)) {
+		if (w != null && (!w.visible || w.parent == null)) {
 			showOnStage(w);
 			app.updatePalette(false);
 		}
@@ -995,21 +996,21 @@ class ScratchRuntime {
 
 	private function setInitialPosition(watcher:DisplayObject):Void {
 		var wList:Array<Dynamic> = app.stagePane.watchers();
-		var w:Int = watcher.width;
-		var h:Int = watcher.height;
+		var w:Int = Std.int(watcher.width);
+		var h:Int = Std.int(watcher.height);
 		var x:Int = 5;
 		while (x < 400) {
 			var maxX:Int = 0;
 			var y:Int = 5;
 			while (y < 320) {
 				var otherWatcher:DisplayObject = watcherIntersecting(wList, new Rectangle(x, y, w, h));
-				if (!otherWatcher) {
+				if (otherWatcher == null) {
 					watcher.x = x;
 					watcher.y = y;
 					return;
 				}
-				y = otherWatcher.y + otherWatcher.height + 5;
-				maxX = otherWatcher.x + otherWatcher.width;
+				y = Std.int(otherWatcher.y + otherWatcher.height + 5);
+				maxX = Std.int(otherWatcher.x + otherWatcher.width);
 			}
 			x = maxX + 5;
 		}
@@ -1040,26 +1041,26 @@ class ScratchRuntime {
 			var uiLayer:Sprite = app.stagePane.getUILayer();
 			var i:Int;
 			if(data.isList)
-				for (i = 0...uiLayer.numChildren) {
+				for (i in 0...uiLayer.numChildren) {
 					var listW:ListWatcher = cast(uiLayer.getChildAt(i), ListWatcher);
-					if (listW && (listW.listName == varName) && listW.visible) return true;
+					if (listW != null && (listW.listName == varName) && listW.visible) return true;
 				}
 			else
-				for (i = 0...uiLayer.numChildren) {
+				for (i in 0...uiLayer.numChildren) {
 					var varW:Watcher = cast(uiLayer.getChildAt(i), Watcher);
 					if (varW && varW.isVarWatcherFor(targetObj, varName) && varW.visible) return true;
 				}
 		}
 		if ('reporter' == data.type) {
 			var w:Watcher = findReporterWatcher(data);
-			return w && w.visible;
+			return w != null && w.visible;
 		}
 		return false;
 	}
 
 	private function findReporterWatcher(data:Object):Watcher {
 		var uiLayer:Sprite = app.stagePane.getUILayer();
-		for (i= 0...uiLayer.numChildren) {
+		for (i in 0...uiLayer.numChildren) {
 			var w:Watcher = cast(uiLayer.getChildAt(i), Watcher);
 			if (w && w.isReporterWatcher(data.targetObj, data.cmd, data.param)) return w;
 		}
@@ -1095,8 +1096,8 @@ class ScratchRuntime {
 
 	private function existingWatcherForVar(target:ScratchObj, vName:String):Watcher {
 		var uiLayer:Sprite = app.stagePane.getUILayer();
-		for (i= 0...uiLayer.numChildren) {
-			var c:Dyamic = uiLayer.getChildAt(i);
+		for (i in 0...uiLayer.numChildren) {
+			var c:Dynamic = uiLayer.getChildAt(i);
 			if (Std.is(c, Watcher) && (c.isVarWatcherFor(target, vName))) return c;
 		}
 		return null;
@@ -1114,7 +1115,7 @@ class ScratchRuntime {
 	public function recordForUndelete(obj:Dynamic, x:Int, y:Int, index:Int, owner:Dynamic = null):Void {
 		if (Std.is(obj, Block)) {
 			var comments:Array<Dynamic> = (cast(obj, Block)).attachedCommentsIn(app.scriptsPane);
-			if (comments.length) {
+			if (comments.length != 0) {
 				for (c in comments) {
 					c.parent.removeChild(c);
 				}
@@ -1126,7 +1127,7 @@ class ScratchRuntime {
 	}
 
 	public function undelete():Void {
-		if (!lastDelete) return;
+		if (lastDelete == null) return;
 		var obj:Dynamic = lastDelete[0];
 		var x:Int = lastDelete[1];
 		var y:Int = lastDelete[2];

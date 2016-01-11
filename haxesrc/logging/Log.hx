@@ -64,13 +64,17 @@ class Log
         }
         
         var entryString : String;
-        function getEntryString() : String{
-            return entryString || (entryString = Std.string(entry));
+        function getEntryString() : String {
+			if (entryString == null)
+				entryString = Std.string(entry);
+			return entryString;
         };
         
         var extraString : String;
-        function getExtraString() : String{
-            return extraString || (extraString = util.JSON.stringify(extraData));
+        function getExtraString() : String {
+			if (extraString == null)
+				extraString = util.JSON.stringify(extraData);
+			return extraString;
         };
         
         if (Capabilities.isDebugger) {

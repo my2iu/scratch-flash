@@ -53,7 +53,7 @@ class LogEntry
         return [makeTimeStampString(), LogLevel.LEVEL[severity], messageKey].join(" | ");
     }
     
-    private static var timerOffset : Float = Date.now().time - Math.round(haxe.Timer.stamp() * 1000);
+    private static var timerOffset : Float = Date.now().getTime() - Math.round(haxe.Timer.stamp() * 1000);
     
     // Returns approximately the same value as "new Date().time" without GC impact
     public static function getCurrentTime() : Float{

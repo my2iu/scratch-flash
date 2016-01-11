@@ -54,7 +54,7 @@ class AskPrompter extends Sprite
     }
     
     public function grabKeyboardFocus() : Void{
-        if (stage)             stage.focus = input;
+        if (stage != null)             stage.focus = input;
     }
     
     public function answer() : String{return input.text;

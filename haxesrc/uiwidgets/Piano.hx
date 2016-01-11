@@ -1,13 +1,5 @@
 package uiwidgets;
 
-import uiwidgets.DisplayObject;
-import uiwidgets.Graphics;
-import uiwidgets.NotePlayer;
-import uiwidgets.Shape;
-import uiwidgets.Sprite;
-import uiwidgets.Stage;
-import uiwidgets.TextField;
-import uiwidgets.TextFormat;
 
 import flash.display.*;
 import flash.events.*;

@@ -127,7 +127,7 @@ class ScratchCostume {
 	public static function scaleForScratch(bm:BitmapData):BitmapData {
 		if ((bm.width <= 480) && (bm.height <= 360)) return bm;
 		var scale:Float = Math.min(480 / bm.width, 360 / bm.height);
-		var result:BitmapData = new BitmapData(scale * bm.width, scale * bm.height, true, 0);
+		var result:BitmapData = new BitmapData(Std.int(scale * bm.width), Std.int(scale * bm.height), true, 0);
 		var m:Matrix = new Matrix();
 		m.scale(scale, scale);
 		result.draw(bm, m);
@@ -135,7 +135,7 @@ class ScratchCostume {
 	}
 
 	public static function isSVGData(data:ByteArray):Bool {
-		if (!data || (data.length < 10)) return false;
+		if (data == null || (data.length < 10)) return false;
 		var oldPosition:Int = data.position;
 		data.position = 0;
 		var s:String = data.readUTFBytes(10);
@@ -266,25 +266,25 @@ class ScratchCostume {
 
 	private static var shapeDict:Object = {};
 	public function getShape():Shape {
-		if (!baseLayerMD5) prepareToSave();
+		if (baseLayerMD5 == null) prepareToSave();
 		var id:String = baseLayerMD5;
-		if(id && textLayerMD5) id += textLayerMD5;
-		else if(textLayerMD5) id = textLayerMD5;
+		if(id != null && textLayerMD5 != null) id += textLayerMD5;
+		else if(textLayerMD5 != null) id = textLayerMD5;
 
 		var s:Shape = shapeDict[id];
-		if(!s) {
+		if(s == null) {
 			s = new Shape();
 			var pts:Array = RasterHull();
 			s.graphics.clear();
 
 			if(pts.length) {
 				s.graphics.lineStyle(1);
-				s.graphics.moveTo(pts[pts.length-1].x, pts[pts.length-1].y);
+				s.graphics.moveTo(pts[Std.int(pts.length-1)].x, pts[Std.int(pts.length-1)].y);
 				for (pt in pts)
 					s.graphics.lineTo(pt.x, pt.y);
 			}
 
-			if(id)
+			if(id != null)
 				shapeDict[id] = s;
 		}
 
@@ -393,13 +393,13 @@ class ScratchCostume {
 		return H;
 	}
 
-	public function width():Float {/* return svgRoot!=null ? svgWidth : */(bitmap ? bitmap.width / bitmapResolution : 0); }
-	public function height():Float {/* return svgRoot!=null ? svgHeight : */(bitmap ? bitmap.height / bitmapResolution : 0); }
+	public function width():Float { return /*svgRoot!=null ? svgWidth : */(bitmap != null ? bitmap.width / bitmapResolution : 0); }
+	public function height():Float { return /*svgRoot!=null ? svgHeight : */(bitmap != null? bitmap.height / bitmapResolution : 0); }
 
 	public function duplicate():ScratchCostume {
 		// Return a copy of this costume.
 
-		if (oldComposite) computeTextLayer();
+		if (oldComposite != null) computeTextLayer();
 
 		var dup:ScratchCostume = new ScratchCostume(costumeName, null);
 		dup.bitmap = bitmap;
@@ -498,9 +498,9 @@ class ScratchCostume {
 		var centerY:Float = r.y + (r.height / 2);
 		var bm:BitmapData = new BitmapData(w, h, true, 0x00FFFFFF); // transparent fill color
 		var scale:Float = Math.min(w / r.width, h / r.height);
-		if (bitmap) scale = Math.min(1, scale);
+		if (bitmap != null) scale = Math.min(1, scale);
 		var m:Matrix = new Matrix();
-		if (scale < 1 || !bitmap) m.scale(scale, scale); // don't scale up bitmaps
+		if (scale < 1 || bitmap == null) m.scale(scale, scale); // don't scale up bitmaps
 		m.translate((w / 2) - (scale * centerX), (h / 2) - (scale * centerY));
 		bm.draw(dispObj, m);
 		return bm;

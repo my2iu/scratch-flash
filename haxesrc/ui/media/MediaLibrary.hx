@@ -160,7 +160,7 @@ class MediaLibrary extends Sprite {
 
 		resultsFrame.x = innerFrame.x + 5;
 		resultsFrame.y = innerFrame.y + 5;
-		resultsFrame.setWidthHeight(innerFrame.width - 10, innerFrame.height - 10);
+		resultsFrame.setWidthHeight(Std.int(innerFrame.width - 10), Std.int(innerFrame.height - 10));
 
 		var nextX:Int = Std.int(title.x + 3);
 		var nextY:Int = inset + 60;
@@ -286,7 +286,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 
 	private function viewLibrary():Void {
 		function gotLibraryData(data:ByteArray):Void {
-			if (!data) return; // failure
+			if (data == null) return; // failure
 			var s:String = data.readUTFBytes(data.length);
 			libraryCache[assetType] = cast(util.JSON.parse(stripComments(s)), Array);
 			collectEntries();
@@ -327,19 +327,19 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 
 
 	private function addScratchExtensions():Void {
-		var extList:Array = [
+		//var extList:Array = [
 //			ScratchExtension.PicoBoard(),
 //			ScratchExtension.WeDo()
-		];
+		//];
 		allItems = [];
-		for (ext in extList) {
-			allItems.push(new MediaLibraryItem({
-				extension: ext,
-				name: ext.name,
-				md5: ext.thumbnailMD5,
-				tags: ext.tags
-			}));
-		}
+		//for (ext in extList) {
+			//allItems.push(new MediaLibraryItem({
+				//extension: ext,
+				//name: ext.name,
+				//md5: ext.thumbnailMD5,
+				//tags: ext.tags
+			//}));
+		//}
 		showFilteredItems();
 		startLoadingThumbnails();
 	}
@@ -394,9 +394,9 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 	private function appendItems(items:Array<Dynamic>):Void {
 		if (items.length == 0) return;
 		var itemWidth:Int = cast(items[0], MediaLibraryItem).frameWidth + 6;
-		var totalWidth:Int = resultsFrame.width - 15;
-		var columnCount:Int = totalWidth / itemWidth;
-		var extra:Int = (totalWidth - (columnCount * itemWidth)) / columnCount; // extra space per column
+		var totalWidth:Int = Std.int(resultsFrame.width - 15);
+		var columnCount:Int = Std.int(totalWidth / itemWidth);
+		var extra:Int = Std.int((totalWidth - (columnCount * itemWidth)) / columnCount); // extra space per column
 
 		var colNum:Int = 0;
 		var nextX:Int = 2;
@@ -420,7 +420,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		// Close dialog and call whenDone() with an array of selected media items.
 		var io:ProjectIO = new ProjectIO(app);
 		close();
-		for (i= 0...resultsPane.numChildren) {
+		for (i in 0...resultsPane.numChildren) {
 			var item:MediaLibraryItem = cast(resultsPane.getChildAt(i), MediaLibraryItem);
 			if (item && item.isHighlighted()) {
 				var md5AndExt:String = item.dbObj.md5;
@@ -474,7 +474,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 	}
 
 	private function stopLoadingThumbnails():Void {
-		for (i= 0...resultsPane.numChildren) {
+		for (i in 0...resultsPane.numChildren) {
 			var item:MediaLibraryItem = cast(resultsPane.getChildAt(i), MediaLibraryItem);
 			if (item) item.stopLoading();
 		}
@@ -486,7 +486,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 
 	private function importImagesOrSpritesFromDisk():Void {
 		function fileSelected(e:Event):Void {
-			for (j= 0...files.fileList.length) {
+			for (j in 0...files.fileList.length) {
 				var file:FileReference = FileReference(files.fileList[j]);
 				file.addEventListener(Event.COMPLETE, fileLoaded);
 				file.load();
@@ -494,7 +494,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		}
 		function fileLoaded(e:Event):Void {
 			var fRef:FileReference = cast(e.target, FileReference);
-			if (fRef) convertAndUploadImageOrSprite(fRef.name, fRef.data);
+			if (fRef != null) convertAndUploadImageOrSprite(fRef.name, fRef.data);
 		}
 		var costumeOrSprite:Dynamic;
 		var files:FileReferenceList = new FileReferenceList();
@@ -580,7 +580,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 				}
 				var newProject:ScratchStage = new OldProjectReader().extractProject(objTable);
 				var sprite:ScratchSprite = newProject.numChildren > 3 ? cast(newProject.getChildAt(3), ScratchSprite) : null;
-				if (!sprite) {
+				if (sprite == null) {
 					spriteError();
 					return;
 				}
@@ -597,7 +597,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		gifReader.read(data);
 		if (gifReader.frames.length == 0) return; // bad GIF (error; no images)
 		var newCostumes:Array<Dynamic> = [];
-		for (i= 0...gifReader.frames.length) {
+		for (i in 0...gifReader.frames.length) {
 			newCostumes.push(new ScratchCostume(fName + '-' + i, gifReader.frames[i]));
 		}
 
@@ -644,7 +644,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 
 	private function importSoundsFromDisk():Void {
 		function fileSelected(e:Event):Void {
-			for (j= 0...files.fileList.length) {
+			for (j in 0...files.fileList.length) {
 				var file:FileReference = FileReference(files.fileList[j]);
 				file.addEventListener(Event.COMPLETE, fileLoaded);
 				file.load();
@@ -662,7 +662,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 	}
 
 	private function startSoundUpload(sndToUpload:ScratchSound, origName:String, whenDone:Function):Void {
-		if(!sndToUpload) {
+		if(sndToUpload == null) {
 			DialogBox.notify(
 					'Sorry!',
 					'The sound file '+origName+' is not recognized by Scratch.  Please use MP3 or WAV sound files.',
@@ -687,10 +687,10 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 			snd = new ScratchSound(sndName, data); // try reading the data as a WAV file
 		} catch (e:Error) { }
 
-		if (snd && snd.sampleCount > 0) { // WAV data
+		if (snd != null && snd.sampleCount > 0) { // WAV data
 			startSoundUpload(snd, origName, uploadComplete);
 		} else { // try to read data as an MP3 file
-			if (app.lp) app.lp.setTitle('Converting mp3 file...');
+			if (app.lp != null ) app.lp.setTitle('Converting mp3 file...');
 			var sound:Sound;
 			/*
 			SCRATCH::allow3d {
@@ -710,7 +710,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 			}
 			*/
 
-			if (!sound)
+			if (sound == null)
 				setTimeout(function():Void {
 					MP3Loader.convertToScratchSound(sndName, data, function(s:ScratchSound):Void {
 						snd = s;

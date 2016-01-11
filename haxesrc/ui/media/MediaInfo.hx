@@ -71,16 +71,16 @@ class MediaInfo extends Sprite {
 		mycostume = cast(obj, ScratchCostume);
 		mysound = cast(obj, ScratchSound);
 		mysprite = cast(obj, ScratchSprite);
-		if (mycostume) {
+		if (mycostume != null) {
 			objType = 'image';
 			objName = mycostume.costumeName;
 			md5 = mycostume.baseLayerMD5;
-		} else if (mysound) {
+		} else if (mysound != null) {
 			objType = 'sound';
 			objName = mysound.soundName;
 			md5 = mysound.md5;
-			if (owner) frameHeight = 75; // use a shorter frame for sounds in a MediaPane
-		} else if (mysprite) {
+			if (owner != null) frameHeight = 75; // use a shorter frame for sounds in a MediaPane
+		} else if (mysprite != null) {
 			objType = 'sprite';
 			objName = mysprite.objName;
 			md5 = null; // initially null
@@ -124,9 +124,9 @@ class MediaInfo extends Sprite {
 	}
 
 	private function showDeleteButton(flag:Bool):Void {
-		if (deleteButton) {
+		if (deleteButton != null) {
 			deleteButton.visible = flag;
-			if (flag && mycostume && owner && (owner.costumes.length < 2)) deleteButton.visible = false;
+			if (flag && mycostume != null && owner != null && (owner.costumes.length < 2)) deleteButton.visible = false;
 		}
 	}
 
@@ -135,13 +135,13 @@ class MediaInfo extends Sprite {
 	//------------------------------
 
 	public function updateMediaThumbnail():Void { /* xxx */ }
-	public function thumbnailX():Int { return thumbnail.x; }
-	public function thumbnailY():Int { return thumbnail.y; }
+	public function thumbnailX():Int { return Std.int(thumbnail.x); }
+	public function thumbnailY():Int { return Std.int(thumbnail.y); }
 
 	public function computeThumbnail():Bool {
-		if (mycostume) setLocalCostumeThumbnail();
-		else if (mysprite) setLocalSpriteThumbnail();
-		else if (scripts) setScriptThumbnail();
+		if (mycostume != null) setLocalCostumeThumbnail();
+		else if (mysprite != null) setLocalSpriteThumbnail();
+		else if (scripts != null) setScriptThumbnail();
 		else return false;
 
 		return true;
@@ -149,7 +149,7 @@ class MediaInfo extends Sprite {
 
 	private function setLocalCostumeThumbnail():Void {
 		// Set the thumbnail for a costume local to this project (and not necessarily saved to the server).
-		var forStage:Bool = owner && owner.isStage;
+		var forStage:Bool = owner != null && owner.isStage;
 		var bm:BitmapData = mycostume.thumbnail(thumbnailWidth, thumbnailHeight, forStage);
 		isBackdrop = forStage;
 		setThumbnailBM(bm);
@@ -161,13 +161,13 @@ class MediaInfo extends Sprite {
 	}
 
 	private function fileType(s:String):String {
-		if (!s) return '';
+		if (s == null) return '';
 		var i:Int = s.lastIndexOf('.');
 		return (i < 0) ? '' : s.slice(i + 1);
 	}
 
 	private function setScriptThumbnail():Void {
-		if (!scripts || (scripts.length < 1)) return; // no scripts
+		if (scripts == null || (scripts.length < 1)) return; // no scripts
 		var script:Block = BlockIO.arrayToStack(scripts[0]);
 		var scale:Float = Math.min(thumbnailWidth / script.width, thumbnailHeight / script.height);
 		var bm:BitmapData = new BitmapData(thumbnailWidth, thumbnailHeight, true, 0);
@@ -214,8 +214,8 @@ class MediaInfo extends Sprite {
 	}
 
 	private function infoString():String {
-		if (mycostume) return costumeInfoString();
-		if (mysound) return soundInfoString(mysound.getLengthInMsec());
+		if (mycostume != null) return costumeInfoString();
+		if (mysound != null) return soundInfoString(mysound.getLengthInMsec());
 		return '';
 	}
 
@@ -224,12 +224,12 @@ class MediaInfo extends Sprite {
 		var w:Int, h:Int;
 		var dispObj:DisplayObject = mycostume.displayObj();
 		if (Std.is(dispObj, Bitmap)) {
-			w = dispObj.width;
-			h = dispObj.height;
+			w = Std.int(dispObj.width);
+			h = Std.int(dispObj.height);
 		} else {
 			var r:Rectangle = dispObj.getBounds(dispObj);
-			w = Math.ceil(r.width);
-			h = Math.ceil(r.height);
+			w = Std.int(Math.ceil(r.width));
+			h = Std.int(Math.ceil(r.height));
 		}
 		return w + 'x' + h;
 	}
@@ -238,9 +238,9 @@ class MediaInfo extends Sprite {
 		// Return a formatted time in MM:SS.HH (where HH is hundredths of a second).
 		function twoDigits(n:Int):String { return (n < 10) ? '0' + n : '' + n; }
 
-		var secs:Int = msecs / 1000;
-		var hundredths:Int = (msecs % 1000) / 10;
-		return twoDigits(secs / 60) + ':' + twoDigits(secs % 60) + '.' + twoDigits(hundredths);
+		var secs:Int = Std.int(msecs / 1000);
+		var hundredths:Int = Std.int((msecs % 1000) / 10);
+		return twoDigits(Std.int(secs / 60)) + ':' + twoDigits(secs % 60) + '.' + twoDigits(hundredths);
 	}
 
 	// -----------------------------
@@ -254,13 +254,13 @@ class MediaInfo extends Sprite {
 			width: objWidth,
 			md5: md5
 		});
-		if (mycostume) result = Scratch.app.createMediaInfo(mycostume, owner);
-		if (mysound) result = Scratch.app.createMediaInfo(mysound, owner);
-		if (mysprite) result = Scratch.app.createMediaInfo(mysprite);
-		if (scripts) result = Scratch.app.createMediaInfo(scripts);
+		if (mycostume != null) result = Scratch.app.createMediaInfo(mycostume, owner);
+		if (mysound != null) result = Scratch.app.createMediaInfo(mysound, owner);
+		if (mysprite != null) result = Scratch.app.createMediaInfo(mysprite);
+		if (scripts != null) result = Scratch.app.createMediaInfo(scripts);
 
 		result.removeDeleteButton();
-		if (thumbnail.bitmapData) result.thumbnail.bitmapData = thumbnail.bitmapData;
+		if (thumbnail.bitmapData != null) result.thumbnail.bitmapData = thumbnail.bitmapData;
 		result.hideTextFields();
 		return result;
 	}
@@ -275,7 +275,7 @@ class MediaInfo extends Sprite {
 	}
 
 	public function removeDeleteButton():Void {
-		if (deleteButton) {
+		if (deleteButton != null) {
 			removeChild(deleteButton);
 			deleteButton = null;
 		}
@@ -288,14 +288,14 @@ class MediaInfo extends Sprite {
 			name: objName,
 			md5: md5
 		};
-		if (mycostume) {
+		if (mycostume != null) {
 			result.width = mycostume.width();
 			result.height = mycostume.height();
 		}
-		if (mysound) {
+		if (mysound != null) {
 			result.seconds = mysound.getLengthInMsec() / 1000;
 		}
-		if (scripts) {
+		if (scripts != null) {
 			result.scripts = scripts;
 			result.md5 = null; //delete result.md5;
 		}
@@ -327,7 +327,7 @@ class MediaInfo extends Sprite {
 			thumbnail.y = 13;
 		}
 		addChild(thumbnail);
-		if (owner) computeThumbnail();
+		if (owner != null) computeThumbnail();
 	}
 
 	private function addLabelAndInfo():Void {
@@ -341,7 +341,7 @@ class MediaInfo extends Sprite {
 
 	private function setText(tf:TextField, s:String):Void {
 		// Set the text of the given TextField, truncating if necessary.
-		var desiredWidth:Int = frame.width - 6;
+		var desiredWidth:Int = Std.int(frame.width - 6);
 		tf.text = s;
 		while ((tf.textWidth > desiredWidth) && (s.length > 0)) {
 			s = s.substring(0, s.length - 1);
@@ -354,13 +354,13 @@ class MediaInfo extends Sprite {
 	//------------------------------
 
 	public function click(evt:MouseEvent):Void {
-		if (!getBackpack()) {
+		if (getBackpack() == null) {
 			var app:Scratch = Scratch.app;
-			if (mycostume) {
+			if (mycostume != null) {
 				app.viewedObj().showCostumeNamed(mycostume.costumeName);
 				app.selectCostume();
 			}
-			if (mysound) app.selectSound(mysound);
+			if (mysound != null) app.selectSound(mysound);
 		}
 	}
 
@@ -376,32 +376,32 @@ class MediaInfo extends Sprite {
 	}
 
 	private function addMenuItems(m:Menu):Void {
-		if (!getBackpack()) m.addItem('duplicate', duplicateMe);
+		if (getBackpack() == null) m.addItem('duplicate', duplicateMe);
 		m.addItem('delete', deleteMe);
 		m.addLine();
-		if (mycostume) {
+		if (mycostume != null) {
 			m.addItem('save to local file', exportCostume);
 		}
-		if (mysound) {
+		if (mysound != null) {
 			m.addItem('save to local file', exportSound);
 		}
 	}
 
 	private function duplicateMe():Void {
-		if (owner && !getBackpack()) {
-			if (mycostume) Scratch.app.addCostume(mycostume.duplicate());
-			if (mysound) Scratch.app.addSound(mysound.duplicate());
+		if (owner != null && getBackpack() == null) {
+			if (mycostume != null ) Scratch.app.addCostume(mycostume.duplicate());
+			if (mysound != null) Scratch.app.addSound(mysound.duplicate());
 		}
 	}
 
 	private function deleteMe(ignore:Dynamic  = null):Void {
-		if (owner) {
+		if (owner != null) {
 			Scratch.app.runtime.recordForUndelete(this, 0, 0, 0, owner);
-			if (mycostume) {
+			if (mycostume != null) {
 				owner.deleteCostume(mycostume);
 				Scratch.app.refreshImageTab(false);
 			}
-			if (mysound) {
+			if (mysound != null) {
 				owner.deleteSound(mysound);
 				Scratch.app.refreshSoundTab();
 			}
@@ -409,7 +409,7 @@ class MediaInfo extends Sprite {
 	}
 
 	private function exportCostume():Void {
-		if (!mycostume) return;
+		if (mycostume == null) return;
 		mycostume.prepareToSave();
 		var ext:String = ScratchCostume.fileExtension(mycostume.baseLayerData);
 		var defaultName:String = mycostume.costumeName + ext;
@@ -417,7 +417,7 @@ class MediaInfo extends Sprite {
 	}
 
 	private function exportSound():Void {
-		if (!mysound) return;
+		if (mysound == null) return;
 		mysound.prepareToSave();
 		var defaultName:String = mysound.soundName + '.wav';
 		new FileReference().save(mysound.soundData, defaultName);

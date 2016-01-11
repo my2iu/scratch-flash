@@ -97,7 +97,7 @@ class Menu extends Sprite
         this.y = Math.max(5, Math.min(this.y, stage.stageHeight - this.height - 8));
         // if under mouse, try to move right a bit so menu stays up
         if ((this.x < stage.mouseX) && (this.y < stage.mouseY)) {
-            var newX : Int = stage.mouseX + 6;
+            var newX : Int = Std.int(stage.mouseX + 6);
             if (newX < (stage.stageWidth - this.width))                 this.x = newX;
         }
         stage.addChild(this);
@@ -153,7 +153,7 @@ class Menu extends Sprite
             nextY += item.height;
         }  // compute max height  
         
-        maxHeight = Math.min(500, stage.stageHeight - 50);
+        maxHeight = Std.int(Math.min(500, stage.stageHeight - 50));
         // compute max scrollIndex
         var totalH : Int;
         maxScrollIndex = allItems.length - 1;
@@ -204,7 +204,7 @@ class Menu extends Sprite
         if ((Math.round(haxe.Timer.stamp() * 1000) - lastTime) < scrollMSecs)             return;
         lastTime = Math.round(haxe.Timer.stamp() * 1000);
         
-        var localY : Int = this.globalToLocal(new Point(stage.mouseX, stage.mouseY)).y;
+        var localY : Int = Std.int(this.globalToLocal(new Point(stage.mouseX, stage.mouseY)).y);
         if ((localY < (2 + scrollInset)) && (firstItemIndex > 0))             scrollBy(-1);
         if ((localY > (this.height - scrollInset)) && (firstItemIndex < maxScrollIndex))             scrollBy(1);
     }
@@ -220,7 +220,7 @@ class Menu extends Sprite
             addChild(item);
             item.x = 1;
             item.y = nextY;
-            nextY += item.height;
+            nextY += Std.int(item.height);
             if (nextY > maxHeight)                 break;
         }  // add up/down arrows, if needed  
         

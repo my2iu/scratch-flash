@@ -70,9 +70,9 @@ class PaletteBuilder {
 
 		var catName:String = Specs.categories[selectedCategory][1];
 		var catColor:Int = Specs.blockColor(selectedCategory);
-		if (app.viewedObj() && app.viewedObj().isStage) {
+		if (app.viewedObj() != null && app.viewedObj().isStage) {
 			// The stage has different blocks for some categories:
-			var stageSpecific:Array = ['Control', 'Looks', 'Motion', 'Pen', 'Sensing'];
+			var stageSpecific:Array<String> = ['Control', 'Looks', 'Motion', 'Pen', 'Sensing'];
 			if (stageSpecific.indexOf(catName) != -1) selectedCategory += 100;
 			if (catName == 'Motion') {
 				addItem(makeLabel(Translator.map('Stage selected:')));
@@ -100,7 +100,7 @@ class PaletteBuilder {
 				addItem(block, showCheckbox);
 				cmdCount++;
 			} else {
-				if ((spec.length == 1) && (cmdCount > 0)) nextY += 10 * spec[0].length; // add some space
+				if ((spec.length == 1) && (cmdCount > 0)) nextY += Std.int(10 * spec[0].length); // add some space
 				cmdCount = 0;
 			}
 		}
@@ -111,7 +111,7 @@ class PaletteBuilder {
 		o.y = nextY;
 		app.palette.addChild(o);
 		app.palette.updateSize();
-		nextY += o.height + 5;
+		nextY += Std.int(o.height + 5);
 	}
 
 	private function makeLabel(label:String):TextField {
@@ -138,23 +138,23 @@ class PaletteBuilder {
 			nextY += 5;
 		}
 
-		addExtensionButtons();
-		for (ext in app.extensionManager.enabledExtensions()) {
-			addExtensionSeparator(ext);
-			addBlocksForExtension(ext);
-		}
+		//addExtensionButtons();
+		//for (ext in app.extensionManager.enabledExtensions()) {
+			//addExtensionSeparator(ext);
+			//addBlocksForExtension(ext);
+		//}
 
 		updateCheckboxes();
 	}
 
 	private function addExtensionButtons():Void {
-		addAddExtensionButton();
-		if (Scratch.app.isExtensionDevMode) {
-			var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
-			if (extensionDevManager) {
-				addItem(extensionDevManager.makeLoadExperimentalExtensionButton());
-			}
-		}
+		//addAddExtensionButton();
+		//if (Scratch.app.isExtensionDevMode) {
+			//var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
+			//if (extensionDevManager) {
+				//addItem(extensionDevManager.makeLoadExperimentalExtensionButton());
+			//}
+		//}
 	}
 
 	private function addAddExtensionButton():Void {
@@ -318,7 +318,7 @@ class PaletteBuilder {
 
 	private function getBlockArg(b:Block, i:Int):String {
 		var arg:BlockArg = cast(b.args[i], BlockArg);
-		if (arg) return arg.argValue;
+		if (arg != null) return arg.argValue;
 		return '';
 	}
 
@@ -343,7 +343,7 @@ class PaletteBuilder {
 	}
 
 	private function toggleWatcher(b:IconButton):Void {
-		var data:Object = b.clientData;
+		var data:Dynamic = b.clientData;
 		if (data.block) {
 			switch (data.block.op) {
 				case 'senseVideoMotion':
@@ -362,7 +362,7 @@ class PaletteBuilder {
 	}
 
 	private function updateCheckboxes():Void {
-		for (i= 0...app.palette.numChildren) {
+		for (i in 0...app.palette.numChildren) {
 			var b:IconButton = cast(app.palette.getChildAt(i), IconButton);
 			if (b && b.clientData) {
 				b.setOn(app.runtime.watcherShowing(b.clientData));
@@ -370,7 +370,7 @@ class PaletteBuilder {
 		}
 	}
 
-	private function getExtensionMenu(ext:ScratchExtension):Menu {
+	//private function getExtensionMenu(ext:ScratchExtension):Menu {
 		//function showAbout():Void {
 			//if (ext.isInternal) {
 				//// Internal extensions are handled specially by tip-bar.js
@@ -389,7 +389,7 @@ class PaletteBuilder {
 			//app.updatePalette();
 		//}
 
-		var m:Menu = new Menu();
+		//var m:Menu = new Menu();
 		//m.addItem(Translator.map('About') + ' ' + ext.name + ' ' + Translator.map('extension') + '...', showAbout, !!ext.url);
 		//m.addItem('Remove extension blocks', hideExtension);
 //
@@ -410,12 +410,12 @@ class PaletteBuilder {
 			//}
 		//}
 //
-		return m;
-	}
+		//return m;
+	//}
 
 	private static inline var pwidth:Int = 215;
 
-	private function addExtensionSeparator(ext:ScratchExtension):Void {
+	//private function addExtensionSeparator(ext:ScratchExtension):Void {
 		//function extensionMenu(ignore:Dynamic):Void {
 			//var m:Menu = getExtensionMenu(ext);
 			//m.showOnStage(app.stage);
@@ -452,12 +452,12 @@ class PaletteBuilder {
 				//nextY += extensionEditStatus.textHeight + 3;
 			//}
 		//}
-	}
+	//}
 
     @:meta(Embed(source="../assets/reload.png"))
 	private static var ReloadIcon:Class<Dynamic>;
 
-	private function addLineForExtensionTitle(titleButton:IconButton, ext:ScratchExtension):Void {
+	//private function addLineForExtensionTitle(titleButton:IconButton, ext:ScratchExtension):Void {
 		//var x:Int = titleButton.width + 12;
 		//var w:Int = pwidth - x - 48;
 		//var extensionDevManager:ExtensionDevManager = cast(Scratch.app.extensionManager, ExtensionDevManager);
@@ -493,24 +493,24 @@ class PaletteBuilder {
 				//reloadBtn.transform.colorTransform = new ColorTransform();
 			//});
 		//}
-	}
+	//}
 
-	private function addBlocksForExtension(ext:ScratchExtension):Void {
-		var blockColor:Int = Specs.extensionsColor;
-		var opPrefix:String = ext.useScratchPrimitives ? '' : ext.name + '.';
-		for (spec in ext.blockSpecs) {
-			if (spec.length >= 3) {
-				var op:String = opPrefix + spec[2];
-				var defaultArgs:Array = spec.slice(3);
-				var block:Block = new Block(spec[1], spec[0], blockColor, op, defaultArgs);
-				var showCheckbox:Bool = (spec[0] == 'r' && defaultArgs.length == 0);
-				if (showCheckbox) addReporterCheckbox(block);
-				addItem(block, showCheckbox);
-			} else {
-				if (spec.length == 1) nextY += 10 * spec[0].length; // add some space
-			}
-		}
-	}
+	//private function addBlocksForExtension(ext:ScratchExtension):Void {
+		//var blockColor:Int = Specs.extensionsColor;
+		//var opPrefix:String = ext.useScratchPrimitives ? '' : ext.name + '.';
+		//for (spec in ext.blockSpecs) {
+			//if (spec.length >= 3) {
+				//var op:String = opPrefix + spec[2];
+				//var defaultArgs:Array = spec.slice(3);
+				//var block:Block = new Block(spec[1], spec[0], blockColor, op, defaultArgs);
+				//var showCheckbox:Bool = (spec[0] == 'r' && defaultArgs.length == 0);
+				//if (showCheckbox) addReporterCheckbox(block);
+				//addItem(block, showCheckbox);
+			//} else {
+				//if (spec.length == 1) nextY += 10 * spec[0].length; // add some space
+			//}
+		//}
+	//}
 
 	private function addLine(x:Int, y:Int, w:Int):Void {
 		var light:Int = 0xF2F2F2;

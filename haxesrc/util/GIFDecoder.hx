@@ -300,7 +300,7 @@ class GIFDecoder
         }
         if (prefix == null)             prefix = new Array<Dynamic>(MaxStackSize);
         if (suffix == null)             suffix = new Array<Dynamic>(MaxStackSize);
-        if (pixelStack == null)             pixelStack = new Array<Dynamic>(MaxStackSize + 1)  //  Initialize GIF data stream decoder.  ;
+        if (pixelStack == null)             pixelStack = new Array<Dynamic>(MaxStackSize + 1);  //  Initialize GIF data stream decoder.  ;
         
         
         

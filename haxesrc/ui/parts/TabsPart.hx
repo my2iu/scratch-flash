@@ -82,8 +82,8 @@ class TabsPart extends UIPart
         imagesTab.y = 0;
         soundsTab.x = imagesTab.x + imagesTab.width + 1;
         soundsTab.y = 0;
-        this.w = soundsTab.x + soundsTab.width;
-        this.h = scriptsTab.height;
+        this.w = Std.int(soundsTab.x + soundsTab.width);
+        this.h = Std.int(scriptsTab.height);
     }
     
     public function updateTranslation() : Void{
@@ -108,10 +108,10 @@ class TabsPart extends UIPart
         img.addChild(tf);
         
         var g : Graphics = img.graphics;
-        var w : Int = tf.width + 20;
+        var w : Int = Std.int(tf.width + 20);
         var h : Int = 28;
         var r : Int = 9;
-        if (isSelected)             drawTopBar(g, CSS.titleBarColors, getTopBarPath(w, h), w, h)
+        if (isSelected)             drawTopBar(g, CSS.titleBarColors, getTopBarPath(w, h), w, h);
         else drawSelected(g, [0xf2f2f2, 0xd1d2d3], getTopBarPath(w, h), w, h);
         return img;
     }

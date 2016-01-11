@@ -59,7 +59,7 @@ class EditableLabel extends Sprite
     
     public function setWidth(w : Int) : Void{
         if (tf.text.length == 0)             tf.text = " ";  // needs at least one character to compute textHeight  ;
-        var h : Int = tf.textHeight + 5;  // the height is determined by the font  
+        var h : Int = Std.int(tf.textHeight + 5);  // the height is determined by the font  
         var g : Graphics = bezel.graphics;
         g.clear();
         g.lineStyle(0.5, frameColor, 1, true);
