@@ -53,7 +53,7 @@ class Resources
 		bitmaps.push(new CutTool(0, 0));
 		bitmaps.push(new GrowTool(0, 0));
 		bitmaps.push(new HelpTool(0, 0));
-		bitmaps.push(new LanguageButtonOff(0, 0));
+                bitmaps.push(new LanguageButtonOff(0, 0));
 		bitmaps.push(new LanguageButtonOn(0, 0));
 		bitmaps.push(new MyStuffOff(0, 0));
 		bitmaps.push(new MyStuffOn(0, 0));
@@ -266,7 +266,8 @@ class Resources
 			if (waitCount < 20) {
 				// If things haven't finished loading, wait some more
 				for (bmp in bitmaps) {
-					if (bmp.image.buffer == null) {
+					if (bmp.image == null ||
+                                            bmp.image.buffer == null) {
 						Timer.delay(isDone, 50);
 						return;
 					}
