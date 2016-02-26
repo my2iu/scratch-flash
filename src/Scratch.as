@@ -160,7 +160,7 @@ public class Scratch extends Sprite {
 	}
 
 	protected function initialize():void {
-		isOffline = !URLUtil.isHttpURL(loaderInfo.url);
+		isOffline = true; // !URLUtil.isHttpURL(loaderInfo.url);  (can't load new project files if this is false)
 		hostProtocol = URLUtil.getProtocol(loaderInfo.url);
 
 		isExtensionDevMode = (loaderInfo.parameters['extensionDevMode'] == 'true');
